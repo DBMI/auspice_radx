@@ -156,6 +156,9 @@ class Entropy extends React.Component {
         >
           <span style={styles.switchTitle}> {t("events")} </span>
         </button>
+        <button key={3} style={this.props.showCounts ? tabGroupMemberSelected : tabGroupMember} onClick={ () => alert("Mutations!") }>
+          <span style={styles.switchTitle}> {t("mutations")} </span>
+        </button>
       </div>
     );
   }
