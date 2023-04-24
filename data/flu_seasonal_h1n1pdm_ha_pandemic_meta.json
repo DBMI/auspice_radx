@@ -1,0 +1,2865 @@
+{
+ "updated": "15 Apr 2018", 
+ "author_info": {
+  "istituto_zooprofilattico_sperimentale_delle_venezie": {
+   "title": "?", 
+   "n": 3
+  }, 
+  "other_database_import": {
+   "title": "?", 
+   "n": 677
+  }, 
+  "who_chinese_national_influenza_center": {
+   "title": "?", 
+   "n": 59
+  }, 
+  "microbiology_services_colindale,_public_health_england": {
+   "title": "?", 
+   "n": 17
+  }, 
+  "kenyatta_university": {
+   "title": "?", 
+   "n": 1
+  }, 
+  "kenya_medical_research_institute": {
+   "title": "?", 
+   "n": 7
+  }, 
+  "national_centre_for_disease_control__ncdc_": {
+   "title": "?", 
+   "n": 1
+  }, 
+  "national_institute_of_hygiene": {
+   "title": "?", 
+   "n": 3
+  }, 
+  "instituto_de_salud_carlos_iii": {
+   "title": "?", 
+   "n": 7
+  }, 
+  "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_": {
+   "title": "?", 
+   "n": 11
+  }, 
+  "health_protection_agency__hpa_": {
+   "title": "?", 
+   "n": 7
+  }, 
+  "robert_koch_institute": {
+   "title": "?", 
+   "n": 10
+  }, 
+  "university_of_regensburg": {
+   "title": "?", 
+   "n": 1
+  }, 
+  "health_protection_agency": {
+   "title": "?", 
+   "n": 1
+  }, 
+  "hellenic_pasteur_institute": {
+   "title": "?", 
+   "n": 1
+  }, 
+  "national_institute_of_infectious_diseases__niid_": {
+   "title": "?", 
+   "n": 66
+  }, 
+  "university_college_london": {
+   "title": "?", 
+   "n": 1
+  }, 
+  "who_collaborating_centre_for_reference_and_research_on_influenza": {
+   "title": "?", 
+   "n": 73
+  }, 
+  "national_institute_for_biological_standards_and_control__nibsc_": {
+   "title": "?", 
+   "n": 4
+  }, 
+  "chulalongkorn_university": {
+   "title": "?", 
+   "n": 1
+  }, 
+  "usamru_k": {
+   "title": "?", 
+   "n": 1
+  }, 
+  "institut_pasteur": {
+   "title": "?", 
+   "n": 4
+  }, 
+  "swedish_institute_for_infectious_disease_control": {
+   "title": "?", 
+   "n": 12
+  }, 
+  "norwegian_institute_of_public_health": {
+   "title": "?", 
+   "n": 2
+  }, 
+  "national_institute_for_medical_research": {
+   "title": "?", 
+   "n": 133
+  }, 
+  "centers_for_disease_control_and_prevention": {
+   "title": "?", 
+   "n": 116
+  }, 
+  "aichi_prefectural_institute_of_public_health": {
+   "title": "?", 
+   "n": 4
+  }
+ }, 
+ "virus_count": 1223, 
+ "defaults": {
+  "geoResolution": "region", 
+  "colorBy": "region", 
+  "mapTriplicate": true
+ }, 
+ "title": "Real-time tracking of influenza A/H1N1pdm evolution", 
+ "vaccine_choices": {
+  "A/California/7/2009": "2009-09-25"
+ }, 
+ "controls": {
+  "geographic location": {
+   "europe": {
+    "count": 136, 
+    "subcats": {
+     "romania": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "albania": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "portugal": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "austria": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "greece": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "hungary": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "italy": {
+      "count": 4, 
+      "subcats": {}
+     }, 
+     "france": {
+      "count": 7, 
+      "subcats": {}
+     }, 
+     "slovakia": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "ireland": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "united_kingdom": {
+      "count": 38, 
+      "subcats": {}
+     }, 
+     "belarus": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "bosnia_herzegovina": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "slovenia": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "germany": {
+      "count": 20, 
+      "subcats": {}
+     }, 
+     "belgium": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "spain": {
+      "count": 11, 
+      "subcats": {}
+     }, 
+     "ukraine": {
+      "count": 8, 
+      "subcats": {}
+     }, 
+     "netherlands": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "name": "country", 
+     "norway": {
+      "count": 8, 
+      "subcats": {}
+     }, 
+     "sweden": {
+      "count": 12, 
+      "subcats": {}
+     }, 
+     "latvia": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "denmark": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "switzerland": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "bulgaria": {
+      "count": 1, 
+      "subcats": {}
+     }
+    }
+   }, 
+   "oceania": {
+    "count": 128, 
+    "subcats": {
+     "australia": {
+      "count": 84, 
+      "subcats": {}
+     }, 
+     "palau": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "name": "country", 
+     "guam": {
+      "count": 15, 
+      "subcats": {}
+     }, 
+     "new_zealand": {
+      "count": 14, 
+      "subcats": {}
+     }, 
+     "papua_new_guinea": {
+      "count": 11, 
+      "subcats": {}
+     }, 
+     "fiji": {
+      "count": 3, 
+      "subcats": {}
+     }
+    }
+   }, 
+   "name": "region", 
+   "south_america": {
+    "count": 104, 
+    "subcats": {
+     "brazil": {
+      "count": 48, 
+      "subcats": {}
+     }, 
+     "suriname": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "chile": {
+      "count": 37, 
+      "subcats": {}
+     }, 
+     "peru": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "colombia": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "paraguay": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "argentina": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "bolivia": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "venezuela": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "ecuador": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "name": "country"
+    }
+   }, 
+   "africa": {
+    "count": 118, 
+    "subcats": {
+     "ghana": {
+      "count": 25, 
+      "subcats": {}
+     }, 
+     "madagascar": {
+      "count": 5, 
+      "subcats": {}
+     }, 
+     "seychelles": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "name": "country", 
+     "algeria": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "ethiopia": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "egypt": {
+      "count": 14, 
+      "subcats": {}
+     }, 
+     "cote_d_ivoire": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "nigeria": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "mauritius": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "morocco": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "senegal": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "uganda": {
+      "count": 17, 
+      "subcats": {}
+     }, 
+     "south_africa": {
+      "count": 12, 
+      "subcats": {}
+     }, 
+     "kenya": {
+      "count": 18, 
+      "subcats": {}
+     }, 
+     "niger": {
+      "count": 4, 
+      "subcats": {}
+     }, 
+     "cameroon": {
+      "count": 5, 
+      "subcats": {}
+     }, 
+     "tanzania": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "tunisia": {
+      "count": 1, 
+      "subcats": {}
+     }
+    }
+   }, 
+   "southeast_asia": {
+    "count": 134, 
+    "subcats": {
+     "name": "country", 
+     "singapore": {
+      "count": 119, 
+      "subcats": {}
+     }, 
+     "indonesia": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "malaysia": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "vietnam": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "thailand": {
+      "count": 10, 
+      "subcats": {}
+     }
+    }
+   }, 
+   "china": {
+    "count": 127, 
+    "subcats": {
+     "taiwan": {
+      "count": 24, 
+      "subcats": {}
+     }, 
+     "hong_kong": {
+      "count": 11, 
+      "subcats": {}
+     }, 
+     "china": {
+      "count": 92, 
+      "subcats": {}
+     }, 
+     "name": "country"
+    }
+   }, 
+   "south_asia": {
+    "count": 109, 
+    "subcats": {
+     "sri_lanka": {
+      "count": 16, 
+      "subcats": {}
+     }, 
+     "nepal": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "india": {
+      "count": 89, 
+      "subcats": {}
+     }, 
+     "name": "country", 
+     "bangladesh": {
+      "count": 2, 
+      "subcats": {}
+     }
+    }
+   }, 
+   "japan_korea": {
+    "count": 125, 
+    "subcats": {
+     "japan": {
+      "count": 104, 
+      "subcats": {}
+     }, 
+     "name": "country", 
+     "south_korea": {
+      "count": 21, 
+      "subcats": {}
+     }
+    }
+   }, 
+   "west_asia": {
+    "count": 84, 
+    "subcats": {
+     "turkey": {
+      "count": 13, 
+      "subcats": {}
+     }, 
+     "israel": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "united_arab_emirates": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "iran": {
+      "count": 12, 
+      "subcats": {}
+     }, 
+     "name": "country", 
+     "kuwait": {
+      "count": 5, 
+      "subcats": {}
+     }, 
+     "qatar": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "cyprus": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "mongolia": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "armenia": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "oman": {
+      "count": 5, 
+      "subcats": {}
+     }, 
+     "iraq": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "kazakhstan": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "russia": {
+      "count": 28, 
+      "subcats": {}
+     }, 
+     "saudi_arabia": {
+      "count": 7, 
+      "subcats": {}
+     }
+    }
+   }, 
+   "north_america": {
+    "count": 158, 
+    "subcats": {
+     "canada": {
+      "count": 50, 
+      "subcats": {}
+     }, 
+     "honduras": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "name": "country", 
+     "usa": {
+      "count": 81, 
+      "subcats": {}
+     }, 
+     "mexico": {
+      "count": 12, 
+      "subcats": {}
+     }, 
+     "panama": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "cuba": {
+      "count": 1, 
+      "subcats": {}
+     }, 
+     "el_salvador": {
+      "count": 2, 
+      "subcats": {}
+     }, 
+     "guatemala": {
+      "count": 4, 
+      "subcats": {}
+     }, 
+     "costa_rica": {
+      "count": 3, 
+      "subcats": {}
+     }, 
+     "nicaragua": {
+      "count": 2, 
+      "subcats": {}
+     }
+    }
+   }
+  }, 
+  "authors": {
+   "istituto_zooprofilattico_sperimentale_delle_venezie": {
+    "count": 3, 
+    "subcats": {}
+   }, 
+   "other_database_import": {
+    "count": 677, 
+    "subcats": {}
+   }, 
+   "who_chinese_national_influenza_center": {
+    "count": 59, 
+    "subcats": {}
+   }, 
+   "microbiology_services_colindale,_public_health_england": {
+    "count": 17, 
+    "subcats": {}
+   }, 
+   "kenyatta_university": {
+    "count": 1, 
+    "subcats": {}
+   }, 
+   "kenya_medical_research_institute": {
+    "count": 7, 
+    "subcats": {}
+   }, 
+   "national_centre_for_disease_control__ncdc_": {
+    "count": 1, 
+    "subcats": {}
+   }, 
+   "national_institute_of_hygiene": {
+    "count": 3, 
+    "subcats": {}
+   }, 
+   "instituto_de_salud_carlos_iii": {
+    "count": 7, 
+    "subcats": {}
+   }, 
+   "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_": {
+    "count": 11, 
+    "subcats": {}
+   }, 
+   "health_protection_agency__hpa_": {
+    "count": 7, 
+    "subcats": {}
+   }, 
+   "robert_koch_institute": {
+    "count": 10, 
+    "subcats": {}
+   }, 
+   "university_of_regensburg": {
+    "count": 1, 
+    "subcats": {}
+   }, 
+   "health_protection_agency": {
+    "count": 1, 
+    "subcats": {}
+   }, 
+   "hellenic_pasteur_institute": {
+    "count": 1, 
+    "subcats": {}
+   }, 
+   "national_institute_of_infectious_diseases__niid_": {
+    "count": 66, 
+    "subcats": {}
+   }, 
+   "university_college_london": {
+    "count": 1, 
+    "subcats": {}
+   }, 
+   "who_collaborating_centre_for_reference_and_research_on_influenza": {
+    "count": 73, 
+    "subcats": {}
+   }, 
+   "national_institute_for_biological_standards_and_control__nibsc_": {
+    "count": 4, 
+    "subcats": {}
+   }, 
+   "chulalongkorn_university": {
+    "count": 1, 
+    "subcats": {}
+   }, 
+   "usamru_k": {
+    "count": 1, 
+    "subcats": {}
+   }, 
+   "name": "authors", 
+   "institut_pasteur": {
+    "count": 4, 
+    "subcats": {}
+   }, 
+   "swedish_institute_for_infectious_disease_control": {
+    "count": 12, 
+    "subcats": {}
+   }, 
+   "norwegian_institute_of_public_health": {
+    "count": 2, 
+    "subcats": {}
+   }, 
+   "national_institute_for_medical_research": {
+    "count": 133, 
+    "subcats": {}
+   }, 
+   "centers_for_disease_control_and_prevention": {
+    "count": 116, 
+    "subcats": {}
+   }, 
+   "aichi_prefectural_institute_of_public_health": {
+    "count": 4, 
+    "subcats": {}
+   }
+  }
+ }, 
+ "color_options": {
+  "gt": {
+   "menuItem": "genotype", 
+   "type": "discrete", 
+   "legendTitle": "Genotype", 
+   "key": "genotype"
+  }, 
+  "country": {
+   "menuItem": "country", 
+   "type": "discrete", 
+   "color_map": [
+    [
+     "senegal", 
+     "#511ea8"
+    ], 
+    [
+     "japan", 
+     "#4f21ab"
+    ], 
+    [
+     "taiwan", 
+     "#4c25b0"
+    ], 
+    [
+     "cyprus", 
+     "#492ab5"
+    ], 
+    [
+     "mongolia", 
+     "#472db8"
+    ], 
+    [
+     "tunisia", 
+     "#4432bc"
+    ], 
+    [
+     "argentina", 
+     "#4136c1"
+    ], 
+    [
+     "norway", 
+     "#403ac3"
+    ], 
+    [
+     "ghana", 
+     "#4040c6"
+    ], 
+    [
+     "belarus", 
+     "#3f45c8"
+    ], 
+    [
+     "bosnia_herzegovina", 
+     "#3f49ca"
+    ], 
+    [
+     "guatemala", 
+     "#3f4fcc"
+    ], 
+    [
+     "belgium", 
+     "#3e56ce"
+    ], 
+    [
+     "kazakhstan", 
+     "#3e5acf"
+    ], 
+    [
+     "netherlands", 
+     "#3f5fd0"
+    ], 
+    [
+     "denmark", 
+     "#4065cf"
+    ], 
+    [
+     "latvia", 
+     "#4068ce"
+    ], 
+    [
+     "papua_new_guinea", 
+     "#416ece"
+    ], 
+    [
+     "switzerland", 
+     "#4273ce"
+    ], 
+    [
+     "bulgaria", 
+     "#4377cd"
+    ], 
+    [
+     "albania", 
+     "#447ccd"
+    ], 
+    [
+     "honduras", 
+     "#4681ca"
+    ], 
+    [
+     "malaysia", 
+     "#4784c8"
+    ], 
+    [
+     "greece", 
+     "#4988c5"
+    ], 
+    [
+     "nicaragua", 
+     "#4a8dc2"
+    ], 
+    [
+     "canada", 
+     "#4c90c0"
+    ], 
+    [
+     "qatar", 
+     "#4d94bd"
+    ], 
+    [
+     "peru", 
+     "#4f98ba"
+    ], 
+    [
+     "palau", 
+     "#519ab7"
+    ], 
+    [
+     "kuwait", 
+     "#539db3"
+    ], 
+    [
+     "panama", 
+     "#56a0af"
+    ], 
+    [
+     "nepal", 
+     "#58a2ac"
+    ], 
+    [
+     "venezuela", 
+     "#5aa5a8"
+    ], 
+    [
+     "iran", 
+     "#5da8a4"
+    ], 
+    [
+     "new_zealand", 
+     "#5fa9a1"
+    ], 
+    [
+     "china", 
+     "#62ab9c"
+    ], 
+    [
+     "armenia", 
+     "#65ae97"
+    ], 
+    [
+     "thailand", 
+     "#67af94"
+    ], 
+    [
+     "iraq", 
+     "#6ab08f"
+    ], 
+    [
+     "south_korea", 
+     "#6db28a"
+    ], 
+    [
+     "ukraine", 
+     "#70b387"
+    ], 
+    [
+     "south_africa", 
+     "#73b583"
+    ], 
+    [
+     "oman", 
+     "#77b67f"
+    ], 
+    [
+     "el_salvador", 
+     "#7ab77c"
+    ], 
+    [
+     "mauritius", 
+     "#7db878"
+    ], 
+    [
+     "romania", 
+     "#81b974"
+    ], 
+    [
+     "seychelles", 
+     "#84ba71"
+    ], 
+    [
+     "egypt", 
+     "#88ba6d"
+    ], 
+    [
+     "guam", 
+     "#8cbb69"
+    ], 
+    [
+     "austria", 
+     "#8ebc66"
+    ], 
+    [
+     "united_arab_emirates", 
+     "#93bc63"
+    ], 
+    [
+     "hungary", 
+     "#97bd5f"
+    ], 
+    [
+     "colombia", 
+     "#99bd5d"
+    ], 
+    [
+     "united_kingdom", 
+     "#9dbe5a"
+    ], 
+    [
+     "niger", 
+     "#a2be57"
+    ], 
+    [
+     "fiji", 
+     "#a5bd56"
+    ], 
+    [
+     "turkey", 
+     "#a9bd53"
+    ], 
+    [
+     "madagascar", 
+     "#adbd51"
+    ], 
+    [
+     "bangladesh", 
+     "#b0bd4f"
+    ], 
+    [
+     "usa", 
+     "#b4bd4c"
+    ], 
+    [
+     "france", 
+     "#b8bc4a"
+    ], 
+    [
+     "slovakia", 
+     "#bbbc49"
+    ], 
+    [
+     "suriname", 
+     "#bfbb47"
+    ], 
+    [
+     "costa_rica", 
+     "#c3ba46"
+    ], 
+    [
+     "bolivia", 
+     "#c6b945"
+    ], 
+    [
+     "ecuador", 
+     "#c9b743"
+    ], 
+    [
+     "israel", 
+     "#cdb642"
+    ], 
+    [
+     "ireland", 
+     "#cfb541"
+    ], 
+    [
+     "algeria", 
+     "#d2b240"
+    ], 
+    [
+     "cote_d_ivoire", 
+     "#d5b03f"
+    ], 
+    [
+     "chile", 
+     "#d7af3f"
+    ], 
+    [
+     "nigeria", 
+     "#d9ac3e"
+    ], 
+    [
+     "spain", 
+     "#dca93c"
+    ], 
+    [
+     "hong_kong", 
+     "#dda73c"
+    ], 
+    [
+     "morocco", 
+     "#dfa43b"
+    ], 
+    [
+     "sweden", 
+     "#e1a03a"
+    ], 
+    [
+     "saudi_arabia", 
+     "#e29d39"
+    ], 
+    [
+     "russia", 
+     "#e39938"
+    ], 
+    [
+     "portugal", 
+     "#e59437"
+    ], 
+    [
+     "mexico", 
+     "#e69236"
+    ], 
+    [
+     "india", 
+     "#e68c35"
+    ], 
+    [
+     "australia", 
+     "#e68634"
+    ], 
+    [
+     "uganda", 
+     "#e68334"
+    ], 
+    [
+     "paraguay", 
+     "#e67d33"
+    ], 
+    [
+     "kenya", 
+     "#e67632"
+    ], 
+    [
+     "italy", 
+     "#e57231"
+    ], 
+    [
+     "cuba", 
+     "#e56c30"
+    ], 
+    [
+     "ethiopia", 
+     "#e4652e"
+    ], 
+    [
+     "cameroon", 
+     "#e3612e"
+    ], 
+    [
+     "brazil", 
+     "#e25a2c"
+    ], 
+    [
+     "singapore", 
+     "#e1532b"
+    ], 
+    [
+     "slovenia", 
+     "#e04e2a"
+    ], 
+    [
+     "germany", 
+     "#df4729"
+    ], 
+    [
+     "tanzania", 
+     "#de4027"
+    ], 
+    [
+     "indonesia", 
+     "#de3b26"
+    ], 
+    [
+     "vietnam", 
+     "#dd3425"
+    ], 
+    [
+     "sri_lanka", 
+     "#dc2f24"
+    ]
+   ], 
+   "legendTitle": "Country", 
+   "key": "country"
+  }, 
+  "region": {
+   "menuItem": "region", 
+   "type": "discrete", 
+   "color_map": [
+    [
+     "china", 
+     "#4042C7"
+    ], 
+    [
+     "southeast_asia", 
+     "#4274CE"
+    ], 
+    [
+     "south_asia", 
+     "#5199B7"
+    ], 
+    [
+     "japan_korea", 
+     "#69B091"
+    ], 
+    [
+     "oceania", 
+     "#88BB6C"
+    ], 
+    [
+     "west_asia", 
+     "#ADBD51"
+    ], 
+    [
+     "africa", 
+     "#CEB541"
+    ], 
+    [
+     "europe", 
+     "#E39B39"
+    ], 
+    [
+     "south_america", 
+     "#E56C2F"
+    ], 
+    [
+     "north_america", 
+     "#DC2F24"
+    ]
+   ], 
+   "legendTitle": "Region", 
+   "key": "region"
+  }, 
+  "ne": {
+   "menuItem": "non-epitope mutations", 
+   "legendTitle": "Non-epitope mutations", 
+   "type": "continuous", 
+   "key": "ne"
+  }, 
+  "num_date": {
+   "menuItem": "date", 
+   "type": "continuous", 
+   "legendTitle": "Sampling date", 
+   "key": "num_date"
+  }, 
+  "lbi": {
+   "vmin": 0, 
+   "vmax": 0.7, 
+   "legendTitle": "local branching index", 
+   "key": "lbi", 
+   "menuItem": "local branching index", 
+   "type": "continuous"
+  }, 
+  "cTiter": {
+   "menuItem": "antigenic advance", 
+   "legendTitle": "Antigenic Advance", 
+   "type": "continuous", 
+   "key": "cTiter"
+  }, 
+  "ep": {
+   "menuItem": "epitope mutations", 
+   "legendTitle": "Epitope mutations", 
+   "type": "continuous", 
+   "key": "ep"
+  }
+ }, 
+ "seq_author_map": {
+  "A/Christchurch/16/2010": "national_institute_for_biological_standards_and_control__nibsc_", 
+  "A/Berlin/187/2009": "robert_koch_institute", 
+  "A/SaoPaulo/52863/2010": "other_database_import", 
+  "A/Ankara/22/2009": "other_database_import", 
+  "A/Mexico/InDRE4487/2009": "other_database_import", 
+  "A/Tehran/5858/2010": "national_institute_for_medical_research", 
+  "A/Wisconsin/8/2010": "centers_for_disease_control_and_prevention", 
+  "A/Ontario/315613/2009": "other_database_import", 
+  "A/Sydney/DD3-42/2010": "other_database_import", 
+  "A/Mexico/LaGloria-4/2009-egg": "other_database_import", 
+  "A/Ghana/FS-10-3638/2010": "national_institute_for_medical_research", 
+  "A/Victoria/2039/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Paraguay/813/2010": "centers_for_disease_control_and_prevention", 
+  "A/Okinawa/51/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Parana/917/2010": "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_", 
+  "A/Mumbai/NIV1134/2009": "other_database_import", 
+  "A/Nagpur/NIV22704/2010": "other_database_import", 
+  "A/Christchurch/2/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Ankara/11/2009": "other_database_import", 
+  "A/Ankara/16/2009": "other_database_import", 
+  "A/NewYork/3209/2009": "other_database_import", 
+  "A/Pune/NIV161/2009": "other_database_import", 
+  "A/Chile/29/2010": "other_database_import", 
+  "A/Guam/NHRC0013/2009": "other_database_import", 
+  "A/Korea/CJ04/2009": "other_database_import", 
+  "A/Delhi/NIV0951831/2009": "other_database_import", 
+  "A/Victoria/502/2010-egg": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/HongKong/2213/2010": "national_institute_for_medical_research", 
+  "A/Aichi/257/2009": "aichi_prefectural_institute_of_public_health", 
+  "A/Catalonia/43/2009": "national_institute_for_medical_research", 
+  "A/Morocco/671/2009": "national_institute_of_hygiene", 
+  "A/StPetersburg/204/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Toronto/T0106/2009": "other_database_import", 
+  "A/Mie/12/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Russia/165/2009-egg": "other_database_import", 
+  "A/Norway/1227/2010": "norwegian_institute_of_public_health", 
+  "A/Jiangxi/SWL8/2009": "who_chinese_national_influenza_center", 
+  "A/SaoPaulo/1454/2009": "other_database_import", 
+  "A/Hyogo/3017/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Sydney/DD3-27/2010": "other_database_import", 
+  "A/Kobe/181/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Ontario/296008/2009": "other_database_import", 
+  "A/Fujian-Tongan/1389/2010": "centers_for_disease_control_and_prevention", 
+  "A/NorthFitzroy/INS529/2010": "other_database_import", 
+  "A/KhonKaen/INS523/2010": "other_database_import", 
+  "A/Verona/2810/2009": "istituto_zooprofilattico_sperimentale_delle_venezie", 
+  "A/Athens/16606/2009": "national_institute_for_medical_research", 
+  "A/California/21/2010": "centers_for_disease_control_and_prevention", 
+  "A/Taiwan/3241/2010": "other_database_import", 
+  "A/Auckland/1/2009-egg": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Tanzania/88/2009": "centers_for_disease_control_and_prevention", 
+  "A/England/404/2010": "national_institute_for_medical_research", 
+  "A/Nairobi/80/2010": "kenya_medical_research_institute", 
+  "A/Kuwait/N05052/2009": "other_database_import", 
+  "A/Sydney/DD3-01/2010": "other_database_import", 
+  "A/Ethiopia/16/2009": "centers_for_disease_control_and_prevention", 
+  "A/Nagasaki/HA-10-5/2010": "other_database_import", 
+  "A/Singapore/EN107/2010": "other_database_import", 
+  "A/England/WTSI2076/2010": "other_database_import", 
+  "A/Egypt/104/2010-egg": "national_institute_for_medical_research", 
+  "A/Dundgovi/381/2010": "national_centre_for_disease_control__ncdc_", 
+  "A/Hubei-Wuchang/SWL171/2010": "who_chinese_national_influenza_center", 
+  "A/Parana/906/2010": "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_", 
+  "A/Nigeria/1938/2010": "centers_for_disease_control_and_prevention", 
+  "A/Singapore/ON0801/2009": "other_database_import", 
+  "A/Chile/109/2010": "other_database_import", 
+  "A/Lisbon/64/2009": "other_database_import", 
+  "A/Pune/NIV21193/2009": "other_database_import", 
+  "A/SouthAfrica/2166/2010": "other_database_import", 
+  "A/SantoDomingo/WRAIR1404T/2009": "other_database_import", 
+  "A/CostaRica/6692/2010": "centers_for_disease_control_and_prevention", 
+  "A/LaReunion/823/2010": "national_institute_for_medical_research", 
+  "A/Malaysia/820/2009": "other_database_import", 
+  "A/England/217/2009": "health_protection_agency__hpa_", 
+  "A/Shanghai-Pudongxin/SWL1147/2010": "who_chinese_national_influenza_center", 
+  "A/NovaScotia/RV1535/2009": "other_database_import", 
+  "A/England/223/2009": "health_protection_agency__hpa_", 
+  "A/Kobe/9109/2009": "other_database_import", 
+  "A/Montana/1/2010": "centers_for_disease_control_and_prevention", 
+  "A/NanChang/8/2010": "other_database_import", 
+  "A/Canberra/2006/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/CoteDIvoire/234/2010": "centers_for_disease_control_and_prevention", 
+  "A/NewYork/6806/2009": "other_database_import", 
+  "A/Victoria/1/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Perugia/1/2010": "national_institute_for_medical_research", 
+  "A/Bahia/376/2010": "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_", 
+  "A/India/8910/2010": "centers_for_disease_control_and_prevention", 
+  "A/Volyn/226/2009": "national_institute_for_medical_research", 
+  "A/Guangdong/427/2010": "other_database_import", 
+  "A/Quebec/RV1586/2009": "other_database_import", 
+  "A/Yamanashi/847/2009": "national_institute_of_infectious_diseases__niid_", 
+  "A/England/211/2009": "health_protection_agency__hpa_", 
+  "A/England/67/2010": "microbiology_services_colindale,_public_health_england", 
+  "A/Chile/36/2009": "other_database_import", 
+  "A/Gangwon/2838/2010-egg": "other_database_import", 
+  "A/Paris/2580/2009": "institut_pasteur", 
+  "A/Arizona/8/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Goroka/16/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Ontario/804635/2010": "other_database_import", 
+  "A/Pune/NIV14886/2009": "other_database_import", 
+  "A/Dakar/WRAIR0018T/2010": "other_database_import", 
+  "A/Chiba/12/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Cameroon/10v-4655/2010": "national_institute_for_medical_research", 
+  "A/JammuKashmir/21/2010": "other_database_import", 
+  "A/MadhyaPradesh/24/2010": "other_database_import", 
+  "A/Ontario/308054/2009": "other_database_import", 
+  "A/Kobe/9015/2009": "other_database_import", 
+  "A/Darwin/7/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Tennessee/F2008c07A/2010": "other_database_import", 
+  "A/Singapore/ON457/2009": "other_database_import", 
+  "A/Slovenia/1195/2010": "national_institute_for_medical_research", 
+  "A/Korea/CJ40/2009": "other_database_import", 
+  "A/Ontario/10296/2009": "other_database_import", 
+  "A/Bolivia/272/2010": "centers_for_disease_control_and_prevention", 
+  "A/Singapore/CC02/2010": "other_database_import", 
+  "A/Rivne/214/2009": "national_institute_for_medical_research", 
+  "A/Sydney/DD3-18/2010": "other_database_import", 
+  "A/Fukuoka-C/2/2009": "national_institute_of_infectious_diseases__niid_", 
+  "A/Florida/16/2010": "centers_for_disease_control_and_prevention", 
+  "A/Peru/8409/2009": "centers_for_disease_control_and_prevention", 
+  "A/Niger/666/2010": "national_institute_for_medical_research", 
+  "A/MinasGerais/14602/2009": "other_database_import", 
+  "A/Saskatchewan/RV1794/2009": "other_database_import", 
+  "A/Pune/NIV807/2009": "other_database_import", 
+  "A/HongKong/26578/2009": "national_institute_for_medical_research", 
+  "A/Mexico/InDRE13547/2009": "other_database_import", 
+  "A/Ecuador/IEC00012/2010": "other_database_import", 
+  "A/Peru/6609/2009": "centers_for_disease_control_and_prevention", 
+  "A/Sapporo/569/2009": "national_institute_of_infectious_diseases__niid_", 
+  "A/Kenya/63/2010": "other_database_import", 
+  "A/Uganda/MUWRP-176/2010": "other_database_import", 
+  "A/Moscow/IIV-33/2010": "other_database_import", 
+  "A/Nara/39/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Guangdong/1106/2009": "other_database_import", 
+  "A/Singapore/GP3026/2009": "other_database_import", 
+  "A/SaoPaulo/70429/2009": "other_database_import", 
+  "A/Norway/238/2010": "national_institute_for_medical_research", 
+  "A/Switzerland/3628801/2010": "national_institute_for_medical_research", 
+  "A/Korea/AF21783/2010": "other_database_import", 
+  "A/Singapore/GP3532/2010": "other_database_import", 
+  "A/Guatemala/175/2010": "centers_for_disease_control_and_prevention", 
+  "A/Ontario/9698/2009": "other_database_import", 
+  "A/Mexico/InDRE13495/2009": "other_database_import", 
+  "A/Parana/886/2010": "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_", 
+  "A/Moscow/IIV03/2009": "other_database_import", 
+  "A/Guangdong/296/2010": "other_database_import", 
+  "A/England/207/2009": "microbiology_services_colindale,_public_health_england", 
+  "A/Ghana/FS-10-4184/2010": "national_institute_for_medical_research", 
+  "A/Singapore/TT437/2010": "other_database_import", 
+  "A/Sichuan-Dongqu/SWL1818/2009": "who_chinese_national_influenza_center", 
+  "A/Goa/35/2010": "other_database_import", 
+  "A/MinasGerais/65/2009": "other_database_import", 
+  "A/UttarPradesh/32/2010": "other_database_import", 
+  "A/SaoPaulo/91768/2009": "other_database_import", 
+  "A/Hainan/SWL14/2009": "who_chinese_national_influenza_center", 
+  "A/Singapore/GP835/2009": "other_database_import", 
+  "A/Bangalore/4163-30/2010": "other_database_import", 
+  "A/Israel/MF17568/2009": "national_institute_for_medical_research", 
+  "A/Brazil/1394/2010": "centers_for_disease_control_and_prevention", 
+  "A/Brisbane/10/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Panama/307207/2010": "centers_for_disease_control_and_prevention", 
+  "A/Kitakyushu/4/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Sweden/25/2009": "swedish_institute_for_infectious_disease_control", 
+  "A/California/5/2009": "centers_for_disease_control_and_prevention", 
+  "A/Guangdong/SWL30/2009": "who_chinese_national_influenza_center", 
+  "A/Singapore/ON2383/2009": "other_database_import", 
+  "A/Honduras/6132/2010": "centers_for_disease_control_and_prevention", 
+  "A/Beijing-Huairou/SWL1856/2009": "who_chinese_national_influenza_center", 
+  "A/NewYork/1669/2009": "other_database_import", 
+  "A/Shiraz/3/2010": "other_database_import", 
+  "A/Brazil/AVS06/2009": "other_database_import", 
+  "A/Alagoas/166/2010": "other_database_import", 
+  "A/Guangdong/379/2010": "other_database_import", 
+  "A/Taiwan/65642/2010": "other_database_import", 
+  "A/Stockholm/93/2009": "swedish_institute_for_infectious_disease_control", 
+  "A/Sydney/DD3-06/2010": "other_database_import", 
+  "A/Ontario/RV1527/2009": "other_database_import", 
+  "A/Ontario/156785/2009": "other_database_import", 
+  "A/Meru/467/2009": "kenya_medical_research_institute", 
+  "A/Egypt/N11640/2009": "other_database_import", 
+  "A/Brisbane/2008/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/England/32/2010": "other_database_import", 
+  "A/Guam/NHRC0027/2009": "other_database_import", 
+  "A/Oman/SQUH-37/2010": "other_database_import", 
+  "A/Cameroon/463/2009": "national_institute_for_medical_research", 
+  "A/SriLanka/23127/2010": "other_database_import", 
+  "A/Brazil/8546/2010": "centers_for_disease_control_and_prevention", 
+  "A/Egypt/N14313/2009": "other_database_import", 
+  "A/Tottori/225/2009": "national_institute_of_infectious_diseases__niid_", 
+  "A/Kentucky/8/2010": "centers_for_disease_control_and_prevention", 
+  "A/Guangdong-Yuexiu/SWL11552/2009": "who_chinese_national_influenza_center", 
+  "A/Perth/382/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Beijing-Huairou/SWL1282/2010": "who_chinese_national_influenza_center", 
+  "A/Vladivostok/IIV17/2009": "other_database_import", 
+  "A/Ontario/237882/2009": "other_database_import", 
+  "A/Chiba-C/51/2009": "other_database_import", 
+  "A/Ankara/6/2009": "other_database_import", 
+  "A/Taiwan/71463/2010": "other_database_import", 
+  "A/Gyeonggi/2623/2010-egg": "other_database_import", 
+  "A/Saga/85/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Singapore/ON506/2009": "other_database_import", 
+  "A/Singapore/GP2982/2009": "other_database_import", 
+  "A/SaoPaulo/71897/2009": "other_database_import", 
+  "A/Stockholm/106/2009": "swedish_institute_for_infectious_disease_control", 
+  "A/Russia/14/2009-egg": "other_database_import", 
+  "A/Lisbon/51/2009": "other_database_import", 
+  "A/Hyderabad/NIV51/2009": "other_database_import", 
+  "A/Goias/16651/2010": "other_database_import", 
+  "A/Rajasthan/19/2010": "other_database_import", 
+  "A/SouthCarolina/2/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Hubei-Hongshan/SWL143/2010-egg": "who_chinese_national_influenza_center", 
+  "A/Assam/2257/2009": "other_database_import", 
+  "A/Nashik/NIV9968/2009": "other_database_import", 
+  "A/Ghana/FS-10-4466/2010": "national_institute_for_medical_research", 
+  "A/India/5107/2010": "centers_for_disease_control_and_prevention", 
+  "A/Argentina/HNRG102/2010-egg": "other_database_import", 
+  "A/Wisconsin/10/2010": "centers_for_disease_control_and_prevention", 
+  "A/Toronto/T5308/2009": "other_database_import", 
+  "A/Uganda/MUWRP-222/2010": "other_database_import", 
+  "A/Ontario/RV3226/2009-egg": "centers_for_disease_control_and_prevention", 
+  "A/Nakuru/192/2009": "kenya_medical_research_institute", 
+  "A/Taiwan/71326/2010": "other_database_import", 
+  "A/Ghana/FS/10-4400/2010": "national_institute_for_medical_research", 
+  "A/Missouri/1/2010": "centers_for_disease_control_and_prevention", 
+  "A/Ankara/18/2009": "other_database_import", 
+  "A/Egypt/73/2010-egg": "national_institute_for_medical_research", 
+  "A/Sachsen/92/2009": "robert_koch_institute", 
+  "A/Taiwan/90110/2010": "other_database_import", 
+  "A/Yamagata/29/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Sydney/DD3-03/2010": "other_database_import", 
+  "A/Beijing/3907/2010": "other_database_import", 
+  "A/Nara/43/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Goroka/19/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Yokosuka/48/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Guam/NHRC0024/2009": "other_database_import", 
+  "A/Fujian/SWL3/2009-egg": "who_chinese_national_influenza_center", 
+  "A/Jabalpur/1413/2010": "other_database_import", 
+  "A/Quebec/RV1759/2009": "other_database_import", 
+  "A/Wisconsin/629-D02367/2009": "other_database_import", 
+  "A/Orenburg/IIV-13/2010-egg": "other_database_import", 
+  "A/Madagascar/7519/2010": "national_institute_for_medical_research", 
+  "A/Kenya/3840/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Madagascar/7473/2010": "national_institute_for_medical_research", 
+  "A/Nagpur/NIV11203/2009": "other_database_import", 
+  "A/Guam/NHRC0014/2009": "other_database_import", 
+  "A/Singapore/GP4444/2010": "other_database_import", 
+  "A/Brisbane/7/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Uganda/MUWRP-093/2009": "other_database_import", 
+  "A/Singapore/GP2432/2010": "other_database_import", 
+  "A/SouthAfrica/2863/2009": "other_database_import", 
+  "A/Yokohama/84/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Thailand/CU-C1157/2010": "other_database_import", 
+  "A/Oman/SQUH-1/2009": "other_database_import", 
+  "A/Argentina/19618/2009": "other_database_import", 
+  "A/Singapore/ON2063/2009": "other_database_import", 
+  "A/Pune/NIV1166/2009": "other_database_import", 
+  "A/Shanghai-Zhangning/SWL1700/2010-egg": "who_chinese_national_influenza_center", 
+  "A/Okinawa/74/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Guam/NHRC0022/2009": "other_database_import", 
+  "A/Ontario/741328/2010": "other_database_import", 
+  "A/Kisumu/56/2009": "kenyatta_university", 
+  "A/Singapore/GP2830/2010": "other_database_import", 
+  "A/Brisbane/1/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Yamaguchi/23/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Bangalore/6846-26/2010": "other_database_import", 
+  "A/Ankara/20/2009": "other_database_import", 
+  "A/Uganda/MUWRP-220/2010": "other_database_import", 
+  "A/Ontario/235657/2009": "other_database_import", 
+  "A/Egypt/N00231/2010": "other_database_import", 
+  "A/Thailand/CU-H2698/2010": "other_database_import", 
+  "A/Ghana/FS-09-1345/2009": "national_institute_for_medical_research", 
+  "A/Taiwan/3994/2010": "other_database_import", 
+  "A/Pune/NIV759/2009": "other_database_import", 
+  "A/Kobe/91890/2009": "other_database_import", 
+  "A/Fukushima/452/2009": "national_institute_of_infectious_diseases__niid_", 
+  "A/Oregon/2/2010": "centers_for_disease_control_and_prevention", 
+  "A/Tehran/5853/2010": "other_database_import", 
+  "A/Singapore/GP1078/2010": "other_database_import", 
+  "A/Oklahoma/1/2010": "centers_for_disease_control_and_prevention", 
+  "A/Guam/2121/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Kolkata/NIV105777/2009": "other_database_import", 
+  "A/Hubei-Shashi/SWL1509/2009": "who_chinese_national_influenza_center", 
+  "A/Mexico/InDRE13555/2009": "other_database_import", 
+  "A/Bayern/T4324/2010": "robert_koch_institute", 
+  "A/Wellington/4/2010-egg": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Zhoushan/52/2009": "other_database_import", 
+  "A/Fujian/SWL6/2009-egg": "who_chinese_national_influenza_center", 
+  "A/Fukushima/119/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/England/1180017/2010": "other_database_import", 
+  "A/SaoPaulo/22205/2010": "other_database_import", 
+  "A/Wisconsin/629-D01987/2009": "other_database_import", 
+  "A/Singapore/KK90/2010": "other_database_import", 
+  "A/Nanded/NIV29214/2010": "other_database_import", 
+  "A/Guangdong-Duanzhou/SWL1198/2010": "who_chinese_national_influenza_center", 
+  "A/Nagasaki/HA-10-25/2010": "other_database_import", 
+  "A/Hawaii/14/2010": "centers_for_disease_control_and_prevention", 
+  "A/Ontario/147265/2009": "other_database_import", 
+  "A/Wisconsin/629-D01412/2009": "other_database_import", 
+  "A/Chile/34/2010": "other_database_import", 
+  "A/Goroka/17/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Delhi/NIV57/2009": "other_database_import", 
+  "A/Ontario/222656/2009": "other_database_import", 
+  "A/Singapore/TT128/2010": "other_database_import", 
+  "A/SaoPaulo/45221/2010": "other_database_import", 
+  "A/Florida/15/2010": "centers_for_disease_control_and_prevention", 
+  "A/Chile/54/2010": "other_database_import", 
+  "A/Vladivostok/7/2010": "other_database_import", 
+  "A/Ghana/FS-1307/2010": "national_institute_for_medical_research", 
+  "A/Ghana/FS-1059/2010": "national_institute_for_medical_research", 
+  "A/Singapore/ON2202/2009": "other_database_import", 
+  "A/Bangladesh/6004/2010": "centers_for_disease_control_and_prevention", 
+  "A/Yokohama/UT-K1205T/2009": "other_database_import", 
+  "A/Taiwan/66259/2010": "other_database_import", 
+  "A/SriLanka/22538/2010": "other_database_import", 
+  "A/Madagascar/9567/2009": "national_institute_for_medical_research", 
+  "A/MexicoCity/CIA3/2009": "other_database_import", 
+  "A/Bratislava/1258/2009": "national_institute_for_medical_research", 
+  "A/Beijing-Xicheng/SWL11348/2009": "who_chinese_national_influenza_center", 
+  "A/Kuwait/4536/2009": "centers_for_disease_control_and_prevention", 
+  "A/Ialomita/3040/2009": "national_institute_for_medical_research", 
+  "A/Japan/NHRC0004/2009": "other_database_import", 
+  "A/Nonthaburi/102/2009": "chulalongkorn_university", 
+  "A/Singapore/ON2400/2009": "other_database_import", 
+  "A/Panama/307168/2010": "centers_for_disease_control_and_prevention", 
+  "A/SouthAfrica/17167/2010": "other_database_import", 
+  "A/Jeddah/3663/2010": "other_database_import", 
+  "A/India/Bangalore/2010-egg": "other_database_import", 
+  "A/England/1580005/2010": "other_database_import", 
+  "A/Tennessee/F1071/2010": "other_database_import", 
+  "A/Victoria/670/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Singapore/GP2257/2010": "other_database_import", 
+  "A/Singapore/TT255/2010": "other_database_import", 
+  "A/Egypt/96/2010": "national_institute_for_medical_research", 
+  "A/England/401/2009": "other_database_import", 
+  "A/Assam/2677/2010": "other_database_import", 
+  "A/Jiangxi/SWL2/2009": "who_chinese_national_influenza_center", 
+  "A/Singapore/EN35/2010": "other_database_import", 
+  "A/HoChiMinh/96211/2010-egg": "other_database_import", 
+  "A/Denmark/528/2009": "other_database_import", 
+  "A/Singapore/GP758/2010": "other_database_import", 
+  "A/India/NIV42409/2010": "other_database_import", 
+  "A/England/3380426/2010": "microbiology_services_colindale,_public_health_england", 
+  "A/PuertoMontt/11868/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Nagasaki/HA-10-27/2010": "other_database_import", 
+  "A/Saskatchewan/RV1788/2009": "other_database_import", 
+  "A/Uganda/MUWRP-212/2010": "other_database_import", 
+  "A/NordrheinWestfalen/74/2009": "robert_koch_institute", 
+  "A/Auckland/532/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/England/200/2009": "microbiology_services_colindale,_public_health_england", 
+  "A/Ghana/FS-10-3907/2010": "national_institute_for_medical_research", 
+  "A/Australia/28/2009": "other_database_import", 
+  "A/Assam/2668/2010": "other_database_import", 
+  "A/Ankara/12/2009": "other_database_import", 
+  "A/SouthAustralia/2001/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Victoria/2/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Japan/NHRC0003/2009": "other_database_import", 
+  "A/Switzerland/3628824/2010": "national_institute_for_medical_research", 
+  "A/Toronto/3141/2009": "other_database_import", 
+  "A/Kobe/90597/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Darwin/2145/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Kobe/9336/2009": "other_database_import", 
+  "A/Parana/927/2010": "other_database_import", 
+  "A/Taiwan/71280/2010": "other_database_import", 
+  "A/Ontario/778873/2010": "other_database_import", 
+  "A/Egypt/114/2009": "national_institute_for_medical_research", 
+  "A/Dnipropetrovsk/445/2010": "centers_for_disease_control_and_prevention", 
+  "A/DistrictofColumbia/WRAIR0310/2010": "other_database_import", 
+  "A/Morocco/1515/2009": "national_institute_of_hygiene", 
+  "A/Guam/NHRC0015/2009": "other_database_import", 
+  "A/Darwin/2142/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Chile/115/2010": "other_database_import", 
+  "A/Moscow/IIV02/2009": "other_database_import", 
+  "A/Punjab/7/2009": "other_database_import", 
+  "A/Goroka/14/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Singapore/GP220/2010": "other_database_import", 
+  "A/Hawaii/7/2010": "centers_for_disease_control_and_prevention", 
+  "A/England/87/2010": "microbiology_services_colindale,_public_health_england", 
+  "A/Alberta/RV1531/2009": "other_database_import", 
+  "A/Taiwan/3002/2010": "other_database_import", 
+  "A/Tennessee/F1042A/2010": "other_database_import", 
+  "A/Astana/S4/2009": "other_database_import", 
+  "A/Oita/49/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Ghana/FS-10-4094/2010": "national_institute_for_medical_research", 
+  "A/Indonesia/105_S3_L001/2010": "university_college_london", 
+  "A/Singapore/GP1156/2009": "other_database_import", 
+  "A/Chile/1586/2009": "other_database_import", 
+  "A/Jiangxi-Zhanggong/SWL52/2010": "who_chinese_national_influenza_center", 
+  "A/SouthAfrica/3377/2010": "other_database_import", 
+  "A/Guangdong-Duanzhou/SWL1178/2010": "who_chinese_national_influenza_center", 
+  "A/California/23/2010": "centers_for_disease_control_and_prevention", 
+  "A/Shanxi-Chengqu/SWL581/2009": "who_chinese_national_influenza_center", 
+  "A/SriLanka/23194/2010": "other_database_import", 
+  "A/Stockholm/87/2009": "swedish_institute_for_infectious_disease_control", 
+  "A/Singapore/GP4670/2010": "other_database_import", 
+  "A/MexicoCity/CIA7/2009": "other_database_import", 
+  "A/Taiwan/90132/2010": "other_database_import", 
+  "A/Singapore/GP3610/2010": "other_database_import", 
+  "A/Canberra/2001/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Argentina/19464/2009": "other_database_import", 
+  "A/StPetersburg/20/2010-egg": "national_institute_for_medical_research", 
+  "A/Ontario/RV1589/2009": "other_database_import", 
+  "A/Ankara/30/2009": "other_database_import", 
+  "A/Singapore/GP669/2009": "other_database_import", 
+  "A/Austria/531141/2009": "national_institute_for_medical_research", 
+  "A/HongKong/5548/2009": "national_institute_for_medical_research", 
+  "A/Pernambuco/688/2009": "other_database_import", 
+  "A/NovaScotia/RV1551/2009": "other_database_import", 
+  "A/California/8/2010": "centers_for_disease_control_and_prevention", 
+  "A/England/WTSI1783/2010": "other_database_import", 
+  "A/Florida/13/2010": "centers_for_disease_control_and_prevention", 
+  "A/Goroka/16/2010-egg": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Kentucky/2/2010": "centers_for_disease_control_and_prevention", 
+  "A/Chiba/23/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Nagasaki/HA-16/2009": "other_database_import", 
+  "A/SaoPaulo/52064/2010": "other_database_import", 
+  "A/SaoPaulo/82668/2009": "other_database_import", 
+  "A/Guangdong/410/2010": "other_database_import", 
+  "A/Korea/CJ109/2009": "other_database_import", 
+  "A/Egypt/N00275/2010": "other_database_import", 
+  "A/SriLanka/22610/2010": "other_database_import", 
+  "A/Delhi/NIV0951830/2009": "other_database_import", 
+  "A/Guangdong/4220/2010": "other_database_import", 
+  "A/Pune/NIV26410/2010": "other_database_import", 
+  "A/Victoria/662/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Kuwait/N05053/2009": "other_database_import", 
+  "A/Rajasthan/9/2009": "other_database_import", 
+  "A/SriLanka/19838/2010": "other_database_import", 
+  "A/England/86/2010": "microbiology_services_colindale,_public_health_england", 
+  "A/Guangdong/55/2009": "other_database_import", 
+  "A/Singapore/ON2241/2009": "other_database_import", 
+  "A/Dakar/37/2009": "national_institute_for_medical_research", 
+  "A/Waikato/2/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Russia/171/2009-egg": "other_database_import", 
+  "A/NewYork/6864/2009": "other_database_import", 
+  "A/Guangdong/7232/2010": "other_database_import", 
+  "A/Kenya/185/2011": "usamru_k", 
+  "A/Palau/1/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Uganda/MUWRP-137/2009": "other_database_import", 
+  "A/Kyoto/2/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/England/375/2010": "national_institute_for_medical_research", 
+  "A/Armenia/N47/2009": "national_institute_for_medical_research", 
+  "A/Managua/58501/2009": "other_database_import", 
+  "A/NovaScotia/RV1554/2009": "other_database_import", 
+  "A/Dnipropetrovsk/448/2010": "centers_for_disease_control_and_prevention", 
+  "A/SouthCarolina/18/2009-egg": "centers_for_disease_control_and_prevention", 
+  "A/Jiangsu-Nanjinggulou/SWL11146/2009": "who_chinese_national_influenza_center", 
+  "A/Chile/6/2010": "other_database_import", 
+  "A/Uganda/MUWRP-092/2009": "other_database_import", 
+  "A/Chile/19/2010": "other_database_import", 
+  "A/Ukraine/132/2010": "national_institute_for_medical_research", 
+  "A/England/92860065/2009": "health_protection_agency", 
+  "A/Guangdong-Yuexiu/SWL1276/2010": "who_chinese_national_influenza_center", 
+  "A/SouthCarolina/10/2010-egg": "other_database_import", 
+  "A/Nagasaki/HA-10/2009": "other_database_import", 
+  "A/Sendai/TU385/2009": "other_database_import", 
+  "A/Haryana/28/2010": "other_database_import", 
+  "A/Bangalore/5531-27/2010": "other_database_import", 
+  "A/Singapore/GP875/2009": "other_database_import", 
+  "A/Singapore/GP999/2010": "other_database_import", 
+  "A/England/202/2009": "microbiology_services_colindale,_public_health_england", 
+  "A/Singapore/GP3848/2010": "other_database_import", 
+  "A/Egypt/6194/2009": "centers_for_disease_control_and_prevention", 
+  "A/Yunnan-Simao/SWL459/2009": "who_chinese_national_influenza_center", 
+  "A/Berlin/164/2009": "robert_koch_institute", 
+  "A/Dhule/NIV9433/2009": "other_database_import", 
+  "A/Ontario/314603/2009": "other_database_import", 
+  "A/Chile/1599/2009": "other_database_import", 
+  "A/Venezuela/27/2010": "centers_for_disease_control_and_prevention", 
+  "A/ElSalvador/798/2010": "centers_for_disease_control_and_prevention", 
+  "A/Ghana/FS-10-4023/2010": "national_institute_for_medical_research", 
+  "A/EastSepik/1/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Perth/500/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Guangdong/195/2010": "other_database_import", 
+  "A/Bulgaria/340/2009": "national_institute_for_medical_research", 
+  "A/Wisconsin/629-D01752/2009": "other_database_import", 
+  "A/Paraguay/171HCl/2009": "other_database_import", 
+  "A/Shiraz/5/2010": "other_database_import", 
+  "A/Taiwan/3533/2010": "other_database_import", 
+  "A/Mexico/InDRE13494/2009": "other_database_import", 
+  "A/Tomsk/3/2009": "other_database_import", 
+  "A/Christchurch/16/2010-egg": "national_institute_for_biological_standards_and_control__nibsc_", 
+  "A/Tennessee/F1052A/2010": "other_database_import", 
+  "A/Auckland/3/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Paris/370/2010": "institut_pasteur", 
+  "A/NordrheinWestfalen/99/2009": "robert_koch_institute", 
+  "A/Arkansas/6/2010": "centers_for_disease_control_and_prevention", 
+  "A/Jeddah/3670/2010": "other_database_import", 
+  "A/Sendai/TU447/2009": "other_database_import", 
+  "A/Singapore/ON2090/2009": "other_database_import", 
+  "A/Korea/CJ68/2009": "other_database_import", 
+  "A/Egypt/N11243/2009": "other_database_import", 
+  "A/Brisbane/2011/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Tennessee/F2005A/2010": "other_database_import", 
+  "A/Singapore/TT017/2010": "other_database_import", 
+  "A/Victoria/2002/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Yokohama/85/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Singapore/GP4078/2009": "other_database_import", 
+  "A/Netherlands/602/2009": "other_database_import", 
+  "A/Nanping/SWL1538/2010": "other_database_import", 
+  "A/Oman/SQUH-31/2009": "other_database_import", 
+  "A/Guangdong/SWL4/2009": "who_chinese_national_influenza_center", 
+  "A/Guam/2123/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Parana/905/2010": "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_", 
+  "A/Tennessee/F1078/2010": "other_database_import", 
+  "A/Singapore/KK439/2010": "other_database_import", 
+  "A/Norway/3858/2009": "other_database_import", 
+  "A/Singapore/TT495/2010": "other_database_import", 
+  "A/Hnl/NIV26271/2010": "other_database_import", 
+  "A/Singapore/GP3693/2010": "other_database_import", 
+  "A/Pune/NIV21090/2009": "other_database_import", 
+  "A/Henan/18/2009": "who_chinese_national_influenza_center", 
+  "A/Nepal/NP09A-284/2009": "other_database_import", 
+  "A/Kansas/4/2010": "centers_for_disease_control_and_prevention", 
+  "A/Darwin/2140/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Chile/2362/2009": "other_database_import", 
+  "A/Colombo/19730/2010": "other_database_import", 
+  "A/Quebec/RV1595/2009": "other_database_import", 
+  "A/Sendai/TU378/2009": "other_database_import", 
+  "A/Miyazaki/25/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Darlinghurst/INS589/2010": "other_database_import", 
+  "A/Guangdong/SWL28/2009": "who_chinese_national_influenza_center", 
+  "A/Henan/SWL14/2009": "who_chinese_national_influenza_center", 
+  "A/Johannesburg/115/2010": "national_institute_for_medical_research", 
+  "A/Mexico/InDRE13551/2009": "other_database_import", 
+  "A/Pune/NIV21159/2009": "other_database_import", 
+  "A/Kobe/91569/2009": "other_database_import", 
+  "A/Kenya/18/2009": "centers_for_disease_control_and_prevention", 
+  "A/Kitale/532/2009": "kenya_medical_research_institute", 
+  "A/Incheon/2434/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Ontario/26184/2009": "other_database_import", 
+  "A/SriLanka/21406/2010": "other_database_import", 
+  "A/CostaRica/5458/2010": "centers_for_disease_control_and_prevention", 
+  "A/Wellington/1/2010-egg": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Uganda/MUWRP-102/2009": "other_database_import", 
+  "A/Sydney/DD3-04/2010": "other_database_import", 
+  "A/Chile/3244/2009": "other_database_import", 
+  "A/Texas/14/2010": "centers_for_disease_control_and_prevention", 
+  "A/Sydney/DD3-07/2010": "other_database_import", 
+  "A/Goroka/15/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/HuZhou/1/2010": "other_database_import", 
+  "A/Niger/665/2010": "national_institute_for_medical_research", 
+  "A/Korea/1/2009": "other_database_import", 
+  "A/Sakai/1/2009": "other_database_import", 
+  "A/SriLanka/21048/2010": "other_database_import", 
+  "A/Ghana/FS-2206/2009": "national_institute_for_medical_research", 
+  "A/Brisbane/15/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Singapore/ON2416/2009": "other_database_import", 
+  "A/Ghana/FS-411/2010": "national_institute_for_medical_research", 
+  "A/Catalonia/10/2009": "national_institute_for_medical_research", 
+  "A/Bremen/20/2009": "robert_koch_institute", 
+  "A/Sydney/DD3-25/2010": "other_database_import", 
+  "A/Australia/38/2009": "other_database_import", 
+  "A/Saskatchewan/RV1767/2009": "other_database_import", 
+  "A/LaReunion/803/2010": "other_database_import", 
+  "A/Jeddah/3647/2010": "other_database_import", 
+  "A/MexicoCity/INER10/2010": "other_database_import", 
+  "A/Taiwan/733/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Thailand/104/2009": "other_database_import", 
+  "A/Galicia/RR6720/2010": "instituto_de_salud_carlos_iii", 
+  "A/Shiraz/6/2010": "other_database_import", 
+  "A/Darwin/2144/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Guam/NHRC0009/2009": "other_database_import", 
+  "A/Bangalore/5532-05/2010": "other_database_import", 
+  "A/Singapore/GP937/2010": "other_database_import", 
+  "A/Singapore/GP4138/2010": "other_database_import", 
+  "A/Daejeon/2780/2010": "centers_for_disease_control_and_prevention", 
+  "A/Singapore/TT454/2010": "other_database_import", 
+  "A/Taiwan/90149/2010": "other_database_import", 
+  "A/Aurangabad/NIV25611/2010": "other_database_import", 
+  "A/Guangxi/SWL4/2009": "who_chinese_national_influenza_center", 
+  "A/Yamagata/247/2009": "national_institute_of_infectious_diseases__niid_", 
+  "A/Chile/3553/2009": "other_database_import", 
+  "A/Kobe/91823/2009": "other_database_import", 
+  "A/England/334/2010": "national_institute_for_medical_research", 
+  "A/Singapore/ON2230/2009": "other_database_import", 
+  "A/Guangdong/801/2009": "other_database_import", 
+  "A/Kagoshima/6/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/HoChiMinh/97411/2010-egg": "other_database_import", 
+  "A/Singapore/ON2269/2009": "other_database_import", 
+  "A/Chile/95/2009": "other_database_import", 
+  "A/HongKong/2212/2010": "national_institute_for_medical_research", 
+  "A/Texas/JMS397/2009": "other_database_import", 
+  "A/Xinjiang/SWL1/2009": "who_chinese_national_influenza_center", 
+  "A/Taiwan/5270/2010": "other_database_import", 
+  "A/Ghana/FS-1974/2010": "national_institute_for_medical_research", 
+  "A/Tennessee/F1076/2010": "other_database_import", 
+  "A/NewYork/1796/2010": "other_database_import", 
+  "A/Mexico/2964/2009": "centers_for_disease_control_and_prevention", 
+  "A/Bangkok/INS492/2010": "other_database_import", 
+  "A/Darwin/165/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/India/3725/2010": "centers_for_disease_control_and_prevention", 
+  "A/Singapore/KK100/2010": "other_database_import", 
+  "A/Washington/47/2009": "centers_for_disease_control_and_prevention", 
+  "A/Suriname/777/2010": "centers_for_disease_control_and_prevention", 
+  "A/Singapore/GP4678/2010": "other_database_import", 
+  "A/Sachsen-Anhalt/97/2009": "other_database_import", 
+  "A/Algeria/G2485/2009": "national_institute_for_medical_research", 
+  "A/Taiwan/1164/2010": "other_database_import", 
+  "A/Malmo/2/2010": "swedish_institute_for_infectious_disease_control", 
+  "A/Korea/CJ63/2009": "other_database_import", 
+  "A/SouthAfrica/17170/2010": "other_database_import", 
+  "A/Bhopal/1544/2010": "other_database_import", 
+  "A/Nairobi/64/2009": "kenya_medical_research_institute", 
+  "A/Delhi/38/2010": "other_database_import", 
+  "A/Indore/379/2010": "other_database_import", 
+  "A/Hunan-Daoxian/SWL31/2010": "who_chinese_national_influenza_center", 
+  "A/SaoPaulo/53845/2009": "other_database_import", 
+  "A/Ecuador/IEC00027/2010": "other_database_import", 
+  "A/Singapore/TT418/2010": "other_database_import", 
+  "A/Bayern/69/2009": "national_institute_for_medical_research", 
+  "A/Guatemala/598/2010": "centers_for_disease_control_and_prevention", 
+  "A/Iwate/1031/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/SouthAfrica/3041/2010": "other_database_import", 
+  "A/Singapore/GP562/2010": "other_database_import", 
+  "A/Sydney/DD3-26/2010": "other_database_import", 
+  "A/Taiwan/3096/2010": "other_database_import", 
+  "A/Victoria/2098/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Bangladesh/5557/2010": "centers_for_disease_control_and_prevention", 
+  "A/Oman/SQUH-22/2009": "other_database_import", 
+  "A/Nairobi/97/2010": "kenya_medical_research_institute", 
+  "A/Singapore/GP1545/2010": "other_database_import", 
+  "A/Singapore/ON2083/2009": "other_database_import", 
+  "A/England/127/2010": "national_institute_for_medical_research", 
+  "A/Norway/3568/2009": "other_database_import", 
+  "A/Okinawa/256/2009": "national_institute_of_infectious_diseases__niid_", 
+  "A/Connecticut/2/2010": "centers_for_disease_control_and_prevention", 
+  "A/Hawaii/13/2010": "centers_for_disease_control_and_prevention", 
+  "A/Singapore/GP2065/2010": "other_database_import", 
+  "A/SaoPaulo/12074/2010": "other_database_import", 
+  "A/Japan/NHRC0002/2009": "other_database_import", 
+  "A/Parana/881/2010": "other_database_import", 
+  "A/Toyama/94/2010": "other_database_import", 
+  "A/Korea/NAP-1/2009": "other_database_import", 
+  "A/Habana/13623/2010": "other_database_import", 
+  "A/Uganda/MUWRP-098/2009": "other_database_import", 
+  "A/Chiba-C/22/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/SouthAfrica/18511/2010": "other_database_import", 
+  "A/Kuwait/N13085/2009": "other_database_import", 
+  "A/Sydney/DD3-39/2010": "other_database_import", 
+  "A/Chile/87/2010": "other_database_import", 
+  "A/Latur/NIV24770/2010": "other_database_import", 
+  "A/Darwin/2139/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Ontario/305598/2009": "other_database_import", 
+  "A/Gyeonggi/2623/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Ankara/4/2009": "other_database_import", 
+  "A/Taiwan/3133/2010": "other_database_import", 
+  "A/Argos/2231/2010": "national_institute_for_medical_research", 
+  "A/Singapore/KK066/2010": "other_database_import", 
+  "A/Fukushima/112/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Kagoshima/1/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Sachsen-Anhalt/9/2010": "robert_koch_institute", 
+  "A/Iraq/251/2009": "centers_for_disease_control_and_prevention", 
+  "A/Castro/12274/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Colombia/4117/2009": "centers_for_disease_control_and_prevention", 
+  "A/SaoPaulo/53511/2010": "other_database_import", 
+  "A/Beijing-Xicheng/SWL1304/2010": "who_chinese_national_influenza_center", 
+  "A/Sydney/DD3-36/2010": "other_database_import", 
+  "A/Ontario/720545/2010": "other_database_import", 
+  "A/Yokosuka/50/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Singapore/GP1191/2010": "other_database_import", 
+  "A/Guangdong/438/2010": "other_database_import", 
+  "A/Qatar/2310006834/2010": "national_institute_for_medical_research", 
+  "A/Singapore/GP1087/2009": "other_database_import", 
+  "A/Sydney/DD3-22/2010": "other_database_import", 
+  "A/Khargone/293/2010": "other_database_import", 
+  "A/Alborz/5607/2010-egg": "national_institute_for_medical_research", 
+  "A/Shizuoka-C/172/2009": "national_institute_of_infectious_diseases__niid_", 
+  "A/Fukushima/117/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Arizona/5/2010": "centers_for_disease_control_and_prevention", 
+  "A/California/7/2009": "national_institute_for_biological_standards_and_control__nibsc_", 
+  "A/Singapore/GP33/2010": "other_database_import", 
+  "A/Sydney/DD3-30/2010": "other_database_import", 
+  "A/Guatemala/483/2010": "centers_for_disease_control_and_prevention", 
+  "A/NorthFitzroy/INS465/2010": "other_database_import", 
+  "A/Singapore/TT428/2010": "other_database_import", 
+  "A/SaoPaulo/29269/2010": "other_database_import", 
+  "A/Yunnan/SWL1/2009": "who_chinese_national_influenza_center", 
+  "A/Singapore/KK80/2010": "other_database_import", 
+  "A/Aichi/118/2010": "aichi_prefectural_institute_of_public_health", 
+  "A/Assam/20/2010": "other_database_import", 
+  "A/Singapore/GP4406/2010": "other_database_import", 
+  "A/Slovenia/1098/2010": "national_institute_for_medical_research", 
+  "A/England/106/2010": "microbiology_services_colindale,_public_health_england", 
+  "A/Nashik/NIV10348/2009": "other_database_import", 
+  "A/Iraq/10249/2009": "centers_for_disease_control_and_prevention", 
+  "A/Moscow/IIV01/2009": "other_database_import", 
+  "A/Chile/158/2009": "other_database_import", 
+  "A/Singapore/GP1097/2009": "other_database_import", 
+  "A/Singapore/KK724/2010": "other_database_import", 
+  "A/Pernambuco/567/2009": "other_database_import", 
+  "A/Texas/JMS393/2009": "other_database_import", 
+  "A/Cameroon/10v-1090/2010": "national_institute_for_medical_research", 
+  "A/Singapore/GP4247/2009": "other_database_import", 
+  "A/Tehran/5336/2010": "national_institute_for_medical_research", 
+  "A/Singapore/GP3733/2009": "other_database_import", 
+  "A/Sydney/DD3-28/2010": "other_database_import", 
+  "A/AbuDhabi/54/2009-egg": "national_institute_for_medical_research", 
+  "A/England/151/2010": "national_institute_for_medical_research", 
+  "A/Ankara/8/2009": "other_database_import", 
+  "A/Utah/5/2010": "centers_for_disease_control_and_prevention", 
+  "A/Texas/JMS412/2009": "other_database_import", 
+  "A/Ghana/FS-10-3964/2010": "national_institute_for_medical_research", 
+  "A/Russia/4/2009-egg": "other_database_import", 
+  "A/Catalonia/53/2009": "national_institute_for_medical_research", 
+  "A/Shiraz/2/2010": "other_database_import", 
+  "A/Singapore/GP2726/2010": "other_database_import", 
+  "A/Singapore/GP4183/2010": "other_database_import", 
+  "A/Assam/2283/2009": "other_database_import", 
+  "A/Singapore/ON2407/2009": "other_database_import", 
+  "A/Parana/943/2010": "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_", 
+  "A/Japan/NHRC0001/2009": "other_database_import", 
+  "A/CapeTown/29/2010": "national_institute_for_medical_research", 
+  "A/Kobe/9185/2009": "other_database_import", 
+  "A/Pennsylvania/7/2010": "centers_for_disease_control_and_prevention", 
+  "A/Oman/SQUH-33/2010": "other_database_import", 
+  "A/Brisbane/10/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Chile/3361/2009": "other_database_import", 
+  "A/Okinawa/283/2009": "national_institute_of_infectious_diseases__niid_", 
+  "A/Belgorod/RII4/2009-egg": "other_database_import", 
+  "A/Venezuela/29/2010": "centers_for_disease_control_and_prevention", 
+  "A/Singapore/EN193/2010": "other_database_import", 
+  "A/Shiraz/4/2010": "other_database_import", 
+  "A/Tomsk/273-MA3/2010": "other_database_import", 
+  "A/Zhoushan/1/2009": "other_database_import", 
+  "A/Fiji/40/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Russia/1/2009": "other_database_import", 
+  "A/Singapore/GP820/2010": "other_database_import", 
+  "A/Singapore/GP4369/2010": "other_database_import", 
+  "A/Mexico/LaGloria-8/2009-egg": "other_database_import", 
+  "A/California/9/2010": "centers_for_disease_control_and_prevention", 
+  "A/Kuwait/N05050/2009": "other_database_import", 
+  "A/Sendai/TU417/2009": "other_database_import", 
+  "A/NewYork/3183/2009": "other_database_import", 
+  "A/Kenya/2836/2010": "centers_for_disease_control_and_prevention", 
+  "A/Ghana/FS-1976/2010": "national_institute_for_medical_research", 
+  "A/Ghana/FS-390/2010": "national_institute_for_medical_research", 
+  "A/NewZealand/2047/2009": "other_database_import", 
+  "A/CoteDIvoire/709/2009": "centers_for_disease_control_and_prevention", 
+  "A/Kagoshima/7/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Beijing-Huairou/SWL1258/2010": "who_chinese_national_influenza_center", 
+  "A/Singapore/GP4266/2010": "other_database_import", 
+  "A/Egypt/83/2010-egg": "national_institute_for_medical_research", 
+  "A/Oita/61/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Latvia/2-764/2010": "national_institute_for_medical_research", 
+  "A/Singapore/GP3991/2009": "other_database_import", 
+  "A/Norway/3206-3/2009": "other_database_import", 
+  "A/SouthAfrica/2091/2009": "other_database_import", 
+  "A/Saitama/74/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Bayern/62/2009": "other_database_import", 
+  "A/PuertoMontt/12498/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/KathmanduBGN/15-1/2009": "national_institute_for_medical_research", 
+  "A/Georgia/670/2010": "national_institute_for_medical_research", 
+  "A/Korea/AF21782/2010": "other_database_import", 
+  "A/Mumbai/NIV398/2009": "other_database_import", 
+  "A/Sachsen-Anhalt/101/2009": "other_database_import", 
+  "A/HongKong/1/2009": "other_database_import", 
+  "A/Parana/908/2010": "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_", 
+  "A/Netherlands/1132/2009": "centers_for_disease_control_and_prevention", 
+  "A/Chile/3819/2009": "other_database_import", 
+  "A/Canberra/1/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Galicia/RR6724/2010": "instituto_de_salud_carlos_iii", 
+  "A/Vladivostok/IIV18/2009": "other_database_import", 
+  "A/Israel/644/2009": "national_institute_for_medical_research", 
+  "A/Nevada/2/2010": "centers_for_disease_control_and_prevention", 
+  "A/Taiwan/66169/2010": "other_database_import", 
+  "A/Brisbane/17/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Shizuoka/1693/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Singapore/GP4353/2010": "other_database_import", 
+  "A/Australia/61/2009": "other_database_import", 
+  "A/England/213/2009": "health_protection_agency__hpa_", 
+  "A/India/NIV29574/2010": "other_database_import", 
+  "A/Korea/CJ112/2009": "other_database_import", 
+  "A/Beijing/3884/2010": "other_database_import", 
+  "A/Guam/1/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Chongqing/SWL1/2009": "who_chinese_national_influenza_center", 
+  "A/Singapore/GP3713/2010": "other_database_import", 
+  "A/Singapore/KK315/2010": "other_database_import", 
+  "A/Astana/S3/2009": "other_database_import", 
+  "A/Chile/3242/2009": "other_database_import", 
+  "A/Ghana/FS-2135/2010": "national_institute_for_medical_research", 
+  "A/Indiana/5/2010": "centers_for_disease_control_and_prevention", 
+  "A/Singapore/KK495/2010": "other_database_import", 
+  "A/Pune/NIV20069/2009": "other_database_import", 
+  "A/Tottori/45/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Hubei-Maojian/SWL1165/2010": "who_chinese_national_influenza_center", 
+  "A/Paris/2573/2009": "institut_pasteur", 
+  "A/Ontario/147723/2009": "other_database_import", 
+  "A/Chattisgarh/26/2010": "other_database_import", 
+  "A/Singapore/TT289/2010": "other_database_import", 
+  "A/Madagascar/290/2010": "national_institute_for_medical_research", 
+  "A/Kerala/23/2010": "other_database_import", 
+  "A/Bangkok/INS498/2010": "other_database_import", 
+  "A/Cyprus/5870/2010": "national_institute_for_medical_research", 
+  "A/Singapore/ON2172/2009": "other_database_import", 
+  "A/Hiroshima/200/2009": "other_database_import", 
+  "A/Ontario/328474/2009": "other_database_import", 
+  "A/Fujian/SWL4/2009": "who_chinese_national_influenza_center", 
+  "A/Cameroon/LEID-06-10-590/2010": "national_institute_for_medical_research", 
+  "A/Iraq/8529/2009-egg": "centers_for_disease_control_and_prevention", 
+  "A/Uganda/MUWRP-066/2009": "other_database_import", 
+  "A/Singapore/GP4549/2010": "other_database_import", 
+  "A/Guam/2/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Niigata/1109/2009": "national_institute_of_infectious_diseases__niid_", 
+  "A/Chattisgarh/25/2010": "other_database_import", 
+  "A/JammuKashmir/22/2010": "other_database_import", 
+  "A/Ontario/25389/2009": "other_database_import", 
+  "A/Chennai/NIV246/2009": "other_database_import", 
+  "A/Victoria/2129/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Colombia/7779/2010": "centers_for_disease_control_and_prevention", 
+  "A/Tianjin-Nankai/SWL1692/2010": "who_chinese_national_influenza_center", 
+  "A/Australia/80/2009": "other_database_import", 
+  "A/Toronto/R8564/2009": "other_database_import", 
+  "A/Brazil/3931/2010": "centers_for_disease_control_and_prevention", 
+  "A/Taiwan/65854/2010": "other_database_import", 
+  "A/Jiangsu-Xiaguan/SWL1442/2009": "who_chinese_national_influenza_center", 
+  "A/Galicia/RR6727/2010": "instituto_de_salud_carlos_iii", 
+  "A/Belarus/94/2009-egg": "national_institute_for_medical_research", 
+  "A/Chile/180/2009": "other_database_import", 
+  "A/Jiangsu-Xiaguan/SWL1404/2009": "who_chinese_national_influenza_center", 
+  "A/Henan/SWL19/2009": "who_chinese_national_influenza_center", 
+  "A/Galicia/RR6723/2010": "instituto_de_salud_carlos_iii", 
+  "A/Australia/44/2009": "other_database_import", 
+  "A/Norway/2003/2009": "national_institute_for_medical_research", 
+  "A/Iowa/5/2010": "centers_for_disease_control_and_prevention", 
+  "A/Saitama/84/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/NovaScotia/RV1565/2009": "other_database_import", 
+  "A/Singapore/ON129/2009": "other_database_import", 
+  "A/California/VRDL353/2009": "other_database_import", 
+  "A/Umea/6/2009": "swedish_institute_for_infectious_disease_control", 
+  "A/Guangdong/302/2010": "other_database_import", 
+  "A/India/NIV1028800/2010": "other_database_import", 
+  "A/Algeria/G34/2009": "national_institute_for_medical_research", 
+  "A/Beijing-Xicheng/SWL11335/2009": "who_chinese_national_influenza_center", 
+  "A/RiodeJaneiro/491/2010": "other_database_import", 
+  "A/Castro/JXP/2009": "other_database_import", 
+  "A/Chile/40/2009": "other_database_import", 
+  "A/HongKong/2200/2010": "national_institute_for_medical_research", 
+  "A/Chile/94/2010": "other_database_import", 
+  "A/Simbu/1/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Mumbai/NIV1126/2009": "other_database_import", 
+  "A/Ontario/35273/2009": "other_database_import", 
+  "A/Yokosuka/52/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Parana/935/2010": "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_", 
+  "A/Stockholm/63/2009": "swedish_institute_for_infectious_disease_control", 
+  "A/Jiangsu-Beitang/SWL164/2010": "who_chinese_national_influenza_center", 
+  "A/HongKong/H090-787-V10/2009": "other_database_import", 
+  "A/Uganda/MUWRP-224/2010": "other_database_import", 
+  "A/Chile/4438/2009": "other_database_import", 
+  "A/Singapore/GP3491/2009": "other_database_import", 
+  "A/Kenya/922/2010": "centers_for_disease_control_and_prevention", 
+  "A/Auckland/2/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Hamburg/5/2009": "other_database_import", 
+  "A/England/195/2009": "national_institute_for_medical_research", 
+  "A/Singapore/ON2394/2009": "other_database_import", 
+  "A/Brazil/AVS03/2009": "other_database_import", 
+  "A/Sydney/DD3-49/2010": "other_database_import", 
+  "A/Bogota/WRAIR0440T/2009": "other_database_import", 
+  "A/Nanping/SWL1569/2010": "other_database_import", 
+  "A/Ukraine/131/2010": "national_institute_for_medical_research", 
+  "A/Berlin/10/2010": "robert_koch_institute", 
+  "A/Galicia/RR6722/2010": "instituto_de_salud_carlos_iii", 
+  "A/India/NIV29386/2010": "other_database_import", 
+  "A/FuZhou/SWL11554/2010": "other_database_import", 
+  "A/England/226/2010": "microbiology_services_colindale,_public_health_england", 
+  "A/Fukuoka-C/34/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Connecticut/3/2010": "centers_for_disease_control_and_prevention", 
+  "A/Anhui/SWL1/2009": "who_chinese_national_influenza_center", 
+  "A/Goroka/9/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Galicia/RR6725/2010": "instituto_de_salud_carlos_iii", 
+  "A/Egypt/N00278/2010": "other_database_import", 
+  "A/Busan/2370/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Vologda/3/2010-egg": "national_institute_for_medical_research", 
+  "A/Ghana/FS-10-3900/2010": "national_institute_for_medical_research", 
+  "A/Singapore/GP2317/2009": "other_database_import", 
+  "A/SriLanka/20708/2010": "other_database_import", 
+  "A/SouthAfrica/18500/2010": "other_database_import", 
+  "A/Taiwan/2908/2010": "other_database_import", 
+  "A/Sendai/TU526/2009": "other_database_import", 
+  "A/Singapore/GP4556/2009": "other_database_import", 
+  "A/Korea/AF2430/2010": "other_database_import", 
+  "A/India/NIV43091/2010": "other_database_import", 
+  "A/Nara/42/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Singapore/GP1889/2010": "other_database_import", 
+  "A/Niger/667/2010": "national_institute_for_medical_research", 
+  "A/England/204/2009": "microbiology_services_colindale,_public_health_england", 
+  "A/Sydney/DD3-11/2010": "other_database_import", 
+  "A/Singapore/ON1888/2009": "other_database_import", 
+  "A/Singapore/ON1802/2009": "other_database_import", 
+  "A/Guangzhou/GIRD07/2009": "other_database_import", 
+  "A/Kagoshima/3/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Singapore/TT340/2010": "other_database_import", 
+  "A/Xinjiang-Hutubi/SWL117/2010": "who_chinese_national_influenza_center", 
+  "A/Managua/525802/2009": "other_database_import", 
+  "A/Fujian/SWL2/2009": "who_chinese_national_influenza_center", 
+  "A/Jabalpur/543/2010": "other_database_import", 
+  "A/Fukuoka-C/1/2009": "other_database_import", 
+  "A/England/93/2010": "microbiology_services_colindale,_public_health_england", 
+  "A/India/GWL_DSC/2010-egg": "other_database_import", 
+  "A/Iran/2521/2009-egg": "national_institute_for_medical_research", 
+  "A/Shandong-Huaiyin/SWL1195/2010": "other_database_import", 
+  "A/Slovakia/1580/2010": "national_institute_for_medical_research", 
+  "A/Brisbane/12/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Ontario/304434/2009": "other_database_import", 
+  "A/Regensburg/Germany/02/2009": "university_of_regensburg", 
+  "A/Sendai/TU618/2009": "other_database_import", 
+  "A/Singapore/GP2297/2009": "other_database_import", 
+  "A/Singapore/GP866/2010": "other_database_import", 
+  "A/Orenburg/IIV-13/2010": "other_database_import", 
+  "A/Ontario/314095/2009": "other_database_import", 
+  "A/Victoria/501/2010-egg": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Victoria/2130/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/SriLanka/20703/2010": "other_database_import", 
+  "A/Okinawa/44/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/HongKong/1881/2010": "national_institute_for_medical_research", 
+  "A/ElSalvador/455/2010": "centers_for_disease_control_and_prevention", 
+  "A/Jeddah/3673/2010": "other_database_import", 
+  "A/Tehran/5652/2010": "national_institute_for_medical_research", 
+  "A/Anhui/1225/2010": "other_database_import", 
+  "A/Okayama/31/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Hawaii/AF21773/2010": "other_database_import", 
+  "A/Kolkata/NIV105774/2009": "other_database_import", 
+  "A/Umea/8/2009": "swedish_institute_for_infectious_disease_control", 
+  "A/HongKong/1886/2010": "national_institute_for_medical_research", 
+  "A/Australia/69/2009": "other_database_import", 
+  "A/Bolivia/1516/2010": "centers_for_disease_control_and_prevention", 
+  "A/Korea/AF21778/2010": "other_database_import", 
+  "A/Ankara/21/2009": "other_database_import", 
+  "A/SriLanka/21/2010": "other_database_import", 
+  "A/Singapore/GP1323/2010": "other_database_import", 
+  "A/Peru/2010731297/2009-egg": "other_database_import", 
+  "A/Darwin/3/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/SaoPaulo/90572/2009": "other_database_import", 
+  "A/Nagasaki/HA-10-28/2010": "other_database_import", 
+  "A/Thailand/CU-H2548/2010": "other_database_import", 
+  "A/Aswan/2288/2009": "national_institute_for_medical_research", 
+  "A/England/99/2010": "microbiology_services_colindale,_public_health_england", 
+  "A/Victoria/1036/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/England/68/2010": "microbiology_services_colindale,_public_health_england", 
+  "A/Beijing/3872/2010": "other_database_import", 
+  "A/Chile/15/2010": "other_database_import", 
+  "A/Taiwan/3093/2010": "other_database_import", 
+  "A/Jiangxi-Donghu/SWL1132/2010": "who_chinese_national_influenza_center", 
+  "A/Delhi/NIV0951833/2009": "other_database_import", 
+  "A/Guangdong/SWL3/2009": "who_chinese_national_influenza_center", 
+  "A/Belarus/24/2009": "national_institute_for_medical_research", 
+  "A/Hawaii/16/2010": "centers_for_disease_control_and_prevention", 
+  "A/Nagasaki/HA-10-9/2010": "other_database_import", 
+  "A/MecklenburgVorpommern/10/2009": "robert_koch_institute", 
+  "A/Fiji/45/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Israel/S2942/2009": "national_institute_for_medical_research", 
+  "A/Slovakia/1634/2010": "national_institute_for_medical_research", 
+  "A/Thailand/CU-B4339/2010": "other_database_import", 
+  "A/Bangalore/4161-22/2010": "other_database_import", 
+  "A/StPetersburg/RII96/2009-egg": "other_database_import", 
+  "A/Uganda/MUWRP-111/2009": "other_database_import", 
+  "A/Ghana/FS-339/2010": "national_institute_for_medical_research", 
+  "A/Stockholm/5/2010": "swedish_institute_for_infectious_disease_control", 
+  "A/Sichuan-Jingyang/SWL1897/2009": "who_chinese_national_influenza_center", 
+  "A/Parana/888/2010": "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_", 
+  "A/Nairobi/58/2009": "kenya_medical_research_institute", 
+  "A/Tennessee/F1093A/2010": "other_database_import", 
+  "A/HongKong/2203/2010": "national_institute_for_medical_research", 
+  "A/Georgia/3/2011": "national_institute_for_medical_research", 
+  "A/Montana/6/2010": "centers_for_disease_control_and_prevention", 
+  "A/StPetersburg/182/2010-egg": "national_institute_for_medical_research", 
+  "A/Assam/2264/2009": "other_database_import", 
+  "A/Niger/668/2010": "national_institute_for_medical_research", 
+  "A/Brazil/AVS07/2009": "other_database_import", 
+  "A/Gyeonggi/245/2010": "other_database_import", 
+  "A/Ghana/FS-10-4241/2010": "national_institute_for_medical_research", 
+  "A/Ghana/FS-1966/2010": "national_institute_for_medical_research", 
+  "A/Lishui/1p/2009": "other_database_import", 
+  "A/Hungary/20/2009-egg": "centers_for_disease_control_and_prevention", 
+  "A/Egypt-Vacsera/162/2009-egg": "national_institute_for_medical_research", 
+  "A/StPetersburg/14/2010": "other_database_import", 
+  "A/Tunisia/20043/2009": "other_database_import", 
+  "A/Singapore/GN285/2009": "other_database_import", 
+  "A/NewYork/3211/2009": "other_database_import", 
+  "A/Moscow/IIV04/2009": "other_database_import", 
+  "A/Singapore/GP4381/2009": "other_database_import", 
+  "A/India/7/2010": "centers_for_disease_control_and_prevention", 
+  "A/Bangalore/3934-28/2010": "other_database_import", 
+  "A/Victoria/663/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Singapore/GP185/2010": "other_database_import", 
+  "A/Guatemala/4/2010": "centers_for_disease_control_and_prevention", 
+  "A/Indore/1085/2010": "other_database_import", 
+  "A/Jeddah/3666/2010": "other_database_import", 
+  "A/Yokohama/83/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/India/NIV42361/2010": "other_database_import", 
+  "A/Belgium/1044/2009": "national_institute_for_medical_research", 
+  "A/SaoPaulo/52897/2010": "other_database_import", 
+  "A/Mumbai/NIV968/2009": "other_database_import", 
+  "A/Galicia/RR6726/2010": "instituto_de_salud_carlos_iii", 
+  "A/Berlin/133/2009": "national_institute_for_medical_research", 
+  "A/Brandenburg/19/2009": "other_database_import", 
+  "A/Gunma/30/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Pune/NIV21139/2009": "other_database_import", 
+  "A/Florida/7/2010": "centers_for_disease_control_and_prevention", 
+  "A/Vanimo/7/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Vadu/NIV1043725/2010": "other_database_import", 
+  "A/Guangdong/5303/2010": "other_database_import", 
+  "A/SriLanka/21386/2010": "other_database_import", 
+  "A/Guangdong/436/2010": "other_database_import", 
+  "A/CoteDIvoire/830/2010": "centers_for_disease_control_and_prevention", 
+  "A/Ghana/FS-323/2010": "national_institute_for_medical_research", 
+  "A/Singapore/EN88/2010": "other_database_import", 
+  "A/Verona/2810/2009-egg": "istituto_zooprofilattico_sperimentale_delle_venezie", 
+  "A/Melbourne/INS472/2010": "other_database_import", 
+  "A/Jeddah/3657/2010": "other_database_import", 
+  "A/Thailand/CU-B5/2009": "other_database_import", 
+  "A/Armenia/N53/2009": "national_institute_for_medical_research", 
+  "A/Tianjin-Hebei/SWL157/2010": "who_chinese_national_influenza_center", 
+  "A/Shenzhen/1023/2010": "other_database_import", 
+  "A/Singapore/GP4640/2010": "other_database_import", 
+  "A/Chile/28/2010": "other_database_import", 
+  "A/England/119/2010": "microbiology_services_colindale,_public_health_england", 
+  "A/SriLanka/20887/2010": "other_database_import", 
+  "A/Brisbane/115/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Singapore/GP1882/2010": "other_database_import", 
+  "A/Latvia/2-953/2010": "national_institute_for_medical_research", 
+  "A/Indiana/6/2010": "centers_for_disease_control_and_prevention", 
+  "A/Bahia/162/2010": "other_database_import", 
+  "A/Sendai/TU612/2009": "other_database_import", 
+  "A/Santiago/14851/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Ecuador/IEC00032/2010": "other_database_import", 
+  "A/Chile/61/2010": "other_database_import", 
+  "A/NordPasDeCalais/450/2010": "institut_pasteur", 
+  "A/Singapore/GP3956/2010": "other_database_import", 
+  "A/Auckland/4/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Australia/57/2009": "other_database_import", 
+  "A/Kanagawa/64/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Ontario/313762/2009": "other_database_import", 
+  "A/Chennai/NIV658/2009": "other_database_import", 
+  "A/Sydney/DD3-10/2010": "other_database_import", 
+  "A/NewHampshire/3/2010": "centers_for_disease_control_and_prevention", 
+  "A/Beijing-Xicheng/SWL11619/2009": "who_chinese_national_influenza_center", 
+  "A/Gothenburg/1/2009": "swedish_institute_for_infectious_disease_control", 
+  "A/Chile/42/2009": "other_database_import", 
+  "A/Niedersachsen/366/2009": "national_institute_for_medical_research", 
+  "A/Singapore/ON2286/2009": "other_database_import", 
+  "A/Ontario/3620/2010": "other_database_import", 
+  "A/Singapore/GP4099/2010": "other_database_import", 
+  "A/Auckland/1/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/SriLanka/32/2010": "other_database_import", 
+  "A/Aichi/116/2010": "aichi_prefectural_institute_of_public_health", 
+  "A/Auckland/3/2009-egg": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Belgorod/2/2010-egg": "national_institute_for_medical_research", 
+  "A/Johannesburg/119/2010": "national_institute_for_medical_research", 
+  "A/Hubei-Songzi/SWL1176/2010": "who_chinese_national_influenza_center", 
+  "A/Okinawa/34/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/NewHampshire/2/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Alabama/6/2010": "centers_for_disease_control_and_prevention", 
+  "A/Ankara/19/2009": "other_database_import", 
+  "A/Jiangsu/SWL1/2009": "who_chinese_national_influenza_center", 
+  "A/Lviv/N6/2009": "national_institute_for_medical_research", 
+  "A/Montana/3/2010": "centers_for_disease_control_and_prevention", 
+  "A/Nagasaki/HA-10-30/2010": "other_database_import", 
+  "A/Chennai/NIV551/2009": "other_database_import", 
+  "A/Hiroshima/50/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/England/91800797/2009": "microbiology_services_colindale,_public_health_england", 
+  "A/Ankara/10/2009": "other_database_import", 
+  "A/Chennai/NIV245/2009": "other_database_import", 
+  "A/Aichi/112/2010": "aichi_prefectural_institute_of_public_health", 
+  "A/Samos/2161/2010": "hellenic_pasteur_institute", 
+  "A/Guangdong/312/2010": "other_database_import", 
+  "A/Ontario/320266/2009": "other_database_import", 
+  "A/Australia/17/2009": "other_database_import", 
+  "A/England/3220137/2010": "microbiology_services_colindale,_public_health_england", 
+  "A/Taiwan/90124/2010": "other_database_import", 
+  "A/Sydney/DD3-09/2010": "other_database_import", 
+  "A/Singapore/TT350/2010": "other_database_import", 
+  "A/Guizhou/SWL1/2009": "who_chinese_national_influenza_center", 
+  "A/Jeddah/3669/2010": "other_database_import", 
+  "A/Australia/73/2009": "other_database_import", 
+  "A/Singapore/GP1162/2010": "other_database_import", 
+  "A/Ghana/FS-09-1306/2009": "national_institute_for_medical_research", 
+  "A/Chile/64/2010": "other_database_import", 
+  "A/Fiji/1/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Singapore/TT134/2010": "other_database_import", 
+  "A/Brazil/AVS04/2009": "other_database_import", 
+  "A/England/XFL00071/2009": "microbiology_services_colindale,_public_health_england", 
+  "A/Seychelles/106/2009": "centers_for_disease_control_and_prevention", 
+  "A/Singapore/GP4217/2010": "other_database_import", 
+  "A/Magadan/2/2009": "other_database_import", 
+  "A/Taiwan/90060/2010": "other_database_import", 
+  "A/Hubei-Wuchang/SWL174/2010": "who_chinese_national_influenza_center", 
+  "A/Scotland/91800797/2009": "other_database_import", 
+  "A/Punjab/31/2010": "other_database_import", 
+  "A/Shizuoka-C/21/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Uganda/MUWRP-069/2009": "other_database_import", 
+  "A/RiodeJaneiro/2459/2009": "other_database_import", 
+  "A/Uganda/MUWRP-236/2010": "other_database_import", 
+  "A/Moscow/IIV05/2009": "other_database_import", 
+  "A/Korea/AF21780/2010": "other_database_import", 
+  "A/Vicenza/2886/2009": "istituto_zooprofilattico_sperimentale_delle_venezie", 
+  "A/Guam/NHRC0004/2009": "other_database_import", 
+  "A/Pernambuco/768/2010": "other_database_import", 
+  "A/Chile/23/2010": "other_database_import", 
+  "A/Singapore/ON2308/2009": "other_database_import", 
+  "A/BandarAbbas/5096/2010": "other_database_import", 
+  "A/Kenya/6362/2010": "centers_for_disease_control_and_prevention", 
+  "A/Cairns/INS597/2010": "other_database_import", 
+  "A/Singapore/TT358/2010": "other_database_import", 
+  "A/NewMexico/4/2010": "centers_for_disease_control_and_prevention", 
+  "A/Mumbai/NIV9312/2009": "other_database_import", 
+  "A/Singapore/TT450/2010": "other_database_import", 
+  "A/Victoria/804/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/England/215/2009": "health_protection_agency__hpa_", 
+  "A/Guangdong/370/2010": "other_database_import", 
+  "A/Mauritius/3KP/2009": "national_institute_for_medical_research", 
+  "A/Beijing-Xicheng/SWL11336/2009": "who_chinese_national_influenza_center", 
+  "A/Hyogo/1595/2009": "national_institute_of_infectious_diseases__niid_", 
+  "A/Kenya/3872/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Parana/882/2010": "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_", 
+  "A/Victoria/2131/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Chiba/17/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Toronto/T5294/2009": "other_database_import", 
+  "A/Moscow/3/2009": "other_database_import", 
+  "A/Chile/88/2009": "other_database_import", 
+  "A/Pune/NIV21123/2009": "other_database_import", 
+  "A/Mauritius/2/2009-egg": "national_institute_for_medical_research", 
+  "A/Fujian/SWL5/2009": "who_chinese_national_influenza_center", 
+  "A/Guam/NHRC0020/2009": "other_database_import", 
+  "A/Stockholm/3/2010": "swedish_institute_for_infectious_disease_control", 
+  "A/Uganda/MUWRP-233/2010": "other_database_import", 
+  "A/Stockholm/29/2009": "swedish_institute_for_infectious_disease_control", 
+  "A/Toronto/462/2009": "other_database_import", 
+  "A/Singapore/GP3760/2010": "other_database_import", 
+  "A/Georgia/308/2010": "national_institute_for_medical_research", 
+  "A/Sydney/DD3-48/2010": "other_database_import", 
+  "A/Michigan/6/2010": "centers_for_disease_control_and_prevention", 
+  "A/Victoria/2010/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Hiroshima-C/29/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Delhi/NIV0951832/2009": "other_database_import", 
+  "A/Norway/445/2010": "national_institute_for_medical_research", 
+  "A/Beijing-Huairou/SWL1848/2009": "who_chinese_national_influenza_center", 
+  "A/NorthernIreland/4380108/2010": "other_database_import", 
+  "A/Ukraine/123/2010": "national_institute_for_medical_research", 
+  "A/HongKong/415742/2009": "other_database_import", 
+  "A/SriLanka/2005/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Kentucky/9/2010-egg": "centers_for_disease_control_and_prevention", 
+  "A/Fukushima/105/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Sydney/DD3-38/2010": "other_database_import", 
+  "A/Cameroon/CAM13876HIN/2010": "national_institute_for_medical_research", 
+  "A/Ibaraki/115/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Norway/1068/2010": "norwegian_institute_of_public_health", 
+  "A/England/216/2009": "health_protection_agency__hpa_", 
+  "A/Ontario/25913/2009": "other_database_import", 
+  "A/Singapore/GP4300/2010": "other_database_import", 
+  "A/Jiangsu-Nanjinggulou/SWL11132/2009": "who_chinese_national_influenza_center", 
+  "A/India/NIV1028816/2010": "other_database_import", 
+  "A/Perth/1/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/England/214/2009": "health_protection_agency__hpa_", 
+  "A/LaReunion/815/2010": "national_institute_for_medical_research", 
+  "A/Hawaii/19/2010": "centers_for_disease_control_and_prevention", 
+  "A/Delhi/39/2010": "other_database_import", 
+  "A/England/143/2010": "national_institute_for_medical_research", 
+  "A/Bangalore/4895-25/2010": "other_database_import", 
+  "A/Singapore/TT421/2010": "other_database_import", 
+  "A/Ghana/FS-10-4259/2010": "national_institute_for_medical_research", 
+  "A/Chile/37/2010": "other_database_import", 
+  "A/Daegu/1374/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Australia/37/2009": "other_database_import", 
+  "A/Darwin/178/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Singapore/57/2009": "centers_for_disease_control_and_prevention", 
+  "A/Kenya/2708/2010": "centers_for_disease_control_and_prevention", 
+  "A/Nanjing/2/2010": "other_database_import", 
+  "A/Goias/69870/2009": "other_database_import", 
+  "A/Malaysia/854/2009": "other_database_import", 
+  "A/Texas/3/2010": "centers_for_disease_control_and_prevention", 
+  "A/Ontario/152439/2009": "other_database_import", 
+  "A/Sendai/TU387/2009": "other_database_import", 
+  "A/Ontario/315015/2009": "other_database_import", 
+  "A/Algeria/G594/2009-egg": "national_institute_for_medical_research", 
+  "A/Vanimo/3/2010": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Chiba-C/41/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Singapore/GP4276/2010": "other_database_import", 
+  "A/Bangalore/4976-17/2010": "other_database_import", 
+  "A/Nagano/2142/2010": "national_institute_of_infectious_diseases__niid_", 
+  "A/Morocco/270/2009": "national_institute_of_hygiene", 
+  "A/Tennessee/F1071B/2010": "other_database_import", 
+  "A/SaoPaulo/82666/2009": "other_database_import", 
+  "A/Tennessee/F1076A/2010": "other_database_import", 
+  "A/Kenya/126/2009": "centers_for_disease_control_and_prevention", 
+  "A/Ontario/142358/2009": "other_database_import", 
+  "A/Sendai/TU528/2009": "other_database_import", 
+  "A/Yamagata/473/2009": "other_database_import", 
+  "A/CostaRica/5529/2010": "centers_for_disease_control_and_prevention", 
+  "A/NewYork/3236/2010": "other_database_import", 
+  "A/Indore/10/2009": "other_database_import", 
+  "A/SriLanka/20502/2010": "other_database_import", 
+  "A/NorthernIreland/1/2010": "national_institute_for_medical_research", 
+  "A/Tianjin-Hongqiao/SWL1463/2009": "who_chinese_national_influenza_center", 
+  "A/Belgium/G4405/2009": "national_institute_for_medical_research", 
+  "A/Singapore/KK147/2010": "other_database_import", 
+  "A/NordrheinWestfalen/79/2009": "national_institute_for_medical_research", 
+  "A/Singapore/TT106/2010": "other_database_import", 
+  "A/Singapore/ON2018/2009": "other_database_import", 
+  "A/Uganda/MUWRP-067/2009": "other_database_import", 
+  "A/Uganda/614/2009-egg": "centers_for_disease_control_and_prevention", 
+  "A/Singapore/GP3187/2009": "other_database_import", 
+  "A/Singapore/GP155/2010": "other_database_import", 
+  "A/Singapore/EN008/2010": "other_database_import", 
+  "A/Sydney/DD3-05/2010": "other_database_import", 
+  "A/Taiwan/71184/2010": "other_database_import", 
+  "A/Ghana/FS-10-4009/2010": "national_institute_for_medical_research", 
+  "A/Madagascar/95/2010": "national_institute_for_medical_research", 
+  "A/Ireland/6534/2010": "national_institute_for_medical_research", 
+  "A/Mumbai/NIV261/2009": "other_database_import", 
+  "A/Sydney/DD3-37/2010": "other_database_import", 
+  "A/Bahia/16925/2009": "oswaldo_cruz_institute___fiocruz___laboratory_of_respiratory_viruses_and_measles__lvrs_", 
+  "A/Chile/78/2010": "other_database_import", 
+  "A/Albania/2385/2009": "national_institute_for_medical_research", 
+  "A/Shiga/2/2009": "other_database_import", 
+  "A/Singapore/GP4326/2009": "other_database_import", 
+  "A/California/7/2009-egg": "national_institute_for_biological_standards_and_control__nibsc_", 
+  "A/Sydney/DD3-56/2010": "other_database_import", 
+  "A/Singapore/ON1868/2009": "other_database_import", 
+  "A/Guam/NHRC0001/2009": "other_database_import", 
+  "A/BosniaHerzegovina/28Sw/2009": "national_institute_for_medical_research", 
+  "A/Guam/2125/2009": "who_collaborating_centre_for_reference_and_research_on_influenza", 
+  "A/Navarra/RR6914/2010": "national_institute_for_medical_research", 
+  "A/Yokohama/1/2009": "other_database_import"
+ }, 
+ "filters": [
+  "region", 
+  "country"
+ ], 
+ "commit": "unknown", 
+ "maintainer": [
+  "Trevor Bedford", 
+  "http://bedford.io/team/trevor-bedford/"
+ ], 
+ "panels": [
+  "tree", 
+  "map", 
+  "entropy"
+ ], 
+ "geo": {
+  "country": {
+   "senegal": {
+    "latitude": 14.5, 
+    "longitude": -14.25
+   }, 
+   "japan": {
+    "latitude": 35.68536, 
+    "longitude": 139.75309
+   }, 
+   "taiwan": {
+    "latitude": 23.9739374, 
+    "longitude": 120.9820179
+   }, 
+   "cyprus": {
+    "latitude": 39.87717, 
+    "longitude": 32.99317
+   }, 
+   "mongolia": {
+    "latitude": 46.8250388, 
+    "longitude": 103.8499736
+   }, 
+   "tunisia": {
+    "latitude": 36.81897, 
+    "longitude": 10.16579
+   }, 
+   "argentina": {
+    "latitude": -34.0, 
+    "longitude": -64.0
+   }, 
+   "norway": {
+    "latitude": 64.574131, 
+    "longitude": 11.5270102892
+   }, 
+   "ghana": {
+    "latitude": 8.0300284, 
+    "longitude": -1.080027
+   }, 
+   "belarus": {
+    "latitude": 53.0, 
+    "longitude": 28.0
+   }, 
+   "bosnia_herzegovina": {
+    "latitude": 43.84864, 
+    "longitude": 18.35644
+   }, 
+   "guatemala": {
+    "latitude": 15.6356088, 
+    "longitude": -89.8988086
+   }, 
+   "belgium": {
+    "latitude": 50.6407351, 
+    "longitude": 4.66696
+   }, 
+   "kazakhstan": {
+    "latitude": 47.2286086, 
+    "longitude": 65.2093197
+   }, 
+   "netherlands": {
+    "latitude": 52.2379891, 
+    "longitude": 5.53460738162
+   }, 
+   "denmark": {
+    "latitude": 56.0, 
+    "longitude": 10.0
+   }, 
+   "latvia": {
+    "latitude": 57.0, 
+    "longitude": 25.0
+   }, 
+   "papua_new_guinea": {
+    "latitude": -6.0, 
+    "longitude": 147.0
+   }, 
+   "switzerland": {
+    "latitude": 47.00016, 
+    "longitude": 8.01427
+   }, 
+   "bulgaria": {
+    "latitude": 42.6073975, 
+    "longitude": 25.4856617
+   }, 
+   "albania": {
+    "latitude": 41.000028, 
+    "longitude": 19.9999619
+   }, 
+   "honduras": {
+    "latitude": 15.0610686, 
+    "longitude": -84.5978533
+   }, 
+   "malaysia": {
+    "latitude": 2.3923759, 
+    "longitude": 112.8471939
+   }, 
+   "greece": {
+    "latitude": 39.0, 
+    "longitude": 22.0
+   }, 
+   "nicaragua": {
+    "latitude": 13.0, 
+    "longitude": -85.0
+   }, 
+   "canada": {
+    "latitude": 61.0666922, 
+    "longitude": -107.991707
+   }, 
+   "qatar": {
+    "latitude": 25.27932, 
+    "longitude": 51.52245
+   }, 
+   "peru": {
+    "latitude": -10.0, 
+    "longitude": -75.25
+   }, 
+   "palau": {
+    "latitude": 7.33978, 
+    "longitude": 134.47326
+   }, 
+   "kuwait": {
+    "latitude": 29.5, 
+    "longitude": 47.75
+   }, 
+   "panama": {
+    "latitude": 8.3096067, 
+    "longitude": -81.3066245
+   }, 
+   "nepal": {
+    "latitude": 28.0, 
+    "longitude": 84.0
+   }, 
+   "venezuela": {
+    "latitude": 8.0, 
+    "longitude": -66.0
+   }, 
+   "iran": {
+    "latitude": 32.0, 
+    "longitude": 53.0
+   }, 
+   "new_zealand": {
+    "latitude": -41.500083, 
+    "longitude": 172.8344077
+   }, 
+   "china": {
+    "latitude": 35.000074, 
+    "longitude": 104.999927
+   }, 
+   "armenia": {
+    "latitude": 40.18111, 
+    "longitude": 44.51361
+   }, 
+   "thailand": {
+    "latitude": 14.8971921, 
+    "longitude": 100.83273
+   }, 
+   "iraq": {
+    "latitude": 33.0, 
+    "longitude": 44.0
+   }, 
+   "south_korea": {
+    "latitude": 35.3985008, 
+    "longitude": 127.937111
+   }, 
+   "ukraine": {
+    "latitude": 49.4871968, 
+    "longitude": 31.2718321
+   }, 
+   "south_africa": {
+    "latitude": -28.8166235, 
+    "longitude": 24.991639
+   }, 
+   "oman": {
+    "latitude": 21.0000287, 
+    "longitude": 57.0036901
+   }, 
+   "el_salvador": {
+    "latitude": 13.68935, 
+    "longitude": -89.18718
+   }, 
+   "mauritius": {
+    "latitude": -20.3, 
+    "longitude": 57.58333
+   }, 
+   "romania": {
+    "latitude": 46.0, 
+    "longitude": 25.0
+   }, 
+   "seychelles": {
+    "latitude": -4.58333, 
+    "longitude": 55.66667
+   }, 
+   "egypt": {
+    "latitude": 26.2540493, 
+    "longitude": 29.2675469
+   }, 
+   "guam": {
+    "latitude": 13.51777, 
+    "longitude": 144.8391
+   }, 
+   "austria": {
+    "latitude": 47.2000338, 
+    "longitude": 13.199959
+   }, 
+   "united_arab_emirates": {
+    "latitude": 24.0002488, 
+    "longitude": 53.9994829
+   }, 
+   "hungary": {
+    "latitude": 47.0, 
+    "longitude": 20.0
+   }, 
+   "colombia": {
+    "latitude": 2.893108, 
+    "longitude": -73.7845142
+   }, 
+   "united_kingdom": {
+    "latitude": 51.50853, 
+    "longitude": -0.12574
+   }, 
+   "niger": {
+    "latitude": 18.0, 
+    "longitude": 9.0
+   }, 
+   "fiji": {
+    "latitude": -18.1239695, 
+    "longitude": 179.0122737
+   }, 
+   "turkey": {
+    "latitude": 39.0, 
+    "longitude": 35.0
+   }, 
+   "madagascar": {
+    "latitude": -20.0, 
+    "longitude": 47.0
+   }, 
+   "bangladesh": {
+    "latitude": 24.4768783, 
+    "longitude": 90.2932426
+   }, 
+   "usa": {
+    "latitude": 39.7837304, 
+    "longitude": -100.4458824
+   }, 
+   "france": {
+    "latitude": 46.603354, 
+    "longitude": 1.8883335
+   }, 
+   "slovakia": {
+    "latitude": 48.66667, 
+    "longitude": 19.5
+   }, 
+   "suriname": {
+    "latitude": 4.1413025, 
+    "longitude": -56.0771186
+   }, 
+   "costa_rica": {
+    "latitude": 10.0, 
+    "longitude": -84.0
+   }, 
+   "bolivia": {
+    "latitude": -17.0, 
+    "longitude": -65.0
+   }, 
+   "ecuador": {
+    "latitude": -1.3397667, 
+    "longitude": -79.3666964
+   }, 
+   "israel": {
+    "latitude": 31.5, 
+    "longitude": 34.75
+   }, 
+   "ireland": {
+    "latitude": 52.865196, 
+    "longitude": -7.9794598
+   }, 
+   "algeria": {
+    "latitude": 28.0000272, 
+    "longitude": 2.9999825
+   }, 
+   "cote_d_ivoire": {
+    "latitude": 7.9897371, 
+    "longitude": -5.5679457
+   }, 
+   "chile": {
+    "latitude": -31.7613364, 
+    "longitude": -71.3187696
+   }, 
+   "nigeria": {
+    "latitude": 10.0, 
+    "longitude": 8.0
+   }, 
+   "spain": {
+    "latitude": 40.0028028, 
+    "longitude": -4.0031039
+   }, 
+   "hong_kong": {
+    "latitude": 22.3964, 
+    "longitude": 114.1095
+   }, 
+   "morocco": {
+    "latitude": 31.1728192, 
+    "longitude": -7.3366042
+   }, 
+   "sweden": {
+    "latitude": 59.6749712, 
+    "longitude": 14.5208584
+   }, 
+   "saudi_arabia": {
+    "latitude": 25.0, 
+    "longitude": 45.0
+   }, 
+   "russia": {
+    "latitude": 64.6863136, 
+    "longitude": 97.7453061
+   }, 
+   "portugal": {
+    "latitude": 39.6945, 
+    "longitude": -8.13057
+   }, 
+   "mexico": {
+    "latitude": 19.4325301, 
+    "longitude": -99.1332101
+   }, 
+   "india": {
+    "latitude": 22.3511148, 
+    "longitude": 78.6677428
+   }, 
+   "australia": {
+    "latitude": -24.7761085, 
+    "longitude": 134.755
+   }, 
+   "uganda": {
+    "latitude": 1.5333554, 
+    "longitude": 32.2166578
+   }, 
+   "paraguay": {
+    "latitude": -23.33333, 
+    "longitude": -58.0
+   }, 
+   "kenya": {
+    "latitude": 1.0, 
+    "longitude": 38.0
+   }, 
+   "italy": {
+    "latitude": 42.6384261, 
+    "longitude": 12.674297
+   }, 
+   "cuba": {
+    "latitude": 22.0, 
+    "longitude": -79.5
+   }, 
+   "ethiopia": {
+    "latitude": 9.0, 
+    "longitude": 39.5
+   }, 
+   "cameroon": {
+    "latitude": 6.0, 
+    "longitude": 12.5
+   }, 
+   "brazil": {
+    "latitude": -10.3333332, 
+    "longitude": -53.1999999
+   }, 
+   "singapore": {
+    "latitude": 1.2904527, 
+    "longitude": 103.852038
+   }, 
+   "slovenia": {
+    "latitude": 45.8133113, 
+    "longitude": 14.4808369
+   }, 
+   "germany": {
+    "latitude": 51.0834196, 
+    "longitude": 10.4234469
+   }, 
+   "tanzania": {
+    "latitude": -6.0, 
+    "longitude": 35.0
+   }, 
+   "indonesia": {
+    "latitude": -5.0, 
+    "longitude": 120.0
+   }, 
+   "vietnam": {
+    "latitude": 16.16667, 
+    "longitude": 107.83333
+   }, 
+   "sri_lanka": {
+    "latitude": 7.75, 
+    "longitude": 80.75
+   }
+  }, 
+  "region": {
+   "europe": {
+    "latitude": 49.646237, 
+    "longitude": 10.799454
+   }, 
+   "oceania": {
+    "latitude": -25.0562891, 
+    "longitude": 152.008576
+   }, 
+   "south_america": {
+    "latitude": -13.083583, 
+    "longitude": -58.470721
+   }, 
+   "africa": {
+    "latitude": 4.070194, 
+    "longitude": 21.824559
+   }, 
+   "southeast_asia": {
+    "latitude": 3.020567, 
+    "longitude": 112.390683
+   }, 
+   "china": {
+    "latitude": 35.000074, 
+    "longitude": 104.999927
+   }, 
+   "south_asia": {
+    "latitude": 24.485438, 
+    "longitude": 76.513158
+   }, 
+   "japan_korea": {
+    "latitude": 35.845119, 
+    "longitude": 136.736386
+   }, 
+   "west_asia": {
+    "latitude": 34.000094, 
+    "longitude": 48.73228
+   }, 
+   "north_america": {
+    "latitude": 28.2367447, 
+    "longitude": -97.738017
+   }
+  }
+ }, 
+ "annotations": {
+  "SigPep": {
+   "start": 0, 
+   "end": 52, 
+   "strand": 1
+  }, 
+  "HA1": {
+   "start": 51, 
+   "end": 1033, 
+   "strand": 1
+  }, 
+  "HA2": {
+   "start": 1032, 
+   "end": 1698, 
+   "strand": 1
+  }, 
+  "nuc": {
+   "start": 1, 
+   "end": 1702
+  }
+ }
+}

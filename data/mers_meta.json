@@ -1,0 +1,33 @@
+{
+  "updated": "today", 
+  "virus_count": 274, 
+  "title": "BEAST proof of principle (MERS-CoV)", 
+  "color_options": {
+    "host": {
+      "menuItem": "host", 
+      "legendTitle": "host", 
+      "type": "discrete", 
+      "key": "host"
+    }, 
+    "posterior": {
+      "menuItem": "posterior", 
+      "legendTitle": "posterior", 
+      "type": "continuous", 
+      "key": "posterior"
+    }, 
+    "type.prob": {
+      "menuItem": "host.prob", 
+      "legendTitle": "host.prob", 
+      "type": "continuous", 
+      "key": "type.prob"
+    }
+  }, 
+  "filters": [
+    "type"
+  ], 
+  "commit": "unknown", 
+  "panels": [
+    "tree"
+  ], 
+  "geo": {}
+}
