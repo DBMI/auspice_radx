@@ -138,6 +138,7 @@ class Entropy extends React.Component {
     );
   }
   entropyCountSwitch(styles) {
+    // KWP: This is where the Entropy/Events buttons are injected.
     const { t } = this.props;
     if (this.props.narrativeMode) return null;
     return (
@@ -155,9 +156,6 @@ class Entropy extends React.Component {
           onClick={() => this.props.dispatch(showCountsNotEntropy(true))}
         >
           <span style={styles.switchTitle}> {t("events")} </span>
-        </button>
-        <button key={3} style={this.props.showCounts ? tabGroupMemberSelected : tabGroupMember} onClick={ () => alert("Mutations!") }>
-          <span style={styles.switchTitle}> {t("mutations")} </span>
         </button>
       </div>
     );

@@ -47,6 +47,7 @@ EntropyChart.prototype.render = function render(props) {
   this._drawAxes();
   this._addBrush();
   this._addClipMask();
+  this._drawCoolShit(this.annotations);
   this._drawGenes(this.annotations);
   this._drawZoomGenes(this.annotations);
   this.okToDrawBars = true;
@@ -213,6 +214,38 @@ EntropyChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) {
     .attr("text-anchor", "middle")
     .style("fill", () => "white")
     .text((d) => (endG(d)-startG(d)) > 15 ? d.prot : ""); /* only print labels if gene large enough to see */
+};
+
+// KWP
+EntropyChart.prototype._drawCoolShit = function _drawCoolShit(annotations) {
+  const geneHeight = 20;
+  const readingFrameOffset = (frame) => 5; // eslint-disable-line no-unused-vars
+  const posInSequence = this.scales.xNav.domain()[1] - this.scales.xNav.domain()[0];
+  const strokeCol = posInSequence < 1e6 ? "white" : "black";
+  const startG = (d) => d.start > this.scales.xNav.domain()[0] ? this.scales.xNav(d.start) : this.offsets.x1;
+  const endG = (d) => d.end < this.scales.xNav.domain()[1] ? this.scales.xNav(d.end) : this.offsets.x2;
+  const selection = this.navGraph.selectAll(".test")
+    .data(annotations)
+    .enter()
+    .append("g");
+  selection.append("rect")
+    .attr("class", "gene")
+    .attr("x", (d) => this.scales.xNav(d.start))
+    .attr("y", (d) => readingFrameOffset(d.strand))
+    .attr("width", (d) => this.scales.xNav(d.end) - this.scales.xNav(d.start))
+    .attr("height", geneHeight)
+    .style("fill", (d) => d.fill)
+    .style("stroke", () => strokeCol);
+  selection.append("text")
+    .attr("x", (d) =>
+      this.scales.xNav(d.start) + (this.scales.xNav(d.end) - this.scales.xNav(d.start)) / 2
+    )
+    .attr("y", (d) => readingFrameOffset(d.strand) + 5)
+    .attr("dy", ".7em")
+    .attr("text-anchor", "middle")
+    .style("fill", () => "white")
+    /* this makes 2K gene in zika not show up!! */
+    .text((d) => (endG(d)-startG(d)) > 10 ? d.prot : ""); /* only print labels if gene large enough to see */
 };
 
 /* draw the genes (annotations) */
@@ -575,6 +608,7 @@ EntropyChart.prototype._createZoomFn = function _createZoomFn() {
 };
 
 /* prepare graph elements to be drawn in */
+// KWP
 EntropyChart.prototype._drawMainNavElements = function _drawMainNavElements() {
   this.mainGraph = this.svg.append("g")
     .attr("class", "main")
@@ -584,6 +618,9 @@ EntropyChart.prototype._drawMainNavElements = function _drawMainNavElements() {
     .attr("transform", "translate(" + this.offsets.x1 + "," + this.offsets.y1Nav + ")");
   this.geneGraph = this.svg.append("g")
     .attr("class", "Gene")
+    .attr("transform", "translate(" + this.offsets.x1 + "," + this.offsets.y1Gene + ")");
+  this.testGraph = this.svg.append("g")
+    .attr("class", "test")
     .attr("transform", "translate(" + this.offsets.x1 + "," + this.offsets.y1Gene + ")");
 };
 
