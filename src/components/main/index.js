@@ -28,7 +28,7 @@ import MobileNarrativeDisplay from "../narrative/MobileNarrativeDisplay";
 const Entropy = lazy(() => import("../entropy"));
 const Frequencies = lazy(() => import("../frequencies"));
 const Measurements = lazy(() => import("../measurements"));
-
+const Signatures = lazy(() => import("../signatures"));
 
 @connect((state) => ({
   panelsToDisplay: state.controls.panelsToDisplay,
@@ -206,6 +206,12 @@ class Main extends React.Component {
           {this.props.panelsToDisplay.includes("entropy") ?
             (<Suspense fallback={null}>
               <Entropy width={chart.width} height={chart.height} key={keyName+"_entropy"}/>
+            </Suspense>) :
+            null
+          }
+          {this.props.panelsToDisplay.includes("signatures") ?
+            (<Suspense fallback={null}>
+              <Signatures width={chart.width} height={chart.height} key={keyName+"_signature"}/>
             </Suspense>) :
             null
           }

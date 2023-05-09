@@ -7,7 +7,7 @@ import 'd3-transition';
 import Card from "../framework/card";
 import { changeColorBy } from "../../actions/colors";
 import { tabGroup, tabGroupMember, tabGroupMemberSelected } from "../../globalStyles";
-import EntropyChart from "./entropyD3";
+import SignaturesChart from "./signaturesD3";
 import InfoPanel from "./infoPanel";
 import { changeMutType, showCountsNotEntropy } from "../../actions/entropy";
 import { analyticsControlsEvent } from "../../util/googleAnalytics";
@@ -15,6 +15,9 @@ import { timerStart, timerEnd } from "../../util/perf";
 import { isColorByGenotype, decodeColorByGenotype, encodeColorByGenotype } from "../../util/getGenotype";
 import { nucleotide_gene } from "../../util/globals";
 import "../../css/entropy.css";
+import {Entropy} from "../entropy";
+
+
 
 const getStyles = (width) => {
   return {
@@ -75,7 +78,7 @@ const constructEncodedGenotype = (mutType, d) => {
     narrativeMode: state.narrative.display
   };
 })
-export class Entropy extends React.Component {
+class Signature extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -161,7 +164,7 @@ export class Entropy extends React.Component {
     );
   }
   setUp(props) {
-    const chart = new EntropyChart(
+    const chart = new SignaturesChart(
       this.d3entropy,
       props.annotations,
       props.geneMap,
@@ -298,6 +301,5 @@ export class Entropy extends React.Component {
   }
 }
 
-const WithTranslation = withTranslation()(Entropy);
+const WithTranslation = withTranslation()(Signature);
 export default WithTranslation;
-
