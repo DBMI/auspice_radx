@@ -30,6 +30,7 @@ const Frequencies = lazy(() => import("../frequencies"));
 const Measurements = lazy(() => import("../measurements"));
 const Signatures = lazy(() => import("../signatures"));
 
+
 @connect((state) => ({
   panelsToDisplay: state.controls.panelsToDisplay,
   panelLayout: state.controls.panelLayout,

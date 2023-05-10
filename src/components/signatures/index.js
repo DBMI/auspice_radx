@@ -272,11 +272,11 @@ class Signature extends React.Component {
     const { t } = this.props;
     const styles = getStyles(this.props.width);
     return (
-      <Card title={t("Diversity")}>
+      <Card title={t("Signatures")}>
         <InfoPanel
           hovered={this.state.hovered}
           width={this.props.width}
-          height={this.props.height}
+          height={(this.props.height + 200)} // KAI added parens and + 200
           mutType={this.props.mutType}
           showCounts={this.props.showCounts}
           geneMap={this.props.geneMap}
@@ -286,7 +286,7 @@ class Signature extends React.Component {
           id="d3entropyParent"
           style={{pointerEvents: "auto"}}
           width={this.props.width}
-          height={this.props.height}
+          height={(this.props.height + 200)} // KAI added parens and + 200
         >
           <g ref={(c) => { this.d3entropy = c; }} id="d3entropy"/>
         </svg>

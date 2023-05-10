@@ -47,7 +47,7 @@ SignaturesChart.prototype.render = function render(props) {
   this._drawAxes();
   this._addBrush();
   this._addClipMask();
-  this._drawCoolShit(this.annotations);
+  this._drawSignatures(this.annotations);
   this._drawGenes(this.annotations);
   this._drawZoomGenes(this.annotations);
   this.okToDrawBars = true;
@@ -216,8 +216,8 @@ SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) 
     .text((d) => (endG(d)-startG(d)) > 15 ? d.prot : ""); /* only print labels if gene large enough to see */
 };
 
-// KWP
-SignaturesChart.prototype._drawCoolShit = function _drawCoolShit(annotations) {
+
+SignaturesChart.prototype._drawSignatures = function _drawSignatures(annotations) {
   const geneHeight = 20;
   const readingFrameOffset = (frame) => 5; // eslint-disable-line no-unused-vars
   const posInSequence = this.scales.xNav.domain()[1] - this.scales.xNav.domain()[0];
@@ -436,15 +436,25 @@ SignaturesChart.prototype._updateYScaleAndAxis = function _updateYScaleAndAxis(y
 /* calculate the offsets */
 SignaturesChart.prototype._calcOffsets = function _calcOffsets(width, height) {
   /* hardcoded padding */
-  this.offsets = {
+  /*this.offsets = {
     x1: 15,
     x2: width - 32,
-    y1Main: 0, /* remember y1 is the top, y2 is the bottom, measured going down */
+    y1Main: 0, // remember y1 is the top, y2 is the bottom, measured going down
     y1Nav: height - 65,
     y2Main: height - 130,
     y2Nav: height - 35,
     y1Gene: height - 107,
     y2Gene: height - 95
+  };*/
+  this.offsets = {
+    x1: 15,
+    x2: width - 32,
+    y1Main: 0, // remember y1 is the top, y2 is the bottom, measured going down
+    y2Main: height - 130,
+    y1Nav: height + 135,
+    y2Nav: height + 165,
+    y1Gene: height + 93,
+    y2Gene: height + 105,
   };
   this.offsets.heightMain = this.offsets.y2Main - this.offsets.y1Main;
   this.offsets.heightNav = this.offsets.y2Nav - this.offsets.y1Nav;
@@ -608,7 +618,6 @@ SignaturesChart.prototype._createZoomFn = function _createZoomFn() {
 };
 
 /* prepare graph elements to be drawn in */
-// KWP
 SignaturesChart.prototype._drawMainNavElements = function _drawMainNavElements() {
   this.mainGraph = this.svg.append("g")
     .attr("class", "main")
