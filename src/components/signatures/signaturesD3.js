@@ -16,13 +16,14 @@ import { nucleotide_gene } from "../../util/globals";
  * keep the visualisation in sync with React:
  * EntropyChart.render & EntropyChartupdate
  */
-const SignaturesChart = function SignaturesChart(ref, annotations, geneMap, maxNt, callbacks) {
+const SignaturesChart = function SignaturesChart(ref, annotations, geneMap, maxNt, callbacks, metadata) {
   this.svg = select(ref);
   this.annotations = annotations;
   this.geneMap = geneMap;
   this.maxNt = maxNt;
   this.callbacks = callbacks;
   this.okToDrawBars = false; /* useful as the brush setUp causes _drawBars x 2 */
+  this.metadata = metadata;
 };
 
 /* "PUBLIC" PROTOTYPES */
@@ -48,8 +49,8 @@ SignaturesChart.prototype.render = function render(props) {
   this._addBrush();
   this._addClipMask();
   this._drawSignatures(this.annotations);
-  this._drawGenes(this.annotations);
-  this._drawZoomGenes(this.annotations);
+  this._drawGenes(this.annotations); // This is the gene that does not get zoomed in on.
+  //this._drawZoomGenes(this.annotations); // this is the gene that does get zoomed in on.
   this.okToDrawBars = true;
   this._drawBars();
   this.zoomed = this._createZoomFn();
@@ -172,6 +173,7 @@ SignaturesChart.prototype._getSelectedNodes = function _getSelectedNodes(parsed)
 
 /* draw the genes Gene (annotations) */
 SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) {
+
   this.geneGraph.selectAll("*").remove();
   const geneHeight = 20;
   const posInSequence = this.scales.xNav.domain()[1] - this.scales.xNav.domain()[0];
@@ -218,35 +220,59 @@ SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) 
 
 
 SignaturesChart.prototype._drawSignatures = function _drawSignatures(annotations) {
-  const geneHeight = 20;
-  const readingFrameOffset = (frame) => 5; // eslint-disable-line no-unused-vars
-  const posInSequence = this.scales.xNav.domain()[1] - this.scales.xNav.domain()[0];
-  const strokeCol = posInSequence < 1e6 ? "white" : "black";
-  const startG = (d) => d.start > this.scales.xNav.domain()[0] ? this.scales.xNav(d.start) : this.offsets.x1;
-  const endG = (d) => d.end < this.scales.xNav.domain()[1] ? this.scales.xNav(d.end) : this.offsets.x2;
-  const selection = this.navGraph.selectAll(".test")
-    .data(annotations)
-    .enter()
+
+  const selection = this.testGraph
     .append("g");
-  selection.append("rect")
-    .attr("class", "gene")
-    .attr("x", (d) => this.scales.xNav(d.start))
-    .attr("y", (d) => readingFrameOffset(d.strand))
-    .attr("width", (d) => this.scales.xNav(d.end) - this.scales.xNav(d.start))
-    .attr("height", geneHeight)
-    .style("fill", (d) => d.fill)
-    .style("stroke", () => strokeCol);
-  selection.append("text")
-    .attr("x", (d) =>
-      this.scales.xNav(d.start) + (this.scales.xNav(d.end) - this.scales.xNav(d.start)) / 2
-    )
-    .attr("y", (d) => readingFrameOffset(d.strand) + 5)
-    .attr("dy", ".7em")
-    .attr("text-anchor", "middle")
-    .style("fill", () => "white")
-    /* this makes 2K gene in zika not show up!! */
-    .text((d) => (endG(d)-startG(d)) > 10 ? d.prot : ""); /* only print labels if gene large enough to see */
+
+  /*selection.append("rect")
+    .attr("x", this.offsets.x1)
+    .attr("y", this.offsets.y1Test)
+    .attr("width", this.offsets.width)
+    .attr("height", "150")
+    .style("fill", "steelblue")
+    .style("border", "25")
+    .style("stroke", "black")
+    .enter();
+
+    selection.append("circle")
+      .style("stroke", "white")
+      .style("border", 100)
+      .style("fill", "red")
+      .attr("r", 40)
+      .attr("cx", this.offsets.width / 2)
+      .attr("cy", this.offsets.y1Test + 75);*/
+
+  const cityHeight = 20;
+  const cityBuffer = 5;
+  const cities = this.metadata.colorings.city.scale;
+
+  let i = 0;
+  do {
+    let city = cities[i][0];
+    let color = cities[i][1];
+
+    selection.append("rect")
+      .attr("x", this.offsets.x1)
+      .attr("y", this.offsets.y1Test + (i * cityHeight) + (i * cityBuffer))
+      .attr("width", this.offsets.width)
+      .attr("height", cityHeight)
+      .attr("fill", color)
+      .enter();
+
+    selection.append("text")
+      .attr("y", this.offsets.y1Test + (i * cityHeight) + (i * cityBuffer) + 10)
+      .attr("x", this.offsets.width / 2)
+      .style("fill", () => "black")
+      .attr("dy", ".4em")
+      .attr("font-size", "1.5em")
+      .attr("font-weight", 500)
+      .text(city)
+      .enter();
+
+    i += 1;
+  } while (i < cities.length);  
 };
+
 
 /* draw the genes (annotations) */
 SignaturesChart.prototype._drawGenes = function _drawGenes(annotations) {
@@ -455,10 +481,13 @@ SignaturesChart.prototype._calcOffsets = function _calcOffsets(width, height) {
     y2Nav: height + 165,
     y1Gene: height + 93,
     y2Gene: height + 105,
+    y1Test: 100,
+    y2Test: height + 75
   };
   this.offsets.heightMain = this.offsets.y2Main - this.offsets.y1Main;
   this.offsets.heightNav = this.offsets.y2Nav - this.offsets.y1Nav;
   this.offsets.heightGene = this.offsets.y2Gene - this.offsets.y1Gene;
+  this.offsets.heightTest = this.offsets.y2Test - this.offsets.y1Test;
   this.offsets.width = this.offsets.x2 - this.offsets.x1;
 };
 
@@ -630,7 +659,7 @@ SignaturesChart.prototype._drawMainNavElements = function _drawMainNavElements()
     .attr("transform", "translate(" + this.offsets.x1 + "," + this.offsets.y1Gene + ")");
   this.testGraph = this.svg.append("g")
     .attr("class", "test")
-    .attr("transform", "translate(" + this.offsets.x1 + "," + this.offsets.y1Gene + ")");
+    .attr("transform", "translate(" + this.offsets.x1 + "," + this.offsets.y1Test + ")");
 };
 
 SignaturesChart.prototype._addClipMask = function _addClipMask() {
