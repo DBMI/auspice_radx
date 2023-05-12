@@ -221,12 +221,12 @@ SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) 
 
 SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
-  const selection = this.testGraph
+  const selection = this.signaturesGraph
     .append("g");
 
   /*selection.append("rect")
     .attr("x", this.offsets.x1)
-    .attr("y", this.offsets.y1Test)
+    .attr("y", this.offsets.y1Signatures)
     .attr("width", this.offsets.width)
     .attr("height", "150")
     .style("fill", "steelblue")
@@ -240,7 +240,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       .style("fill", "red")
       .attr("r", 40)
       .attr("cx", this.offsets.width / 2)
-      .attr("cy", this.offsets.y1Test + 75);*/
+      .attr("cy", this.offsets.y1Signatures + 75);*/
 
   const barHeight = 20;
   const barBuffer = 5;
@@ -264,14 +264,14 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
     selection.append("rect")
       .attr("x", this.offsets.x1)
-      .attr("y", this.offsets.y1Test + (i * barHeight) + (i * barBuffer))
+      .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer))
       .attr("width", this.offsets.width)
       .attr("height", barHeight)
       .attr("fill", categoryElementColor)
       .enter();
 
     selection.append("text")
-      .attr("y", this.offsets.y1Test + (i * barHeight) + (i * barBuffer) + 10)
+      .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer) + 10)
       .attr("x", this.offsets.width / 2)
       .style("fill", () => "black")
       .attr("dy", ".4em")
@@ -492,13 +492,13 @@ SignaturesChart.prototype._calcOffsets = function _calcOffsets(width, height) {
     y2Nav: height + 165,
     y1Gene: height + 93,
     y2Gene: height + 105,
-    y1Test: 100,
-    y2Test: height + 75
+    y1Signatures: 100,
+    y2Signatures: height + 75
   };
   this.offsets.heightMain = this.offsets.y2Main - this.offsets.y1Main;
   this.offsets.heightNav = this.offsets.y2Nav - this.offsets.y1Nav;
   this.offsets.heightGene = this.offsets.y2Gene - this.offsets.y1Gene;
-  this.offsets.heightTest = this.offsets.y2Test - this.offsets.y1Test;
+  this.offsets.heightSignatures = this.offsets.y2Signatures - this.offsets.y1Signatures;
   this.offsets.width = this.offsets.x2 - this.offsets.x1;
 };
 
@@ -668,9 +668,9 @@ SignaturesChart.prototype._drawMainNavElements = function _drawMainNavElements()
   this.geneGraph = this.svg.append("g")
     .attr("class", "Gene")
     .attr("transform", "translate(" + this.offsets.x1 + "," + this.offsets.y1Gene + ")");
-  this.testGraph = this.svg.append("g")
-    .attr("class", "test")
-    .attr("transform", "translate(" + this.offsets.x1 + "," + this.offsets.y1Test + ")");
+  this.signaturesGraph = this.svg.append("g")
+    .attr("class", "signatures")
+    .attr("transform", "translate(" + this.offsets.x1 + "," + this.offsets.y1Signatures + ")");
 };
 
 SignaturesChart.prototype._addClipMask = function _addClipMask() {
