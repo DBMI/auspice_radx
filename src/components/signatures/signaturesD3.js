@@ -48,7 +48,7 @@ SignaturesChart.prototype.render = function render(props) {
   this._drawAxes();
   this._addBrush();
   this._addClipMask();
-  this._drawSignatures(this.annotations);
+  this._drawSignatures(this.props);
   this._drawGenes(this.annotations); // This is the gene that does not get zoomed in on.
   //this._drawZoomGenes(this.annotations); // this is the gene that does get zoomed in on.
   this.okToDrawBars = true;
@@ -219,7 +219,7 @@ SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) 
 };
 
 
-SignaturesChart.prototype._drawSignatures = function _drawSignatures(annotations) {
+SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
   const selection = this.testGraph
     .append("g");
@@ -242,35 +242,46 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(annotations
       .attr("cx", this.offsets.width / 2)
       .attr("cy", this.offsets.y1Test + 75);*/
 
-  const cityHeight = 20;
-  const cityBuffer = 5;
-  const cities = this.metadata.colorings.city.scale;
+  const barHeight = 20;
+  const barBuffer = 5;
+  let categoryGroup = null;
 
+  if(props.colorBy == 'city') {
+    categoryGroup = this.metadata.colorings.city.scale;
+  }
+  else if(props.colorBy == 'country') {
+    categoryGroup = this.metadata.colorings.country.scale;
+  }
+  else {
+    categoryGroup = [['Undefined Coloring', '#FFFF00']];
+  }
+  
   let i = 0;
   do {
-    let city = cities[i][0];
-    let color = cities[i][1];
+
+    let categoryElement = categoryGroup[i][0];
+    let categoryElementColor = categoryGroup[i][1];
 
     selection.append("rect")
       .attr("x", this.offsets.x1)
-      .attr("y", this.offsets.y1Test + (i * cityHeight) + (i * cityBuffer))
+      .attr("y", this.offsets.y1Test + (i * barHeight) + (i * barBuffer))
       .attr("width", this.offsets.width)
-      .attr("height", cityHeight)
-      .attr("fill", color)
+      .attr("height", barHeight)
+      .attr("fill", categoryElementColor)
       .enter();
 
     selection.append("text")
-      .attr("y", this.offsets.y1Test + (i * cityHeight) + (i * cityBuffer) + 10)
+      .attr("y", this.offsets.y1Test + (i * barHeight) + (i * barBuffer) + 10)
       .attr("x", this.offsets.width / 2)
       .style("fill", () => "black")
       .attr("dy", ".4em")
       .attr("font-size", "1.5em")
       .attr("font-weight", 500)
-      .text(city)
+      .text(categoryElement)
       .enter();
 
     i += 1;
-  } while (i < cities.length);  
+  } while (i < categoryGroup.length);  
 };
 
 
