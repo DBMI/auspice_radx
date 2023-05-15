@@ -11,6 +11,7 @@ import { lightGrey, medGrey, darkGrey } from "../../globalStyles";
 import { isColorByGenotype, decodeColorByGenotype } from "../../util/getGenotype";
 import { changeZoom } from "../../actions/entropy";
 import { nucleotide_gene } from "../../util/globals";
+import { getBrighterColor } from "../../util/colorHelpers.js"
 
 /* EntropChart uses D3 for visualisation. There are 2 methods exposed to
  * keep the visualisation in sync with React:
@@ -28,6 +29,7 @@ const SignaturesChart = function SignaturesChart(ref, annotations, geneMap, maxN
 
 /* "PUBLIC" PROTOTYPES */
 SignaturesChart.prototype.render = function render(props) {
+
   this.props = props;
   this.aa = props.mutType === "aa";
   this.bars = props.bars;
@@ -221,39 +223,29 @@ SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) 
 
 SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
+const geneLength = props.geneLength.nuc;
+
+  // Draw legends (without zoom functionality)
+  
+  console.log("PROPS", props.mutType);
+
   const selection = this.signaturesGraph
     .append("g");
 
-  /*selection.append("rect")
-    .attr("x", this.offsets.x1)
-    .attr("y", this.offsets.y1Signatures)
-    .attr("width", this.offsets.width)
-    .attr("height", "150")
-    .style("fill", "steelblue")
-    .style("border", "25")
-    .style("stroke", "black")
-    .enter();
-
-    selection.append("circle")
-      .style("stroke", "white")
-      .style("border", 100)
-      .style("fill", "red")
-      .attr("r", 40)
-      .attr("cx", this.offsets.width / 2)
-      .attr("cy", this.offsets.y1Signatures + 75);*/
-
-  const barHeight = 20;
+  const barHeight = 15;
   const barBuffer = 5;
   let categoryGroup = null;
 
   if(props.colorBy == 'city') {
     categoryGroup = this.metadata.colorings.city.scale;
+    //categoryGroup.unshift(["Reference", "gray"]);
   }
   else if(props.colorBy == 'country') {
     categoryGroup = this.metadata.colorings.country.scale;
+    //categoryGroup.unshift(["Reference", "gray"]);
   }
   else {
-    categoryGroup = [['Undefined Coloring', '#FFFF00']];
+    categoryGroup = [['Cotegory coloring does currently not support ' + props.colorBy + '.', '#FFFF00']];
   }
   
   let i = 0;
@@ -263,25 +255,47 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     let categoryElementColor = categoryGroup[i][1];
 
     selection.append("rect")
-      .attr("x", this.offsets.x1)
+      .attr("x", this.offsets.x1 - (barHeight + barBuffer))
       .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer))
-      .attr("width", this.offsets.width)
+      .attr("width", barHeight)
       .attr("height", barHeight)
-      .attr("fill", categoryElementColor)
+      .attr("stroke", categoryElementColor)
+      .attr("stroke-width", 2)
+      .attr("fill", getBrighterColor(categoryElementColor))
       .enter();
 
+      // For testing purposes only:
+      let ii = 2000;
+      do {
+        //let xRand = parseInt((Math.random() * this.offsets.width) + this.offsets.x1, 10);
+        selection.append("rect")
+          //.attr("x", xRand)
+          .attr("x", this.scales.xNav(ii))
+          .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer))
+          .attr("width", 3)
+          .attr("height", barHeight)
+          .attr("fill", categoryElementColor)
+          .enter();
+        ii += 2000;
+      } while (ii < 29000);
+
+
     selection.append("text")
-      .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer) + 10)
-      .attr("x", this.offsets.width / 2)
-      .style("fill", () => "black")
+      .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer) + (1.25 * barBuffer))
+      .attr("x", this.offsets.x1 - (2 * barHeight))
+      .attr("text-anchor", "end")
+      .style("fill", () => "rgb(51, 51, 51)")
       .attr("dy", ".4em")
-      .attr("font-size", "1.5em")
+      .attr("font-size", "12px")
       .attr("font-weight", 500)
+      .attr("text-align", "left")
       .text(categoryElement)
       .enter();
 
     i += 1;
-  } while (i < categoryGroup.length);  
+  } while (i < categoryGroup.length);
+  
+  // Draw zoomable elements:
 };
 
 
@@ -442,7 +456,7 @@ SignaturesChart.prototype._drawAxes = function _drawAxes() {
     .attr("class", "y axis")
     .attr("id", "entropyYAxis")
     /* no idea why the 15 is needed here */
-    .attr("transform", "translate(" + (this.offsets.x1 + 15) + "," + this.offsets.y1Main + ")")
+    .attr("transform", "translate(" + (this.offsets.x1 + 50) + "," + this.offsets.y1Main + ")")
     .call(this.axes.y);
   this.svg.append("g")
     .attr("class", "xMain axis")
@@ -484,7 +498,7 @@ SignaturesChart.prototype._calcOffsets = function _calcOffsets(width, height) {
     y2Gene: height - 95
   };*/
   this.offsets = {
-    x1: 15,
+    x1: 50,
     x2: width - 32,
     y1Main: 0, // remember y1 is the top, y2 is the bottom, measured going down
     y2Main: height - 130,
@@ -492,7 +506,7 @@ SignaturesChart.prototype._calcOffsets = function _calcOffsets(width, height) {
     y2Nav: height + 165,
     y1Gene: height + 93,
     y2Gene: height + 105,
-    y1Signatures: 100,
+    y1Signatures: 120,
     y2Signatures: height + 75
   };
   this.offsets.heightMain = this.offsets.y2Main - this.offsets.y1Main;
