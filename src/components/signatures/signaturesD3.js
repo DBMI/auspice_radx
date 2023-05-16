@@ -245,9 +245,19 @@ const geneLength = props.geneLength.nuc;
     //categoryGroup.unshift(["Reference", "gray"]);
   }
   else {
-    categoryGroup = [['Cotegory coloring does currently not support ' + props.colorBy + '.', '#FFFF00']];
+    categoryGroup = [['Unsupported', '#FFFF00']];
   }
   
+  selection.append("text")
+    .attr("x", this.offsets.x1 - (barHeight + barBuffer))
+    .attr("y", this.offsets.y1Signatures - 25)
+    .style("fill", () => "rgb(51, 51, 51)")
+    .attr("dy", ".4em")
+    .attr("font-size", "14px")
+    .attr("text-align", "left")
+    .text("Shared Mutations by " + props.colorBy.charAt(0).toUpperCase() + props.colorBy.slice(1)) // Capitalize the first letter of the colorBy string.
+    .enter();
+
   let i = 0;
   do {
 
@@ -265,19 +275,18 @@ const geneLength = props.geneLength.nuc;
       .enter();
 
       // For testing purposes only:
-      let ii = 2000;
+      let ii = 0;
       do {
-        //let xRand = parseInt((Math.random() * this.offsets.width) + this.offsets.x1, 10);
+        let randomBase = parseInt((Math.random() * (geneLength - 1)) + 1, 10);
         selection.append("rect")
-          //.attr("x", xRand)
-          .attr("x", this.scales.xNav(ii))
+          .attr("x", this.scales.xNav(randomBase))
           .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer))
-          .attr("width", 3)
+          .attr("width", 2.5)
           .attr("height", barHeight)
           .attr("fill", categoryElementColor)
           .enter();
-        ii += 2000;
-      } while (ii < 29000);
+        ii++;
+      } while (ii < 10);
 
 
     selection.append("text")
