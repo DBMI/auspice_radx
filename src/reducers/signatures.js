@@ -1,6 +1,8 @@
 import * as types from "../actions/types";
 
 const Signatures = (state = {loaded: false, showCounts: false}, action) => {
+
+  console.log("Signatures Reducer", action);
   switch (action.type) {
     case types.CHANGE_ZOOM:
       return Object.assign({}, state, {
@@ -12,6 +14,11 @@ const Signatures = (state = {loaded: false, showCounts: false}, action) => {
     case types.URL_QUERY_CHANGE_WITH_COMPUTED_STATE: /* fallthrough */
     case types.CLEAN_START:
       return action.entropy;
+    case types.NEW_COLORS:
+      return Object.assign({}, state, {
+        nodeColors: action.nodeColors,
+        nodeColorsVersion: action.version
+      });
     case types.ENTROPY_DATA:
       return Object.assign({}, state, {
         loaded: true,

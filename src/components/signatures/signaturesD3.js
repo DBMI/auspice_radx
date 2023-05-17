@@ -223,11 +223,12 @@ SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) 
 
 SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
+//console.log("SIGNATURES", props.tree.nodes);
+parseMutationsBy(props.colorBy, props.tree.nodes);
+
 const geneLength = props.geneLength.nuc;
 
   // Draw legends (without zoom functionality)
-  
-  console.log("PROPS", props.mutType);
 
   const selection = this.signaturesGraph
     .append("g");
@@ -272,7 +273,9 @@ const geneLength = props.geneLength.nuc;
       .attr("stroke", categoryElementColor)
       .attr("stroke-width", 2)
       .attr("fill", getBrighterColor(categoryElementColor))
-      .enter();
+      .append(categoryElement)
+      .text(function(d) { return "Tooltip"; });
+      //.enter();
 
       // For testing purposes only:
       let ii = 0;
@@ -306,6 +309,39 @@ const geneLength = props.geneLength.nuc;
   
   // Draw zoomable elements:
 };
+
+
+/* Parse mutations from a tree object by a filter like clade, city, etc. */
+function parseMutationsBy(parseBy, inputTree)  {
+
+  let nodes = [];
+
+  for (var branch in inputTree) {
+    //console.log(inputTree[branch]);
+    nodes[inputTree[branch].arrayIdx] = {
+      arrayIndex: inputTree[branch].arrayIdx,
+      name: inputTree[branch].name,
+       hasChildren: inputTree[branch].hasChildren,
+       parentArrayIndex: inputTree[branch].parent.arrayIdx,
+       mutations: inputTree[branch].branch_attrs,
+       author: inputTree[branch].node_attrs.author,
+       city: inputTree[branch].node_attrs.city,
+       country: inputTree[branch].node_attrs.country,
+       host: inputTree[branch].node_attrs.host,
+       originatingLab: inputTree[branch].node_attrs.origingating_lab,
+       submittingLab: inputTree[branch].node_attrs.submitting_lab,
+       num_date: inputTree[branch].node_attrs.num_date
+    };
+  }
+
+  /*
+    TODO: Iterate over elements. If the name does not start with 'NODE_' place in new array keyed on the 'parseBy' value.
+    Add any associated mutations to the new array. Then, recursively add the mutations associated with respective parents, grandparents, etc.
+  */
+  for(var node in nodes) {
+    console.log(nodes[node]);
+  }
+}
 
 
 /* draw the genes (annotations) */
