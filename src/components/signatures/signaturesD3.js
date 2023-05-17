@@ -314,7 +314,8 @@ const geneLength = props.geneLength.nuc;
 /* Parse mutations from a tree object by a filter like clade, city, etc. */
 function parseMutationsBy(parseBy, inputTree)  {
 
-  let nodes = [];
+  const nodes = [];
+  const groupMap = new Map();
 
   for (var branch in inputTree) {
     //console.log(inputTree[branch]);
@@ -339,7 +340,13 @@ function parseMutationsBy(parseBy, inputTree)  {
     Add any associated mutations to the new array. Then, recursively add the mutations associated with respective parents, grandparents, etc.
   */
   for(var node in nodes) {
-    console.log(nodes[node]);
+    // EXCLUDE NODES HERE THAT ARE NOT GENES FIRST
+    if(!nodes[node].name.includes("ROOT") && !nodes[node].name.includes("NODE")) {
+     if(parseBy == 'city') {
+      //???
+     }
+     console.log(nodes[node]);
+   }
   }
 }
 
