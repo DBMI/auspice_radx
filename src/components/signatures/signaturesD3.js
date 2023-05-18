@@ -315,39 +315,105 @@ const geneLength = props.geneLength.nuc;
 function parseMutationsBy(parseBy, inputTree)  {
 
   const nodes = [];
-  const groupMap = new Map();
+  let groupKey;
+  let groupKeys = [];
+  const groupMutations = new Map();
 
   for (var branch in inputTree) {
-    //console.log(inputTree[branch]);
     nodes[inputTree[branch].arrayIdx] = {
       arrayIndex: inputTree[branch].arrayIdx,
       name: inputTree[branch].name,
-       hasChildren: inputTree[branch].hasChildren,
-       parentArrayIndex: inputTree[branch].parent.arrayIdx,
-       mutations: inputTree[branch].branch_attrs,
-       author: inputTree[branch].node_attrs.author,
-       city: inputTree[branch].node_attrs.city,
-       country: inputTree[branch].node_attrs.country,
-       host: inputTree[branch].node_attrs.host,
-       originatingLab: inputTree[branch].node_attrs.origingating_lab,
-       submittingLab: inputTree[branch].node_attrs.submitting_lab,
-       num_date: inputTree[branch].node_attrs.num_date
+      hasChildren: inputTree[branch].hasChildren,
+      parentArrayIndex: inputTree[branch].parent.arrayIdx,
+      mutations: inputTree[branch].branch_attrs,
+      author: inputTree[branch].node_attrs.author,
+      city: inputTree[branch].node_attrs.city,
+      country: inputTree[branch].node_attrs.country,
+      host: inputTree[branch].node_attrs.host,
+      originatingLab: inputTree[branch].node_attrs.originating_lab,
+      submittingLab: inputTree[branch].node_attrs.submitting_lab,
+      num_date: inputTree[branch].node_attrs.num_date
     };
   }
 
   /*
-    TODO: Iterate over elements. If the name does not start with 'NODE_' place in new array keyed on the 'parseBy' value.
-    Add any associated mutations to the new array. Then, recursively add the mutations associated with respective parents, grandparents, etc.
+    Iterate over elements. If the name does not contain 'ROOT' or 'NODE' place in new array keyed on the 'parseBy' value.
   */
   for(var node in nodes) {
     // EXCLUDE NODES HERE THAT ARE NOT GENES FIRST
     if(!nodes[node].name.includes("ROOT") && !nodes[node].name.includes("NODE")) {
-     if(parseBy == 'city') {
-      //???
-     }
-     console.log(nodes[node]);
-   }
+      console.log(nodes[node]);
+      if(parseBy == 'author') {
+        groupKey = nodes[node].author.value;
+      }
+      else if(parseBy == 'city') {
+        groupKey = nodes[node].city.value;
+      }
+      else if(parseBy == 'country') {
+        groupKey = nodes[node].country.value;
+      }
+      else if(parseBy == 'host') {
+        groupKey = nodes[node].host.value;
+      }
+      else if(parseBy == 'num_date') {
+        groupKey = nodes[node].num_date.value;
+      }
+      else if(parseBy == 'originating_lab') {
+        groupKey = nodes[node].originatingLab.value;
+      }
+      else if(parseBy == 'submitting_lab') {
+        groupKey = nodes[node].submittingLab.value;
+      }
+
+      groupKeys.push(groupKey);
+    }
   }
+  groupKeys = [...new Set(groupKeys)].sort(); // Make array elements unique.
+  
+  // Initialize the groupMutations Map.
+  for(var i = 0; i < groupKeys.length; i++) {
+    groupMutations.set(groupKeys[i], []);
+  }
+
+  /*
+    Populate the mutations arrays in the groupMutations Map. First, with the non-node sequences themselves.
+  */
+  for(var node in nodes) {
+    if(!nodes[node].name.includes("ROOT") && !nodes[node].name.includes("NODE")) {
+
+      if(parseBy == 'author') {
+        groupKey = nodes[node].author.value;
+      }
+      else if(parseBy == 'city') {
+        groupKey = nodes[node].city.value;
+      }
+      else if(parseBy == 'country') {
+        groupKey = nodes[node].country.value;
+      }
+      else if(parseBy == 'host') {
+        groupKey = nodes[node].host.value;
+      }
+      else if(parseBy == 'num_date') {
+        groupKey = nodes[node].num_date.value;
+      }
+      else if(parseBy == 'originating_lab') {
+        groupKey = nodes[node].originatingLab.value;
+      }
+      else if(parseBy == 'submitting_lab') {
+        groupKey = nodes[node].submittingLab.value;
+      }
+
+      if (nodes[node].mutations.mutations.nuc != null) {
+        for(let i = 0; i < nodes[node].mutations.mutations.nuc.length; i++) {
+          groupMutations.get(groupKey).push(nodes[node].mutations.mutations.nuc[i]);
+        }
+      }
+    }
+  }
+
+  // TODO: Add parental mutations to groupMutations Map.
+  
+  console.log(groupMutations);
 }
 
 
