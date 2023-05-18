@@ -2,7 +2,7 @@ import * as types from "../actions/types";
 
 const Signatures = (state = {loaded: false, showCounts: false}, action) => {
 
-  console.log("Signatures Reducer", action);
+  //console.log("Signatures Reducer", action);
   switch (action.type) {
     case types.CHANGE_ZOOM:
       return Object.assign({}, state, {
