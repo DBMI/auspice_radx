@@ -342,7 +342,7 @@ function parseMutationsBy(parseBy, inputTree)  {
   for(var node in nodes) {
     // EXCLUDE NODES HERE THAT ARE NOT GENES FIRST
     if(!nodes[node].name.includes("ROOT") && !nodes[node].name.includes("NODE")) {
-      console.log(nodes[node]);
+      //console.log(nodes[node]);
       if(parseBy == 'author') {
         groupKey = nodes[node].author.value;
       }
@@ -412,7 +412,7 @@ function parseMutationsBy(parseBy, inputTree)  {
   }
 
   // TODO: Add parental mutations to groupMutations Map.
-  
+
   console.log(groupMutations);
 }
 
