@@ -107,7 +107,6 @@ export const parseMutationsBy = (parseBy, inputTree) => {
   // Use this code to recursively fill mutations from parent(s).
   function injectParentMutations(node, nodes, mutations) {
   
-    let ai = nodes[node].arrayIndex;
     let pai = nodes[node].parentArrayIndex;
   
     if (nodes[node].mutations.mutations.nuc != null) {
