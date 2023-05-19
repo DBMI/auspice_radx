@@ -1,3 +1,12 @@
+const PARSE_BY_AUTHOR = 'author';
+const PARSE_BY_CITY = 'city';
+const PARSE_BY_COUNTRY = 'country';
+const PARSE_BY_HOST = 'host';
+const PARSE_BY_ORIGINATING_LAB = 'originating_lab';
+const PARSE_BY_SAMPLING_DATE = 'num_date';
+const PARSE_BY_SUBMITTING_LAB = 'submitting_lab';
+
+
 /* Parse mutations from a tree object by a filter like clade, city, etc. */
 export const parseMutationsBy = (parseBy, inputTree) => {
 //function parseMutationsBy(parseBy, inputTree)  {
@@ -23,37 +32,14 @@ export const parseMutationsBy = (parseBy, inputTree) => {
         num_date: inputTree[branch].node_attrs.num_date
       };
     }
-  
+    
     /*
       Iterate over elements. If the name does not contain 'ROOT' or 'NODE' place in new array keyed on the 'parseBy' value.
     */
     for(var node in nodes) {
-      // EXCLUDE NODES HERE THAT ARE NOT GENES FIRST
+      // Exclude non-gene nodes first.
       if(!nodes[node].name.includes("ROOT") && !nodes[node].name.includes("NODE")) {
-        //console.log(nodes[node]);
-        if(parseBy == 'author') {
-          groupKey = nodes[node].author.value;
-        }
-        else if(parseBy == 'city') {
-          groupKey = nodes[node].city.value;
-        }
-        else if(parseBy == 'country') {
-          groupKey = nodes[node].country.value;
-        }
-        else if(parseBy == 'host') {
-          groupKey = nodes[node].host.value;
-        }
-        else if(parseBy == 'num_date') {
-          groupKey = nodes[node].num_date.value;
-        }
-        else if(parseBy == 'originating_lab') {
-          groupKey = nodes[node].originatingLab.value;
-        }
-        else if(parseBy == 'submitting_lab') {
-          groupKey = nodes[node].submittingLab.value;
-        }
-  
-        groupKeys.push(groupKey);
+        groupKeys.push(getGroupKey(node, nodes, parseBy));
       }
     }
     groupKeys = [...new Set(groupKeys)].sort(); // Make array elements unique.
@@ -69,28 +55,8 @@ export const parseMutationsBy = (parseBy, inputTree) => {
     for(var node in nodes) {
       if(!nodes[node].name.includes("ROOT") && !nodes[node].name.includes("NODE")) {
   
-        if(parseBy == 'author') {
-          groupKey = nodes[node].author.value;
-        }
-        else if(parseBy == 'city') {
-          groupKey = nodes[node].city.value;
-        }
-        else if(parseBy == 'country') {
-          groupKey = nodes[node].country.value;
-        }
-        else if(parseBy == 'host') {
-          groupKey = nodes[node].host.value;
-        }
-        else if(parseBy == 'num_date') {
-          groupKey = nodes[node].num_date.value;
-        }
-        else if(parseBy == 'originating_lab') {
-          groupKey = nodes[node].originatingLab.value;
-        }
-        else if(parseBy == 'submitting_lab') {
-          groupKey = nodes[node].submittingLab.value;
-        }
-  
+        groupKey = getGroupKey(node, nodes, parseBy);
+
         if (nodes[node].mutations.mutations.nuc != null) {
           for(let i = 0; i < nodes[node].mutations.mutations.nuc.length; i++) {
             groupMutations.get(groupKey).push(nodes[node].mutations.mutations.nuc[i]);
@@ -104,8 +70,9 @@ export const parseMutationsBy = (parseBy, inputTree) => {
     console.log(groupMutations);
   }
   
+
   // Use this code to recursively fill mutations from parent(s).
-  function injectParentMutations(node, nodes, mutations) {
+function injectParentMutations(node, nodes, mutations) {
   
     let pai = nodes[node].parentArrayIndex;
   
@@ -120,5 +87,50 @@ export const parseMutationsBy = (parseBy, inputTree) => {
     }
   
     return [...new Set(mutations)].sort();
-  }
+}
+
+
+// Get the groupKey for a particular node.
+function getGroupKey(node, nodes, parseBy) {
+
+    let groupKey = 'UNDEFINED';
+
+    if(parseBy == PARSE_BY_AUTHOR) {
+        if(nodes[node].author != null) {
+            groupKey = nodes[node].author.value;
+        }
+    }
+    else if(parseBy == PARSE_BY_CITY) {
+        if(nodes[node].city != null) {
+            groupKey = nodes[node].city.value;
+        } 
+    }
+    else if(parseBy == PARSE_BY_COUNTRY) {
+        if(nodes[node].country != null) {
+            groupKey = nodes[node].country.value;
+        }
+    }
+    else if(parseBy == PARSE_BY_HOST) {
+        if (nodes[node].host != null) {
+            groupKey = nodes[node].host.value;
+        }
+    }
+    else if(parseBy == PARSE_BY_ORIGINATING_LAB) {
+        if(nodes[node].originatingLab != null) {
+            groupKey = nodes[node].originatingLab.value;
+        }
+    }
+    else if(parseBy == PARSE_BY_SAMPLING_DATE) {
+        if(nodes[node].num_date != null) {
+            groupKey = nodes[node].num_date.value;
+        }
+    }
+    else if(parseBy == PARSE_BY_SUBMITTING_LAB) {
+        if(nodes[node].submittingLab != null) {
+            groupKey = nodes[node].submittingLab.value;
+        }
+    }
+
+    return groupKey;
+}
   
