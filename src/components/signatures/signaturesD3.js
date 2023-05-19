@@ -317,7 +317,7 @@ function parseMutationsBy(parseBy, inputTree)  {
   const nodes = [];
   let groupKey;
   let groupKeys = [];
-  const groupMutations = new Map();
+  let groupMutations = new Map();
 
   for (var branch in inputTree) {
     nodes[inputTree[branch].arrayIdx] = {
@@ -409,24 +409,30 @@ function parseMutationsBy(parseBy, inputTree)  {
         }
       }
 
-      printParent(node, nodes, groupMutations.get(groupKey));
+      groupMutations.set(groupKey, injectParentMutations(node, nodes, groupMutations.get(groupKey)));
     }
   }
 
-  // TODO: Add parental mutations to groupMutations Map.
-
-  //console.log(groupMutations);
+  console.log(groupMutations);
 }
 
 // Use this code to recursively fill mutations from parent(s).
-function printParent(node, nodes, mutations) {
+function injectParentMutations(node, nodes, mutations) {
+
   let ai = nodes[node].arrayIndex;
   let pai = nodes[node].parentArrayIndex;
-  console.log("SELF", ai);
-  console.log("PARENT", pai);
-  if((nodes[pai].parentArrayIndex != null) && (nodes[pai].arrayIndex != nodes[pai].parentArrayIndex)) {
-    printParent(pai, nodes);
+
+  if (nodes[node].mutations.mutations.nuc != null) {
+    for(let i = 0; i < nodes[node].mutations.mutations.nuc.length; i++) {
+      mutations.push(nodes[node].mutations.mutations.nuc[i]);
+    }
   }
+
+  if((nodes[pai].parentArrayIndex != null) && (nodes[pai].arrayIndex != nodes[pai].parentArrayIndex)) {
+    injectParentMutations(pai, nodes, mutations);
+  }
+
+  return [...new Set(mutations)].sort();
 }
 
 
