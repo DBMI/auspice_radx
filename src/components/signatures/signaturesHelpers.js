@@ -167,6 +167,36 @@ function getGroupKey(node, nodes, parseBy) {
         }
     }
 
+    if(typeof groupKey == 'number') {
+      groupKey = convertDecimalDate(groupKey);
+    }
+
+    groupKey = groupKey.replaceAll("&","and");
+    groupKey = groupKey.replaceAll("(","");
+    groupKey = groupKey.replaceAll(")","");
+    groupKey = groupKey.replaceAll(",","");
+    groupKey = groupKey.replaceAll(";","-");
+    groupKey = groupKey.replaceAll(" ","-");
+    groupKey = groupKey.replaceAll("--","-");
+
+    console.log(groupKey);
+
     return groupKey;
 }
+
+
+function isLeapYear(year) {
+  return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+}
+
+
+function convertDecimalDate(decimalDate) {
+  var year = parseInt(decimalDate);
+  var reminder = decimalDate - year;
+  var daysPerYear = isLeapYear(year) ? 366 : 365;
+  var miliseconds = reminder * daysPerYear * 24 * 60 * 60 * 1000;
+  var yearDate = new Date(year, 0, 1);
+  return new Date(yearDate).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"});
+}
+
   
