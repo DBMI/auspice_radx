@@ -12,13 +12,14 @@ import { isColorByGenotype, decodeColorByGenotype } from "../../util/getGenotype
 import { changeZoom } from "../../actions/entropy";
 import { nucleotide_gene } from "../../util/globals";
 import { getBrighterColor } from "../../util/colorHelpers";
-import { parseMutationsBy } from "./signaturesHelpers";
+import { parseCombinedMutationsBy } from "./signaturesHelpers";
+import { parseGroupColoringsBy } from "./signaturesHelpers";
 
 /* EntropChart uses D3 for visualisation. There are 2 methods exposed to
  * keep the visualisation in sync with React:
  * EntropyChart.render & EntropyChartupdate
  */
-const SignaturesChart = function SignaturesChart(ref, annotations, geneMap, maxNt, callbacks, metadata) {
+const SignaturesChart = function SignaturesChart(ref, annotations, geneMap, maxNt, callbacks, metadata, signatures) {
   this.svg = select(ref);
   this.annotations = annotations;
   this.geneMap = geneMap;
@@ -26,11 +27,12 @@ const SignaturesChart = function SignaturesChart(ref, annotations, geneMap, maxN
   this.callbacks = callbacks;
   this.okToDrawBars = false; /* useful as the brush setUp causes _drawBars x 2 */
   this.metadata = metadata;
+  this.signatures = signatures;
 };
 
 /* "PUBLIC" PROTOTYPES */
 SignaturesChart.prototype.render = function render(props) {
-
+  console.log("SIGNATURES D3", props);
   this.props = props;
   this.aa = props.mutType === "aa";
   this.bars = props.bars;
@@ -224,8 +226,29 @@ SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) 
 
 SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
-//console.log("SIGNATURES", props.tree.nodes);
-parseMutationsBy(props.colorBy, props.tree.nodes);
+let colorBy;
+let categoryGroup;
+
+// Dynamically assigned from drop-down menu.
+if(typeof props.signatures.colorBy !== 'undefined') {
+  colorBy = props.signatures.colorBy;
+  categoryGroup = parseGroupColoringsBy(colorBy, props.tree.nodes, props.signatures.nodeColors);
+}
+// Initial coloring is available from JSON file.
+else {
+  colorBy = props.colorBy;
+  if(colorBy == 'city') {
+    categoryGroup = props.metadata.colorings.city.scale;
+  }
+  else if(colorBy == 'country') {
+    categoryGroup = props.metadata.colorings.country.scale;
+  }
+  else {
+    categoryGroup = [['Unsupported', '#FFFF00']];
+  }
+}
+
+parseCombinedMutationsBy(colorBy, props.tree.nodes);
 
 const geneLength = props.geneLength.nuc;
 
@@ -236,19 +259,6 @@ const geneLength = props.geneLength.nuc;
 
   const barHeight = 15;
   const barBuffer = 5;
-  let categoryGroup = null;
-
-  if(props.colorBy == 'city') {
-    categoryGroup = this.metadata.colorings.city.scale;
-    //categoryGroup.unshift(["Reference", "gray"]);
-  }
-  else if(props.colorBy == 'country') {
-    categoryGroup = this.metadata.colorings.country.scale;
-    //categoryGroup.unshift(["Reference", "gray"]);
-  }
-  else {
-    categoryGroup = [['Unsupported', '#FFFF00']];
-  }
   
   selection.append("text")
     .attr("x", this.offsets.x1 - (barHeight + barBuffer))

@@ -77,7 +77,8 @@ const constructEncodedGenotype = (mutType, d) => {
     panelLayout: state.controls.panelLayout,
     narrativeMode: state.narrative.display,
     metadata: state.metadata,
-    tree: state.tree
+    tree: state.tree,
+    signatures: state.signatures
   };
 })
 class Signature extends React.Component {
@@ -176,7 +177,8 @@ class Signature extends React.Component {
         onLeave: this.onLeave.bind(this),
         onClick: this.onClick.bind(this)
       },
-      props.metadata
+      props.metadata,
+      props.signatures
     );
     chart.render(props);
     if (props.narrativeMode) {

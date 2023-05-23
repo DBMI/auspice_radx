@@ -7,8 +7,44 @@ const PARSE_BY_SAMPLING_DATE = 'num_date';
 const PARSE_BY_SUBMITTING_LAB = 'submitting_lab';
 
 
+/* Parse colorings for a group by the colorBy parameter. */
+export const parseGroupColoringsBy = (parseBy, inputTree, nodeColors) => {
+
+  const nodes = [];
+  let groupColorings = new Map();
+
+  for (var branch in inputTree) {
+    nodes[inputTree[branch].arrayIdx] = {
+      arrayIndex: inputTree[branch].arrayIdx,
+      name: inputTree[branch].name,
+      hasChildren: inputTree[branch].hasChildren,
+      parentArrayIndex: inputTree[branch].parent.arrayIdx,
+      mutations: inputTree[branch].branch_attrs,
+      author: inputTree[branch].node_attrs.author,
+      city: inputTree[branch].node_attrs.city,
+      country: inputTree[branch].node_attrs.country,
+      host: inputTree[branch].node_attrs.host,
+      originatingLab: inputTree[branch].node_attrs.originating_lab,
+      submittingLab: inputTree[branch].node_attrs.submitting_lab,
+      num_date: inputTree[branch].node_attrs.num_date
+    };
+  }
+
+  for(var node in nodes) {
+    // Exclude non-gene nodes first.
+    if(!nodes[node].name.includes("ROOT") && !nodes[node].name.includes("NODE")) {
+      if(!groupColorings.has()) {
+        groupColorings.set(getGroupKey(node, nodes, parseBy), nodeColors[node]);
+      }
+    }
+  }
+
+  return Array.from(groupColorings, ([name, value]) => ([name, value])); // Convert to array of arrays.
+}
+
+
 /* Parse mutations from a tree object by a filter like clade, city, etc. */
-export const parseMutationsBy = (parseBy, inputTree) => {
+export const parseCombinedMutationsBy = (parseBy, inputTree) => {
 //function parseMutationsBy(parseBy, inputTree)  {
 
     const nodes = [];

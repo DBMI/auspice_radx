@@ -1,9 +1,7 @@
 import * as types from "../actions/types";
 
 const Signatures = (state = {loaded: false, showCounts: false}, action) => {
-
-  //console.log("Signatures Reducer", action);
-  switch (action.type) {
+  switch (action.type) { 
     case types.CHANGE_ZOOM:
       return Object.assign({}, state, {
         zoomMax: action.zoomc[1],
@@ -15,7 +13,9 @@ const Signatures = (state = {loaded: false, showCounts: false}, action) => {
     case types.CLEAN_START:
       return action.entropy;
     case types.NEW_COLORS:
+      console.log("SIGNATURES REDUCER", action);
       return Object.assign({}, state, {
+        colorBy: action.colorBy,
         nodeColors: action.nodeColors,
         nodeColorsVersion: action.version
       });
