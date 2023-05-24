@@ -143,59 +143,68 @@ function injectParentMutations(node, nodes, mutations) {
 
 
 // Get the groupKey for a particular node.
-function getGroupKey(node, nodes, parseBy) {
+function getGroupName(node, nodes, parseBy) {
 
-    let groupKey = 'UNDEFINED';
+    let groupName = 'UNDEFINED';
 
     if(parseBy == PARSE_BY_AUTHOR) {
         if(nodes[node].author != null) {
-            groupKey = nodes[node].author.value;
+          groupName = nodes[node].author.value;
         }
     }
     else if(parseBy == PARSE_BY_CITY) {
         if(nodes[node].city != null) {
-            groupKey = nodes[node].city.value;
+            groupName = nodes[node].city.value;
         } 
     }
     else if(parseBy == PARSE_BY_COUNTRY) {
         if(nodes[node].country != null) {
-            groupKey = nodes[node].country.value;
+            groupName = nodes[node].country.value;
         }
     }
     else if(parseBy == PARSE_BY_HOST) {
         if (nodes[node].host != null) {
-            groupKey = nodes[node].host.value;
+            groupName = nodes[node].host.value;
         }
     }
     else if(parseBy == PARSE_BY_ORIGINATING_LAB) {
         if(nodes[node].originatingLab != null) {
-            groupKey = nodes[node].originatingLab.value;
+            groupName = nodes[node].originatingLab.value;
         }
     }
     else if(parseBy == PARSE_BY_SAMPLING_DATE) {
         if(nodes[node].num_date != null) {
-            groupKey = nodes[node].num_date.value;
+            groupName = nodes[node].num_date.value;
         }
     }
     else if(parseBy == PARSE_BY_SUBMITTING_LAB) {
         if(nodes[node].submittingLab != null) {
-            groupKey = nodes[node].submittingLab.value;
+            groupName = nodes[node].submittingLab.value;
         }
     }
 
-    if(typeof groupKey == 'number') {
-      groupKey = convertDecimalDate(groupKey);
+    if(typeof  groupName == 'number') {
+       groupName = convertDecimalDate(groupName);
     }
 
-    groupKey = groupKey.replaceAll("&","and");
-    groupKey = groupKey.replaceAll("(","");
-    groupKey = groupKey.replaceAll(")","");
-    groupKey = groupKey.replaceAll(",","");
-    groupKey = groupKey.replaceAll(";","-");
-    groupKey = groupKey.replaceAll(" ","-");
-    groupKey = groupKey.replaceAll("--","-");
+    return groupName;
+}
 
-    return groupKey;
+
+// Get the groupKey for a particular node. This is the groupName with illegal characters removed.
+function getGroupKey(node, nodes, parseBy) {
+
+  let groupKey = getGroupName(node, nodes, parseBy);
+
+  groupKey = groupKey.replaceAll("&","and");
+  groupKey = groupKey.replaceAll("(","");
+  groupKey = groupKey.replaceAll(")","");
+  groupKey = groupKey.replaceAll(",","");
+  groupKey = groupKey.replaceAll(";","-");
+  groupKey = groupKey.replaceAll(" ","-");
+  groupKey = groupKey.replaceAll("--","-");
+
+  return groupKey;
 }
 
 
