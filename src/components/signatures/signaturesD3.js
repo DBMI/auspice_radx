@@ -226,31 +226,32 @@ SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) 
 
 SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
-let colorBy;
-let categoryGroup;
+  const geneLength = props.geneLength.nuc;
 
-// Dynamically assigned from drop-down menu.
-if(typeof props.signatures.colorBy !== 'undefined') {
-  colorBy = props.signatures.colorBy;
-  categoryGroup = parseGroupColoringsBy(colorBy, props.tree.nodes, props.signatures.nodeColors);
-}
-// Initial coloring is available from JSON file.
-else {
-  colorBy = props.colorBy;
-  if(colorBy == 'city') {
-    categoryGroup = props.metadata.colorings.city.scale;
+  let colorBy;
+  let categoryGroup;
+  let mutationsMap;
+
+  // Dynamically assigned from drop-down menu.
+  if(typeof props.signatures.colorBy !== 'undefined') {
+    colorBy = props.signatures.colorBy;
+    categoryGroup = parseGroupColoringsBy(colorBy, props.tree.nodes, props.signatures.nodeColors);
   }
-  else if(colorBy == 'country') {
-    categoryGroup = props.metadata.colorings.country.scale;
-  }
+  // Initial coloring is available from JSON file.
   else {
-    categoryGroup = [['Unsupported', '#FFFF00']];
+    colorBy = props.colorBy;
+    if(colorBy == 'city') {
+      categoryGroup = props.metadata.colorings.city.scale;
+    }
+    else if(colorBy == 'country') {
+      categoryGroup = props.metadata.colorings.country.scale;
+    }
+    else {
+      categoryGroup = [['Unsupported', '#FFFF00']];
+    }
   }
-}
 
-parseCombinedMutationsBy(colorBy, props.tree.nodes);
-
-const geneLength = props.geneLength.nuc;
+  mutationsMap = parseCombinedMutationsBy(colorBy, props.tree.nodes);
 
   // Draw legends (without zoom functionality)
 
@@ -288,8 +289,8 @@ const geneLength = props.geneLength.nuc;
       .text(function(d) { return "Tooltip"; });
       //.enter();
 
-      // For testing purposes only:
-      let ii = 0;
+      // For testing purposes only use random values:
+      /*let ii = 0;
       do {
         let randomBase = parseInt((Math.random() * (geneLength - 1)) + 1, 10);
         selection.append("rect")
@@ -300,7 +301,17 @@ const geneLength = props.geneLength.nuc;
           .attr("fill", categoryElementColor)
           .enter();
         ii++;
-      } while (ii < 10);
+      } while (ii < 10);*/
+      let currentMutations = mutationsMap.get(categoryElement);
+      for(let ii = 0; ii < currentMutations.length; ii++) {
+        selection.append("rect")
+          .attr("x", this.scales.xNav(currentMutations[ii]))
+          .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer))
+          .attr("width", 2.5)
+          .attr("height", barHeight)
+          .attr("fill", categoryElementColor)
+          .enter();
+      }
 
 
     selection.append("text")

@@ -95,7 +95,7 @@ export const parseCombinedMutationsBy = (parseBy, inputTree) => {
 
         if (nodes[node].mutations.mutations.nuc != null) {
           for(let i = 0; i < nodes[node].mutations.mutations.nuc.length; i++) {
-            groupMutations.get(groupKey).push(nodes[node].mutations.mutations.nuc[i]);
+            groupMutations.get(groupKey).push(parsePositionFromMutationString(nodes[node].mutations.mutations.nuc[i]));
           }
         }
   
@@ -103,7 +103,7 @@ export const parseCombinedMutationsBy = (parseBy, inputTree) => {
       }
     }
   
-    console.log(groupMutations);
+    return groupMutations;
   }
   
 
@@ -114,7 +114,7 @@ function injectParentMutations(node, nodes, mutations) {
   
     if (nodes[node].mutations.mutations.nuc != null) {
       for(let i = 0; i < nodes[node].mutations.mutations.nuc.length; i++) {
-        mutations.push(nodes[node].mutations.mutations.nuc[i]);
+        mutations.push(parsePositionFromMutationString(nodes[node].mutations.mutations.nuc[i]));
       }
     }
   
@@ -179,8 +179,6 @@ function getGroupKey(node, nodes, parseBy) {
     groupKey = groupKey.replaceAll(" ","-");
     groupKey = groupKey.replaceAll("--","-");
 
-    console.log(groupKey);
-
     return groupKey;
 }
 
@@ -199,4 +197,8 @@ function convertDecimalDate(decimalDate) {
   return new Date(yearDate).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"});
 }
 
+// Converts 'A21137G' to 21137
+function parsePositionFromMutationString(mutation) {
+  return parseInt(mutation.replace(/\D/g,''));
+}
   
