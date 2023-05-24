@@ -19,7 +19,7 @@ export const formatGroupName = (groupNameIn) => {
       groupNameOut = groupNameOut.concat(" ");
     }
   }
-  console.log("HELPERS-FORMAT", groupNameOut);
+  
   return groupNameOut;
 }
 
