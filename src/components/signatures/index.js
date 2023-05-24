@@ -203,11 +203,17 @@ class Signature extends React.Component {
     }
     // if we're here, then this.state.chart exists
     if (this.props.width !== nextProps.width || this.props.height !== nextProps.height) {
-      timerStart("entropy initial render");
+      timerStart("signatures initial render");
       this.state.chart.render(nextProps);
-      timerEnd("entropy initial render");
-    } else { /* props changed, but a new render probably isn't required */
-      timerStart("entropy D3 update");
+      timerEnd("signatures initial render");
+    }
+    if(this.props.signatures !== nextProps.signatures) {
+      timerStart("signatures re-render");
+      this.state.chart.render(nextProps);
+      timerEnd("signatures re-render");
+    }
+    else { /* props changed, but a new render probably isn't required */
+      timerStart("signatures D3 update");
       const updateParams = {};
       if (this.props.zoomMax !== nextProps.zoomMax || this.props.zoomMin !== nextProps.zoomMin) {
         updateParams.zoomMax = nextProps.zoomMax;
@@ -261,7 +267,7 @@ class Signature extends React.Component {
       if (Object.keys(updateParams).length) {
         this.state.chart.update(updateParams);
       }
-      timerEnd("entropy D3 update");
+      timerEnd("signatures D3 update");
     }
     /* perhaps hide the brush due to the narrative */
     if (this.props.narrativeMode !== nextProps.narrativeMode) {
@@ -291,8 +297,9 @@ class Signature extends React.Component {
           id="d3entropyParent"
           style={{pointerEvents: "auto"}}
           width={this.props.width}
-          height={(this.props.height + 200)} // KAI added parens and + 200
+          height={(this.props.height + 250)} // KAI added parens and + 200
         >
+          {console.log("INSIDE", this.props.height)}
           <g ref={(c) => { this.d3entropy = c; }} id="d3entropy"/>
         </svg>
         {this.aaNtSwitch(styles)}

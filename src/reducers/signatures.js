@@ -13,7 +13,6 @@ const Signatures = (state = {loaded: false, showCounts: false}, action) => {
     case types.CLEAN_START:
       return action.entropy;
     case types.NEW_COLORS:
-      console.log("SIGNATURES REDUCER", action);
       return Object.assign({}, state, {
         colorBy: action.colorBy,
         nodeColors: action.nodeColors,

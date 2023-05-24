@@ -213,6 +213,7 @@ class Main extends React.Component {
           {this.props.panelsToDisplay.includes("signatures") ?
             (<Suspense fallback={null}>
               <Signatures width={chart.width} height={chart.height} key={keyName+"_signature"}/>
+              {console.log("OUTSIDE", chart.height)}
             </Suspense>) :
             null
           }

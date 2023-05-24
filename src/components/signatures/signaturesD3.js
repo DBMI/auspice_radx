@@ -12,8 +12,7 @@ import { isColorByGenotype, decodeColorByGenotype } from "../../util/getGenotype
 import { changeZoom } from "../../actions/entropy";
 import { nucleotide_gene } from "../../util/globals";
 import { getBrighterColor } from "../../util/colorHelpers";
-import { parseCombinedMutationsBy } from "./signaturesHelpers";
-import { parseGroupColoringsBy } from "./signaturesHelpers";
+import { formatGroupName, parseCombinedMutationsBy, parseGroupColoringsBy } from "./signaturesHelpers";
 
 /* EntropChart uses D3 for visualisation. There are 2 methods exposed to
  * keep the visualisation in sync with React:
@@ -32,7 +31,6 @@ const SignaturesChart = function SignaturesChart(ref, annotations, geneMap, maxN
 
 /* "PUBLIC" PROTOTYPES */
 SignaturesChart.prototype.render = function render(props) {
-  console.log("SIGNATURES D3", props);
   this.props = props;
   this.aa = props.mutType === "aa";
   this.bars = props.bars;
@@ -268,7 +266,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     .attr("dy", ".4em")
     .attr("font-size", "14px")
     .attr("text-align", "left")
-    .text("Shared Mutations by " + props.colorBy.charAt(0).toUpperCase() + props.colorBy.slice(1)) // Capitalize the first letter of the colorBy string.
+    .text("Shared Mutations by " + formatGroupName(props.colorBy))
     .enter();
 
   let i = 0;
@@ -490,7 +488,7 @@ SignaturesChart.prototype._drawAxes = function _drawAxes() {
     .attr("class", "y axis")
     .attr("id", "entropyYAxis")
     /* no idea why the 15 is needed here */
-    .attr("transform", "translate(" + (this.offsets.x1 + 50) + "," + this.offsets.y1Main + ")")
+    .attr("transform", "translate(" + (this.offsets.x1 + 15) + "," + this.offsets.y1Main + ")")
     .call(this.axes.y);
   this.svg.append("g")
     .attr("class", "xMain axis")
@@ -532,15 +530,15 @@ SignaturesChart.prototype._calcOffsets = function _calcOffsets(width, height) {
     y2Gene: height - 95
   };*/
   this.offsets = {
-    x1: 50,
+    x1: 15,
     x2: width - 32,
     y1Main: 0, // remember y1 is the top, y2 is the bottom, measured going down
     y2Main: height - 130,
-    y1Nav: height + 135,
-    y2Nav: height + 165,
-    y1Gene: height + 93,
-    y2Gene: height + 105,
-    y1Signatures: 120,
+    y1Nav: height + 185,
+    y2Nav: height + 215,
+    y1Gene: height + 143,
+    y2Gene: height + 155,
+    y1Signatures: height - 175,
     y2Signatures: height + 75
   };
   this.offsets.heightMain = this.offsets.y2Main - this.offsets.y1Main;
