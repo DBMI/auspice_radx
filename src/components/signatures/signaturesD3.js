@@ -12,7 +12,7 @@ import { isColorByGenotype, decodeColorByGenotype } from "../../util/getGenotype
 import { changeZoom } from "../../actions/entropy";
 import { nucleotide_gene } from "../../util/globals";
 import { getBrighterColor } from "../../util/colorHelpers";
-import { formatGroupName, parseCombinedMutationsBy, parseGroupColoringsBy } from "./signaturesHelpers";
+import { formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy } from "./signaturesHelpers";
 
 /* EntropChart uses D3 for visualisation. There are 2 methods exposed to
  * keep the visualisation in sync with React:
@@ -266,7 +266,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     .attr("dy", ".4em")
     .attr("font-size", "14px")
     .attr("text-align", "left")
-    .text("Shared Mutations by " + formatGroupName(props.colorBy))
+    .text("Shared Mutations by " + formatGroupByName(props.colorBy))
     .enter();
 
   let i = 0;

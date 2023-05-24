@@ -7,20 +7,20 @@ const PARSE_BY_SAMPLING_DATE = 'num_date';
 const PARSE_BY_SUBMITTING_LAB = 'submitting_lab';
 
 
-export const formatGroupName = (groupNameIn) => {
+export const formatGroupByName = (groupByNameIn) => {
 
-  let groupNameOut = "";
-  let groupNameElements = groupNameIn.split("_");
+  let groupByNameOut = "";
+  let groupByNameElements = groupByNameIn.split("_");
 
-  for(let i = 0; i < groupNameElements.length; i++) {
-    groupNameOut = groupNameOut.concat(groupNameElements[i].charAt(0).toUpperCase());
-    groupNameOut = groupNameOut.concat(groupNameElements[i].slice(1));
-    if((i + 1) < groupNameElements.length) {
-      groupNameOut = groupNameOut.concat(" ");
+  for(let i = 0; i < groupByNameElements.length; i++) {
+    groupByNameOut = groupByNameOut.concat(groupByNameElements[i].charAt(0).toUpperCase());
+    groupByNameOut = groupByNameOut.concat(groupByNameElements[i].slice(1));
+    if((i + 1) < groupByNameElements.length) {
+      groupByNameOut = groupByNameOut.concat(" ");
     }
   }
-  
-  return groupNameOut;
+
+  return groupByNameOut;
 }
 
 /* Parse colorings for a group by the colorBy parameter. */
