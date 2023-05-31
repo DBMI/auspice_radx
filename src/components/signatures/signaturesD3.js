@@ -59,6 +59,11 @@ SignaturesChart.prototype.render = function render(props) {
   this.zoomed = this._createZoomFn();
 };
 
+SignaturesChart.prototype.updateSignatures = function updateSignatures(props) {
+  this.signaturesGraph.selectAll("*").remove();
+  this._drawSignatures(props);
+}
+
 SignaturesChart.prototype.update = function update({
   aa = undefined, /* undefined is a no-op for each optional argument */
   selected = undefined,
@@ -259,6 +264,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
   const barHeight = 15;
   const barBuffer = 5;
   
+  // Signatures Header (not zoomable, static for grouping)
   selection.append("text")
     .attr("x", this.offsets.x1 - (barHeight + barBuffer))
     .attr("y", this.offsets.y1Signatures - 25)
@@ -275,6 +281,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     let categoryElement = categoryGroup[i][0];
     let categoryElementColor = categoryGroup[i][1];
 
+    // Rectangles representing the groupings (not zoomable, static for grouping)
     selection.append("rect")
       .attr("x", this.offsets.x1 - (barHeight + barBuffer))
       .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer))
@@ -287,19 +294,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       .text(function(d) { return "Tooltip"; });
       //.enter();
 
-      // For testing purposes only use random values:
-      /*let ii = 0;
-      do {
-        let randomBase = parseInt((Math.random() * (geneLength - 1)) + 1, 10);
-        selection.append("rect")
-          .attr("x", this.scales.xNav(randomBase))
-          .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer))
-          .attr("width", 2.5)
-          .attr("height", barHeight)
-          .attr("fill", categoryElementColor)
-          .enter();
-        ii++;
-      } while (ii < 10);*/
+      // Lines representing the locations of mutations (zoomable)
       let currentMutations = mutationsMap.get(categoryElement);
       for(let ii = 0; ii < currentMutations.length; ii++) {
         selection.append("rect")
