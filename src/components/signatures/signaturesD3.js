@@ -60,7 +60,7 @@ SignaturesChart.prototype.render = function render(props) {
 };
 
 SignaturesChart.prototype.updateSignatures = function updateSignatures(props) {
-  this.signaturesGraph.selectAll("*").remove();
+  //this.signaturesGraph.selectAll("*").remove(); // MOVED TO DRAW SIGNATURES
   this._drawSignatures(props);
 }
 
@@ -228,6 +228,13 @@ SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) 
 
 
 SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
+
+  // USE THE TWO BELOW TO SCALE THE X COORDINATE IN LINE 308 TO DRAW TICKS.
+  this.zoomCoordinates[0] = props.zoomMin ? props.zoomMin : this.zoomCoordinates[0];
+  this.zoomCoordinates[1] = props.zoomMax ? props.zoomMax : this.zoomCoordinates[1];
+  console.log("DRAW SIGNATURES", [this.zoomCoordinates[0], this.zoomCoordinates[1]]);
+  
+  this.signaturesGraph.selectAll("*").remove();
 
   const geneLength = props.geneLength.nuc;
 
@@ -598,6 +605,7 @@ SignaturesChart.prototype._addBrush = function _addBrush() {
     this.svg.select(".xMain.axis").call(this.axes.xMain);
     this._drawBars();
     this._drawZoomGenes(this.annotations);
+    this._drawSignatures(this.props); // KAI
     if (this.brushHandle) {
       this.brushHandle
         .attr("display", null)
