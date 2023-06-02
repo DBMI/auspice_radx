@@ -304,6 +304,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       // Lines representing the locations of mutations (zoomable)
       let currentMutations = mutationsMap.get(categoryElement);
       for(let ii = 0; ii < currentMutations.length; ii++) {
+        // TODO: KAI 06/01/2023: THE CALCULATION FOR xPostion NEEDS TO BE FIXED
         let xPosition = Math.round((currentMutations[ii] - this.zoomCoordinates[0]) * (this.zoomCoordinates[1] - this.zoomCoordinates[0]) / geneLength);
         selection.append("rect")
           .attr("x", this.scales.xNav(xPosition)) // WAS this.scales.xNav(currentMutations[ii])
