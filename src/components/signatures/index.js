@@ -297,7 +297,7 @@ class Signature extends React.Component {
           id="d3entropyParent"
           style={{pointerEvents: "auto"}}
           width={this.props.width}
-          height={(this.props.height + 250)} // KAI added parens and + 200
+          height={(this.props.height + 400)} // KAI added parens and + 200
         >
           {console.log("INSIDE", this.props.height)}
           <g ref={(c) => { this.d3entropy = c; }} id="d3entropy"/>

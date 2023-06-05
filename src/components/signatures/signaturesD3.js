@@ -245,16 +245,19 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     colorBy = props.signatures.colorBy;
     categoryGroup = parseGroupColoringsBy(colorBy, props.tree.nodes, props.signatures.nodeColors);
   }
-  // Initial coloring is available from JSON file.
+  // Initial coloring is available from JSON file; should be implemented to be more generic.
+  // TODO: FIND the full props path for all options and seperate code below into helper function.
   else {
-    colorBy = props.colorBy;
+    colorBy = props.defaultColorBy;
     if(colorBy == 'city') {
       categoryGroup = props.metadata.colorings.city.scale;
     }
     else if(colorBy == 'country') {
+      // This shouldn't happen with the first test file.
       categoryGroup = props.metadata.colorings.country.scale;
     }
     else {
+      // This shouldn't happen with the first test file.
       categoryGroup = [['Unsupported', '#FFFF00']];
     }
   }
@@ -277,7 +280,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     .attr("dy", ".4em")
     .attr("font-size", "14px")
     .attr("text-align", "left")
-    .text("Shared Mutations by " + formatGroupByName(props.colorBy))
+    .text("Shared Mutations by " + formatGroupByName(colorBy))
     .enter();
 
   let i = 0;
@@ -536,10 +539,10 @@ SignaturesChart.prototype._calcOffsets = function _calcOffsets(width, height) {
     x2: width - 32,
     y1Main: 0, // remember y1 is the top, y2 is the bottom, measured going down
     y2Main: height - 130,
-    y1Nav: height + 185,
-    y2Nav: height + 215,
-    y1Gene: height + 143,
-    y2Gene: height + 155,
+    y1Nav: height + 285,
+    y2Nav: height + 315,
+    y1Gene: height + 243,
+    y2Gene: height + 255,
     y1Signatures: height - 175,
     y2Signatures: height + 75
   };
