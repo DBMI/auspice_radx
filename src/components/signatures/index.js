@@ -209,7 +209,6 @@ class Signature extends React.Component {
     }
     if(this.props.signatures !== nextProps.signatures) {
       timerStart("signatures re-render");
-      //this.state.chart.render(nextProps); // KAI POINT
       this.state.chart.updateSignatures(nextProps);
       timerEnd("signatures re-render");
     }

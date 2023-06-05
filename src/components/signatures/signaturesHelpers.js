@@ -7,6 +7,23 @@ const PARSE_BY_SAMPLING_DATE = 'num_date';
 const PARSE_BY_SUBMITTING_LAB = 'submitting_lab';
 
 
+// Translates the position of a nucleotide to the zoome in map.
+export const getZoomXPosition = (xPosition, zoomMin, zoomMax, geneLength) => {
+
+  if(zoomMax > geneLength) {
+    zoomMax = geneLength;
+  }
+
+  let zoomXPosition = Math.round((xPosition - zoomMin) * (geneLength / (zoomMax - zoomMin)));
+
+  if((zoomXPosition >= 0) && (zoomXPosition <= geneLength)) {
+    return zoomXPosition;
+  }
+  else {
+    return -1;
+  }
+}
+
 export const formatGroupByName = (groupByNameIn) => {
 
   let groupByNameOut = "";
@@ -122,7 +139,7 @@ export const parseCombinedMutationsBy = (parseBy, inputTree) => {
 }
   
 
-  // Use this code to recursively fill mutations from parent(s).
+// Use this code to recursively fill mutations from parent(s).
 function injectParentMutations(node, nodes, mutations) {
   
   let pai = nodes[node].parentArrayIndex;

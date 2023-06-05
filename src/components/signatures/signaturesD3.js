@@ -12,7 +12,7 @@ import { isColorByGenotype, decodeColorByGenotype } from "../../util/getGenotype
 import { changeZoom } from "../../actions/entropy";
 import { nucleotide_gene } from "../../util/globals";
 import { getBrighterColor } from "../../util/colorHelpers";
-import { formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy } from "./signaturesHelpers";
+import { getZoomXPosition, formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy } from "./signaturesHelpers";
 
 /* EntropChart uses D3 for visualisation. There are 2 methods exposed to
  * keep the visualisation in sync with React:
@@ -60,7 +60,7 @@ SignaturesChart.prototype.render = function render(props) {
 };
 
 SignaturesChart.prototype.updateSignatures = function updateSignatures(props) {
-  //this.signaturesGraph.selectAll("*").remove(); // MOVED TO DRAW SIGNATURES
+  this.props = props;
   this._drawSignatures(props);
 }
 
@@ -229,10 +229,8 @@ SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) 
 
 SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
-  // USE THE TWO BELOW TO SCALE THE X COORDINATE IN LINE 308 TO DRAW TICKS.
   this.zoomCoordinates[0] = props.zoomMin ? props.zoomMin : this.zoomCoordinates[0];
   this.zoomCoordinates[1] = props.zoomMax ? props.zoomMax : this.zoomCoordinates[1];
-  console.log("DRAW SIGNATURES", [this.zoomCoordinates[0], this.zoomCoordinates[1]]);
   
   this.signaturesGraph.selectAll("*").remove();
 
@@ -304,15 +302,16 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       // Lines representing the locations of mutations (zoomable)
       let currentMutations = mutationsMap.get(categoryElement);
       for(let ii = 0; ii < currentMutations.length; ii++) {
-        // TODO: KAI 06/01/2023: THE CALCULATION FOR xPostion NEEDS TO BE FIXED
-        let xPosition = Math.round((currentMutations[ii] - this.zoomCoordinates[0]) * (this.zoomCoordinates[1] - this.zoomCoordinates[0]) / geneLength);
-        selection.append("rect")
-          .attr("x", this.scales.xNav(xPosition)) // WAS this.scales.xNav(currentMutations[ii])
+        let xPosition = getZoomXPosition(currentMutations[ii], this.zoomCoordinates[0], this.zoomCoordinates[1], geneLength);
+        if(xPosition !== -1) {
+          selection.append("rect")
+          .attr("x", this.scales.xNav(xPosition))
           .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer))
           .attr("width", 2.5)
           .attr("height", barHeight)
           .attr("fill", categoryElementColor)
           .enter();
+        } 
       }
 
 
@@ -331,7 +330,6 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     i += 1;
   } while (i < categoryGroup.length);
   
-  // Draw zoomable elements:
 };
 
 
@@ -607,7 +605,7 @@ SignaturesChart.prototype._addBrush = function _addBrush() {
     this.svg.select(".xMain.axis").call(this.axes.xMain);
     this._drawBars();
     this._drawZoomGenes(this.annotations);
-    this._drawSignatures(this.props); // KAI
+    this._drawSignatures(this.props);
     if (this.brushHandle) {
       this.brushHandle
         .attr("display", null)
