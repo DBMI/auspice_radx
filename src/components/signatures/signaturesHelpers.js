@@ -6,6 +6,8 @@ const PARSE_BY_ORIGINATING_LAB = 'originating_lab';
 const PARSE_BY_SAMPLING_DATE = 'num_date';
 const PARSE_BY_SUBMITTING_LAB = 'submitting_lab';
 
+export const REFERENCE_COLOR = '#808080';
+
 
 // Translates the position of a nucleotide to the zoome in map.
 export const getZoomXPosition = (xPosition, zoomMin, zoomMax, geneLength) => {
@@ -244,5 +246,20 @@ function parsePositionFromMutationString(mutation) {
   return parseInt(mutation.replace(/\D/g,''));
 }
 
+/* Draws mutations from a single grouping as a single line of ticks. */
+export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementColor, currentMutations, geneLength, groupIndex, offsets, scales, selection, zoomCoordinates) => {
 
+  for(let ii = 0; ii < currentMutations.length; ii++) {
+    let xPosition = getZoomXPosition(currentMutations[ii], zoomCoordinates[0], zoomCoordinates[1], geneLength);
+    if(xPosition !== -1) {
+      selection.append("rect")
+      .attr("x", scales.xNav(xPosition))
+      .attr("y", offsets.y1Signatures + (groupIndex * barHeight) + (groupIndex * barBuffer))
+      .attr("width", 2.5)
+      .attr("height", barHeight)
+      .attr("fill", categoryElementColor)
+      .enter();
+    }
+  } 
+}
   

@@ -12,7 +12,7 @@ import { isColorByGenotype, decodeColorByGenotype } from "../../util/getGenotype
 import { changeZoom } from "../../actions/entropy";
 import { nucleotide_gene } from "../../util/globals";
 import { getBrighterColor } from "../../util/colorHelpers";
-import { getZoomXPosition, formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy } from "./signaturesHelpers";
+import { drawGroupMutationsAsTicks, formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy, REFERENCE_COLOR } from "./signaturesHelpers";
 
 /* EntropChart uses D3 for visualisation. There are 2 methods exposed to
  * keep the visualisation in sync with React:
@@ -283,6 +283,30 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     .text("Shared Mutations by " + formatGroupByName(colorBy))
     .enter();
 
+  // Add the reference display before jumping into the group depiction.
+  selection.append("rect")
+    .attr("x", this.offsets.x1 - (barHeight + barBuffer))
+    .attr("y", this.offsets.y1Signatures)// + barHeight + barBuffer)
+    .attr("width", barHeight)
+    .attr("height", barHeight)
+    .attr("stroke", REFERENCE_COLOR)
+    .attr("stroke-width", 2)
+    .attr("fill", getBrighterColor(REFERENCE_COLOR))
+    .append("REFERENCE")
+    .text(function(d) { return "Tooltip"; });
+
+  // TODO: Refseq info will go here (zoomable)
+  if(this.zoomCoordinates[1] - this.zoomCoordinates[0] <= 1000) {
+    selection.append("rect")
+      .attr("x", this.offsets.x1)
+      .attr("y", this.offsets.y1Signatures)
+      .attr("width", this.offsets.width)
+      .attr("height", barHeight)
+      .attr("fill", getBrighterColor(REFERENCE_COLOR))
+      .enter();
+  }
+
+  
   let i = 0;
   do {
 
@@ -292,7 +316,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     // Rectangles representing the groupings (not zoomable, static for grouping)
     selection.append("rect")
       .attr("x", this.offsets.x1 - (barHeight + barBuffer))
-      .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer))
+      .attr("y", this.offsets.y1Signatures + ((i + 1) * barHeight) + ((i + 1) * barBuffer))
       .attr("width", barHeight)
       .attr("height", barHeight)
       .attr("stroke", categoryElementColor)
@@ -302,33 +326,32 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       .text(function(d) { return "Tooltip"; });
       //.enter();
 
-      // Lines representing the locations of mutations (zoomable)
+      // Draw ticks representing the locations of mutations (zoomable)
       let currentMutations = mutationsMap.get(categoryElement);
-      for(let ii = 0; ii < currentMutations.length; ii++) {
-        let xPosition = getZoomXPosition(currentMutations[ii], this.zoomCoordinates[0], this.zoomCoordinates[1], geneLength);
-        if(xPosition !== -1) {
-          selection.append("rect")
-          .attr("x", this.scales.xNav(xPosition))
-          .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer))
-          .attr("width", 2.5)
+      if(this.zoomCoordinates[1] - this.zoomCoordinates[0] > 1000) {
+
+        drawGroupMutationsAsTicks(
+          barBuffer,
+          barHeight,
+          categoryElementColor,
+          currentMutations,
+          geneLength,
+          (i + 1), // => groupIndex
+          this.offsets,
+          this.scales,
+          selection,
+          this.zoomCoordinates);
+      }
+      else {
+        selection.append("rect")
+          .attr("x", this.offsets.x1)
+          .attr("y", this.offsets.y1Signatures + ((i + 1) * barHeight) + ((i + 1) * barBuffer))
+          .attr("width", this.offsets.width)
           .attr("height", barHeight)
-          .attr("fill", categoryElementColor)
+          .attr("fill", getBrighterColor(categoryElementColor))
           .enter();
-        } 
       }
 
-
-    selection.append("text")
-      .attr("y", this.offsets.y1Signatures + (i * barHeight) + (i * barBuffer) + (1.25 * barBuffer))
-      .attr("x", this.offsets.x1 - (2 * barHeight))
-      .attr("text-anchor", "end")
-      .style("fill", () => "rgb(51, 51, 51)")
-      .attr("dy", ".4em")
-      .attr("font-size", "12px")
-      .attr("font-weight", 500)
-      .attr("text-align", "left")
-      .text(categoryElement)
-      .enter();
 
     i += 1;
   } while (i < categoryGroup.length);
