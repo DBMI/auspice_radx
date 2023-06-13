@@ -282,8 +282,6 @@ export const retrieveSubsequence = (start, stop, mutations) => {
     }
     else {
       for(let i = 0; i < mutations.length; i++) {
-        // TODO apply mutations to reference sequence string.
-        //let oldBase = mutations[i].charAt(0);
         let newBase = mutations[i].slice(-1);
         let position = parsePositionFromMutationString(mutations[i]) - 1;
         sequence[position] = newBase;
