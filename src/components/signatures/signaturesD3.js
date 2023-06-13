@@ -240,7 +240,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
   let categoryGroup;
   let mutationsMap;
 
-  let sequenceDisplayMax = 80;
+  let sequenceDisplayMax = 150;
 
   // Dynamically assigned from drop-down menu.
   if(typeof props.signatures.colorBy !== 'undefined') {
