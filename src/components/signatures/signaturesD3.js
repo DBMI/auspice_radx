@@ -12,7 +12,7 @@ import { isColorByGenotype, decodeColorByGenotype } from "../../util/getGenotype
 import { changeZoom } from "../../actions/entropy";
 import { nucleotide_gene } from "../../util/globals";
 import { getBrighterColor } from "../../util/colorHelpers";
-import { drawGroupMutationsAsTicks, formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy, REFERENCE_COLOR } from "./signaturesHelpers";
+import { drawGroupMutationsAsTicks, formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy, retrieveSubsequence, REFERENCE_COLOR } from "./signaturesHelpers";
 
 /* EntropChart uses D3 for visualisation. There are 2 methods exposed to
  * keep the visualisation in sync with React:
@@ -240,6 +240,8 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
   let categoryGroup;
   let mutationsMap;
 
+  let sequenceDisplayMax = 80;
+
   // Dynamically assigned from drop-down menu.
   if(typeof props.signatures.colorBy !== 'undefined') {
     colorBy = props.signatures.colorBy;
@@ -296,14 +298,30 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     .text(function(d) { return "Tooltip"; });
 
   // TODO: Refseq info will go here (zoomable)
-  if(this.zoomCoordinates[1] - this.zoomCoordinates[0] <= 1000) {
-    selection.append("rect")
-      .attr("x", this.offsets.x1)
+  if(this.zoomCoordinates[1] - this.zoomCoordinates[0] <= sequenceDisplayMax) {
+
+    let sequence = retrieveSubsequence(this.zoomCoordinates[0], this.zoomCoordinates[1], []);
+
+    for(let i = 0; i < sequence.length; i++) {
+
+      selection.append("rect")
+      .attr("x", this.offsets.x1 + (i * (barHeight + barBuffer)))
       .attr("y", this.offsets.y1Signatures)
-      .attr("width", this.offsets.width)
+      .attr("width", barHeight)
       .attr("height", barHeight)
       .attr("fill", getBrighterColor(REFERENCE_COLOR))
       .enter();
+    
+    selection.append("text")
+      .attr("x", this.offsets.x1 + (i * (barHeight + barBuffer)) +(barHeight / 4))
+      .attr("y", this.offsets.y1Signatures + (barHeight / 2))
+      .style("fill", () => "rgb(51, 51, 51)")
+      .attr("dy", ".4em")
+      .attr("font-size", "12px")
+      .attr("text-align", "left")
+      .text(sequence[i])
+      .enter();
+    }
   }
 
   
@@ -328,7 +346,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
       // Draw ticks representing the locations of mutations (zoomable)
       let currentMutations = mutationsMap.get(categoryElement);
-      if(this.zoomCoordinates[1] - this.zoomCoordinates[0] > 1000) {
+      if(this.zoomCoordinates[1] - this.zoomCoordinates[0] > sequenceDisplayMax) {
 
         drawGroupMutationsAsTicks(
           barBuffer,
@@ -343,13 +361,28 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
           this.zoomCoordinates);
       }
       else {
-        selection.append("rect")
-          .attr("x", this.offsets.x1)
+        let sequence = retrieveSubsequence(this.zoomCoordinates[0], this.zoomCoordinates[1], currentMutations);
+
+        for(let ii = 0; ii < sequence.length; ii++) {
+
+          selection.append("rect")
+          .attr("x", this.offsets.x1 + (ii * (barHeight + barBuffer)))
           .attr("y", this.offsets.y1Signatures + ((i + 1) * barHeight) + ((i + 1) * barBuffer))
-          .attr("width", this.offsets.width)
+          .attr("width", barHeight)
           .attr("height", barHeight)
-          .attr("fill", getBrighterColor(categoryElementColor))
+          .attr("fill", getBrighterColor(getBrighterColor(categoryElementColor)))
           .enter();
+        
+        selection.append("text")
+          .attr("x", this.offsets.x1 + (ii * (barHeight + barBuffer)) +(barHeight / 4))
+          .attr("y", this.offsets.y1Signatures +  ((i + 1) * barHeight) + ((i + 1) * barBuffer) + (barHeight / 2))
+          .style("fill", () => "rgb(51, 51, 51)")
+          .attr("dy", ".4em")
+          .attr("font-size", "12px")
+          .attr("text-align", "left")
+          .text(sequence[ii])
+          .enter();
+        }
       }
 
 
