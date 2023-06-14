@@ -12,7 +12,7 @@ import { isColorByGenotype, decodeColorByGenotype } from "../../util/getGenotype
 import { changeZoom } from "../../actions/entropy";
 import { nucleotide_gene } from "../../util/globals";
 import { getBrighterColor } from "../../util/colorHelpers";
-import { drawGroupMutationsAsTicks, formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy, retrieveSubsequence, REFERENCE_COLOR } from "./signaturesHelpers";
+import { drawGroupMutationsAsTicks, drawGroupSequence, formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy, retrieveSequence, REFERENCE_COLOR } from "./signaturesHelpers";
 
 /* EntropChart uses D3 for visualisation. There are 2 methods exposed to
  * keep the visualisation in sync with React:
@@ -236,11 +236,13 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
   const geneLength = props.geneLength.nuc;
 
+  const barHeight = 15;
+  const barBuffer = 5;
+  const sequenceDisplayMax = Math.round(props.width / (barHeight + barBuffer));
+
   let colorBy;
   let categoryGroup;
   let mutationsMap;
-
-  let sequenceDisplayMax = 150;
 
   // Dynamically assigned from drop-down menu.
   if(typeof props.signatures.colorBy !== 'undefined') {
@@ -270,9 +272,6 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
   const selection = this.signaturesGraph
     .append("g");
-
-  const barHeight = 15;
-  const barBuffer = 5;
   
   // Signatures Header (not zoomable, static for grouping)
   selection.append("text")
@@ -297,31 +296,21 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     .append("REFERENCE")
     .text(function(d) { return "Tooltip"; });
 
-  // TODO: Refseq info will go here (zoomable)
   if(this.zoomCoordinates[1] - this.zoomCoordinates[0] <= sequenceDisplayMax) {
-
-    let sequence = retrieveSubsequence(this.zoomCoordinates[0], this.zoomCoordinates[1], []);
-
-    for(let i = 0; i < sequence.length; i++) {
-
-      selection.append("rect")
-      .attr("x", this.offsets.x1 + (i * (barHeight + barBuffer)))
-      .attr("y", this.offsets.y1Signatures)
-      .attr("width", barHeight)
-      .attr("height", barHeight)
-      .attr("fill", getBrighterColor(REFERENCE_COLOR))
-      .enter();
     
-    selection.append("text")
-      .attr("x", this.offsets.x1 + (i * (barHeight + barBuffer)) +(barHeight / 4))
-      .attr("y", this.offsets.y1Signatures + (barHeight / 2))
-      .style("fill", () => "rgb(51, 51, 51)")
-      .attr("dy", ".4em")
-      .attr("font-size", "12px")
-      .attr("text-align", "left")
-      .text(sequence[i])
-      .enter();
-    }
+    let sequence = retrieveSequence([]);
+
+    drawGroupSequence(
+      barBuffer,
+      barHeight,
+      REFERENCE_COLOR,
+      sequence,
+      geneLength,
+      -1, // => groupIndex
+      this.offsets,
+      this.scales,
+      selection,
+      this.zoomCoordinates);
   }
 
   
@@ -354,41 +343,31 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
           categoryElementColor,
           currentMutations,
           geneLength,
-          (i + 1), // => groupIndex
+          i, // => groupIndex
           this.offsets,
           this.scales,
           selection,
           this.zoomCoordinates);
       }
       else {
-        let sequence = retrieveSubsequence(this.zoomCoordinates[0], this.zoomCoordinates[1], currentMutations);
 
-        for(let ii = 0; ii < sequence.length; ii++) {
+        let sequence = retrieveSequence(currentMutations);
 
-          selection.append("rect")
-          .attr("x", this.offsets.x1 + (ii * (barHeight + barBuffer)))
-          .attr("y", this.offsets.y1Signatures + ((i + 1) * barHeight) + ((i + 1) * barBuffer))
-          .attr("width", barHeight)
-          .attr("height", barHeight)
-          .attr("fill", getBrighterColor(getBrighterColor(categoryElementColor)))
-          .enter();
-        
-        selection.append("text")
-          .attr("x", this.offsets.x1 + (ii * (barHeight + barBuffer)) +(barHeight / 4))
-          .attr("y", this.offsets.y1Signatures +  ((i + 1) * barHeight) + ((i + 1) * barBuffer) + (barHeight / 2))
-          .style("fill", () => "rgb(51, 51, 51)")
-          .attr("dy", ".4em")
-          .attr("font-size", "12px")
-          .attr("text-align", "left")
-          .text(sequence[ii])
-          .enter();
-        }
+        drawGroupSequence(
+          barBuffer,
+          barHeight,
+          categoryElementColor,
+          sequence,
+          geneLength,
+          i, // => groupIndex
+          this.offsets,
+          this.scales,
+          selection,
+          this.zoomCoordinates);
       }
 
-
     i += 1;
-  } while (i < categoryGroup.length);
-  
+  } while (i < categoryGroup.length); 
 };
 
 
