@@ -303,7 +303,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       .attr("y", this.offsets.y1Signatures)
       .attr("width", props.width - 50)
       .attr("height", barHeight)
-      .attr("fill", getBrighterColor(REFERENCE_COLOR))
+      .attr("fill", getBrighterColor(getBrighterColor(REFERENCE_COLOR)))
       .append("REFERENCE")
       .text(function(d) { return "Tooltip"; });
 

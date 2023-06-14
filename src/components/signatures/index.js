@@ -286,6 +286,9 @@ class Signature extends React.Component {
     const styles = getStyles(this.props.width);
     return (
       <Card title={t("Signatures")}>
+        <ErrorBoundary>
+          <Legend width={this.props.width}/>
+        </ErrorBoundary>
         <InfoPanel
           hovered={this.state.hovered}
           width={this.props.width}
@@ -306,9 +309,6 @@ class Signature extends React.Component {
         </svg>
         {this.aaNtSwitch(styles)}
         {this.entropyCountSwitch(styles)}
-        <ErrorBoundary>
-          <Legend width={this.props.width}/>
-        </ErrorBoundary>
       </Card>
     );
   }
