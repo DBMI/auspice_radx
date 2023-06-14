@@ -16,6 +16,8 @@ import { isColorByGenotype, decodeColorByGenotype, encodeColorByGenotype } from 
 import { nucleotide_gene } from "../../util/globals";
 import "../../css/entropy.css";
 import {Entropy} from "../entropy";
+import ErrorBoundary from "../../util/errorBoundary";
+import Legend from "../tree/legend/legend";
 
 
 
@@ -304,6 +306,9 @@ class Signature extends React.Component {
         </svg>
         {this.aaNtSwitch(styles)}
         {this.entropyCountSwitch(styles)}
+        <ErrorBoundary>
+          <Legend width={this.props.width}/>
+        </ErrorBoundary>
       </Card>
     );
   }

@@ -286,8 +286,8 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
   // Add the reference display before jumping into the group depiction.
   selection.append("rect")
-    .attr("x", this.offsets.x1 - (barHeight + barBuffer))
-    .attr("y", this.offsets.y1Signatures)// + barHeight + barBuffer)
+    .attr("x", this.offsets.x1 - (barHeight + (2 * barBuffer)))
+    .attr("y", this.offsets.y1Signatures)
     .attr("width", barHeight)
     .attr("height", barHeight)
     .attr("stroke", REFERENCE_COLOR)
@@ -322,7 +322,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
     // Rectangles representing the groupings (not zoomable, static for grouping)
     selection.append("rect")
-      .attr("x", this.offsets.x1 - (barHeight + barBuffer))
+      .attr("x", this.offsets.x1 - (barHeight + (2 * barBuffer)))
       .attr("y", this.offsets.y1Signatures + ((i + 1) * barHeight) + ((i + 1) * barBuffer))
       .attr("width", barHeight)
       .attr("height", barHeight)

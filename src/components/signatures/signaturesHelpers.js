@@ -16,7 +16,7 @@ export const getZoomXPosition = (xPosition, zoomMin, zoomMax, geneLength) => {
     zoomMax = geneLength;
   }
 
-  let zoomXPosition = Math.round((xPosition - zoomMin) * (geneLength / (zoomMax - zoomMin)));
+  let zoomXPosition = Math.round((xPosition + 1 - zoomMin) * (geneLength / (zoomMax - zoomMin)));
 
   if((zoomXPosition >= 0) && (zoomXPosition <= geneLength)) {
     return zoomXPosition;
