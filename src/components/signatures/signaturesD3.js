@@ -296,7 +296,28 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     .append("REFERENCE")
     .text(function(d) { return "Tooltip"; });
 
-  if(this.zoomCoordinates[1] - this.zoomCoordinates[0] <= sequenceDisplayMax) {
+  if(this.zoomCoordinates[1] - this.zoomCoordinates[0] > sequenceDisplayMax) {
+
+    selection.append("rect")
+      .attr("x", this.offsets.x1)
+      .attr("y", this.offsets.y1Signatures)
+      .attr("width", props.width - 50)
+      .attr("height", barHeight)
+      .attr("fill", getBrighterColor(REFERENCE_COLOR))
+      .append("REFERENCE")
+      .text(function(d) { return "Tooltip"; });
+
+    selection.append("text")
+      .attr("x", this.offsets.x1 + 20)
+      .attr("y", this.offsets.y1Signatures + 7)
+      .style("fill", () => "rgb(51, 51, 51)")
+      .attr("dy", ".4em")
+      .attr("font-size", "12px")
+      .attr("text-align", "left")
+      .text("REFERENCE  SEQUENCE")
+      .enter();
+  }
+  else {
     
     let sequence = retrieveSequence([]);
 
