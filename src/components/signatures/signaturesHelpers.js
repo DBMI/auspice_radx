@@ -312,4 +312,90 @@ export const retrieveSequence = (mutations) => {
   return sequence;
 
 }
+
+
+export class Base {
+
+  location;
+  originalBase;
+  mutantBases;
+
+
+  constructor(location, originalBase) {
+
+    this.location = location;
+    this.originalBase = originalBase;
+    this.mutantBases = new Set();
+  }
+
+
+  addMutantBase(mutantBase) {
+
+    this.mutantBases.add(mutantBase);
+  }
+
+
+  getDisplayBase = function() {
+
+    // If there are no mutant varieties return the original base for this location.
+    if(this.mutantBases.size === 0) {
+      return this.originalBase;
+    }
+    // If there is only one mutant variety return it for this location.
+    else if(this.mutantBases.size === 1) {
+      return [...this.mutantBases][0];
+    }
+    // If there are different varieties at this location return the respictive ambigous base representing the respective combination.
+    else if(this.mutantBases.size === 2) {
+      if(this.mutantBases.has("A")) {
+        // A or C => M
+        if(this.mutantBases.has("C")) {
+          return "M";
+        }
+        // A or G => R
+        else if(this.mutantBases.has("G")) {
+          return "R";
+        }
+        // A or T => W
+        else {
+          return "W";
+        }
+      }
+      else if(this.mutantBases.has("C")) {
+        // C or G => S
+        if(this.mutantBases.has("G")) {
+          return "S";
+        }
+        // C or T => Y
+        else {
+          return "Y";
+        }
+      }
+      // G or T => K
+      else {
+        return "K";
+      }
+    }
+    else if(this.mutantBases.size === 3) {
+      if(this.mutantBases.has("A")) {
+        // A, C or G => V
+        if(this.mutantBases.has("C") && this.mutantBases.has("G")) {
+          return "V";
+        }
+        // A, C or T => H
+        else {
+          return "H";
+        }
+      } 
+      // C, G or T => B
+      else {
+        return "B";
+      }
+    }
+    // A, C, T or G => N
+    else {
+      return "N";
+    }
+  }
+}
   
