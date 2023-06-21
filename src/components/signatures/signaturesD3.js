@@ -229,13 +229,6 @@ SignaturesChart.prototype._drawZoomGenes = function _drawZoomGenes(annotations) 
 
 SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
-  let base = new Base(500, "A"); // IMPLEMENT THIS!!!
-  //base.addMutantBase("G");
-  //base.addMutantBase("C");
-  //base.addMutantBase("G");
-
-  console.log("DISPLAY", base.getDisplayBase());
-
   this.zoomCoordinates[0] = props.zoomMin ? props.zoomMin : this.zoomCoordinates[0];
   this.zoomCoordinates[1] = props.zoomMax ? props.zoomMax : this.zoomCoordinates[1];
   
