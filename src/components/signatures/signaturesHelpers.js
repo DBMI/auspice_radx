@@ -1,3 +1,6 @@
+import { getBrighterColor } from "../../util/colorHelpers";
+
+
 const PARSE_BY_AUTHOR = 'author';
 const PARSE_BY_CITY = 'city';
 const PARSE_BY_COUNTRY = 'country';
@@ -26,6 +29,14 @@ const BASE_AMBIG_ACGT = "N";
 
 const VALID_BASES = new Set([BASE_A, BASE_C, BASE_G, BASE_T]);
 
+const BLACK = "#000000";
+const WHITE = "#FFFFFF";
+const RED = "#E30202";
+
+const COLOR_A = "#139AB2";
+const COLOR_C = "#37BEB0";
+const COLOR_G = "#A4E5E0";
+const COLOR_T = "#DBF5F0";
 
 export const REFERENCE_COLOR = '#808080';
 
@@ -287,24 +298,29 @@ export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementC
 /* Draws the sequence for a single grouping as a row of base-labeled squares. */
 export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, currentSequence, geneLength, groupIndex, offsets, scales, selection, zoomCoordinates) => {
 
+  console.log("COLOR A", COLOR_A);
+
   for(let i = 0; i < currentSequence.length; i++) {
 
     let xPosition = getZoomXPosition(i, zoomCoordinates[0], zoomCoordinates[1], geneLength);
     
     if(xPosition !== -1) {
 
+      let boxDisplayColor = categoryElementColor;
+      let fontDisplayColor = BLACK;
+
       selection.append("rect")
         .attr("x", scales.xNav(xPosition))
         .attr("y", offsets.y1Signatures + ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer))
         .attr("width", barHeight)
         .attr("height", barHeight)
-        .attr("fill", categoryElementColor)
+        .attr("fill", currentSequence[i].getDisplayColor())
         .enter();
 
       selection.append("text")
         .attr("x", scales.xNav(xPosition)+ (barHeight / 4))
         .attr("y", offsets.y1Signatures +  ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer) + (barHeight / 2))
-        .style("fill", () => "rgb(51, 51, 51)")
+        .style("fill", fontDisplayColor)
         .attr("dy", ".4em")
         .attr("font-size", "12px")
         .attr("text-align", "left")
@@ -375,6 +391,37 @@ export class Base {
 
     return base;
   }
+
+
+  hasMutation = function() {
+
+    if(this.mutantBases.size === 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+
+  getDisplayColor = function() {
+
+    if(this.mutantBases.size > 0) {
+      return RED;
+    }
+    else if(this.originalBase === BASE_A) {
+      return COLOR_A;
+    }
+    else if(this.originalBase === BASE_C) {
+      return COLOR_C;
+    }
+    else if(this.originalBase === BASE_G) {
+      return COLOR_G;
+    }
+    else if(this.originalBase === BASE_T) {
+      return COLOR_T;
+    }
+  }
+
 
 
   getDisplayBase = function() {
