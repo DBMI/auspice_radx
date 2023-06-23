@@ -31,6 +31,7 @@ const SignaturesChart = function SignaturesChart(ref, annotations, geneMap, maxN
 
 /* "PUBLIC" PROTOTYPES */
 SignaturesChart.prototype.render = function render(props) {
+
   this.props = props;
   this.aa = props.mutType === "aa";
   this.bars = props.bars;
@@ -319,7 +320,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
   }
   else {
     
-    let sequence = retrieveSequence([]);
+    let sequence = retrieveSequence(props.metadata.rootSequence.nuc, []);
 
     drawGroupSequence(
       barBuffer,
@@ -372,7 +373,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       }
       else {
 
-        let sequence = retrieveSequence(currentMutations);
+        let sequence = retrieveSequence(props.metadata.rootSequence.nuc, currentMutations);
 
         drawGroupSequence(
           barBuffer,
