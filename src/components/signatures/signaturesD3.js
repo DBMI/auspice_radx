@@ -65,6 +65,12 @@ SignaturesChart.prototype.updateSignatures = function updateSignatures(props) {
   this._drawSignatures(props);
 }
 
+SignaturesChart.prototype.updateSignaturesWithNewZoomMinMax = function updateSignaturesWithNewZoomMinMax(newZoomMin, newZoomMax) {
+  this.props.dispatch(changeZoom([newZoomMin, newZoomMax]))
+  console.log(this.props);
+  this._drawSignatures(this.props);
+}
+
 SignaturesChart.prototype.update = function update({
   aa = undefined, /* undefined is a no-op for each optional argument */
   selected = undefined,
@@ -335,7 +341,6 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       this.zoomCoordinates);
   }
 
-  
   let i = 0;
   do {
 
@@ -369,7 +374,9 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
           this.offsets,
           this.scales,
           selection,
-          this.zoomCoordinates);
+          this.zoomCoordinates,
+          sequenceDisplayMax,
+          this);
       }
       else {
 
@@ -647,7 +654,8 @@ SignaturesChart.prototype._addBrush = function _addBrush() {
         /* If selected gene or clicked on entropy, hide zoom coords */
         this.props.dispatch(changeZoom([undefined, undefined]));
       }
-    } else if (_isZoomEvent(d3event)) {
+    }
+    else if (_isZoomEvent(d3event)) {
       this.props.dispatch(changeZoom(this.zoomCoordinates));
     }
   };

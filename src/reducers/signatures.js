@@ -3,6 +3,7 @@ import * as types from "../actions/types";
 const Signatures = (state = {loaded: false, showCounts: false}, action) => {
   switch (action.type) { 
     case types.CHANGE_ZOOM:
+      console.log("POOPERPOOPING", [action.zoomc[0], action.zoomc[1]]);
       return Object.assign({}, state, {
         zoomMax: action.zoomc[1],
         zoomMin: action.zoomc[0]

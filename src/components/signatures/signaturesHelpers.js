@@ -1,4 +1,3 @@
-import { getBrighterColor } from "../../util/colorHelpers";
 
 
 const PARSE_BY_AUTHOR = 'author';
@@ -279,18 +278,22 @@ export const parsePositionFromMutationString = (mutation) => {
 }
 
 /* Draws mutations from a single grouping as a single line of ticks. */
-export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementColor, currentMutations, geneLength, groupIndex, offsets, scales, selection, zoomCoordinates) => {
+export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementColor, currentMutations, geneLength, groupIndex, offsets, scales, selection, zoomCoordinates, sequenceDisplayMax, signaturesChart) => {
+
+  var displayBufferSequenceLength = Math.round(sequenceDisplayMax / 2) - 1; // The number of bases on either side of a mutation to show to change to full sequence view.
 
   for(let i = 0; i < currentMutations.length; i++) {
     let xPosition = getZoomXPosition(parsePositionFromMutationString(currentMutations[i]), zoomCoordinates[0], zoomCoordinates[1], geneLength);
     if(xPosition !== -1) {
+      //signaturesChart.updateSignaturesWithNewZoomMinMax((xPosition - displayBufferSequenceLength), (xPosition + displayBufferSequenceLength));
       selection.append("rect")
-      .attr("x", scales.xNav(xPosition))
-      .attr("y", offsets.y1Signatures + ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer))
-      .attr("width", 2.5)
-      .attr("height", barHeight)
-      .attr("fill", categoryElementColor)
-      .enter();
+        .attr("x", scales.xNav(xPosition))
+        .attr("y", offsets.y1Signatures + ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer))
+        .attr("width", 2.5)
+        .attr("height", barHeight)
+        .attr("fill", categoryElementColor)
+        .on("click", function() { signaturesChart.updateSignaturesWithNewZoomMinMax((xPosition - displayBufferSequenceLength), (xPosition + displayBufferSequenceLength)); })
+        .enter();
     }
   }
 }
