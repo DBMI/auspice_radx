@@ -673,11 +673,14 @@ SignaturesChart.prototype._addBrush = function _addBrush() {
     this.svg.select(".xMain.axis").call(this.axes.xMain);
     this._drawBars();
     this._drawZoomGenes(this.annotations);
+    //this.props.zoomMin = start;
+    //this.props.zoomMax = end;
     this._drawSignatures(this.props);
     if (this.brushHandle) {
       this.brushHandle
         .attr("display", null)
         .attr("transform", (d, i) => "translate(" + this.scales.xNav(s[i]) + "," + (this.offsets.heightNav + 25) + ")");
+        //console.log("BABABOOM", this.props);
     }
   };
 
