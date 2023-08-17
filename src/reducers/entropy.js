@@ -2,6 +2,7 @@
 import * as types from "../actions/types";
 
 const Entropy = (state = {loaded: false, showCounts: false}, action) => {
+  console.log("ENT RED", action);
   switch (action.type) {
     case types.CHANGE_ZOOM:
       return Object.assign({}, state, {

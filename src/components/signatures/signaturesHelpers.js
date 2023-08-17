@@ -292,8 +292,8 @@ export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementC
         .attr("width", 2.5)
         .attr("height", barHeight)
         .attr("fill", categoryElementColor)
-        //.on("click", function() { signaturesChart.updateSignaturesWithNewZoomMinMax((xPosition - displayBufferSequenceLength), (xPosition + displayBufferSequenceLength)); })
-        .on("click", function() { signaturesChart._zoom((xPosition - displayBufferSequenceLength), (xPosition + displayBufferSequenceLength)); })
+        .on("click", function() { signaturesChart.updateSignaturesWithNewZoomMinMax((xPosition - displayBufferSequenceLength), (xPosition + displayBufferSequenceLength)); })
+        //.on("click", function() { signaturesChart._zoom((xPosition - displayBufferSequenceLength), (xPosition + displayBufferSequenceLength)); })
         .enter();
     }
   }

@@ -9,7 +9,7 @@ import { brushX } from "d3-brush";
 import Mousetrap from "mousetrap";
 import { lightGrey, medGrey, darkGrey } from "../../globalStyles";
 import { isColorByGenotype, decodeColorByGenotype } from "../../util/getGenotype";
-import { changeZoom } from "../../actions/entropy";
+import { changeZoom } from "../../actions/signatures";
 import { nucleotide_gene } from "../../util/globals";
 import { getBrighterColor } from "../../util/colorHelpers";
 import { Base, drawGroupMutationsAsTicks, drawGroupSequence, formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy, retrieveSequence, REFERENCE_COLOR } from "./signaturesHelpers";
@@ -66,9 +66,13 @@ SignaturesChart.prototype.updateSignatures = function updateSignatures(props) {
 }
 
 SignaturesChart.prototype.updateSignaturesWithNewZoomMinMax = function updateSignaturesWithNewZoomMinMax(newZoomMin, newZoomMax) {
-  this.props.dispatch(changeZoom([newZoomMin, newZoomMax]))
-  console.log(this.props);
+  this.zoomMin = newZoomMin;
+  this.zoomMax = newZoomMax;
+  this.zoomCoordinates[0] = newZoomMin;
+  this.zoomCoordinates[1] = newZoomMax;
+  console.log("BULLSHEEEEAT-1", [this.zoomMin, this.zoomMax])
   this._drawSignatures(this.props);
+  this._zoom(newZoomMin, newZoomMax);
 }
 
 SignaturesChart.prototype.update = function update({
@@ -238,7 +242,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
   this.zoomCoordinates[0] = props.zoomMin ? props.zoomMin : this.zoomCoordinates[0];
   this.zoomCoordinates[1] = props.zoomMax ? props.zoomMax : this.zoomCoordinates[1];
-  
+  console.log("BULLSHEEEEAT-2", [this.zoomCoordinates[0], this.zoomCoordinates[1]]);
   this.signaturesGraph.selectAll("*").remove();
 
   const geneLength = props.geneLength.nuc;
@@ -680,7 +684,6 @@ SignaturesChart.prototype._addBrush = function _addBrush() {
       this.brushHandle
         .attr("display", null)
         .attr("transform", (d, i) => "translate(" + this.scales.xNav(s[i]) + "," + (this.offsets.heightNav + 25) + ")");
-        //console.log("BABABOOM", this.props);
     }
   };
 
