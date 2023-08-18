@@ -25,7 +25,7 @@ export const showCountsNotEntropy = (showCounts) => (dispatch, getState) => {
 };
 
 export const changeZoom = (zoomc) => (dispatch, getState) => {
-  console.log("SIGNATURES FOR THE LORD");
+
   dispatch({type: types.CHANGE_ZOOM, zoomc});
   updateEntropyVisibility(dispatch, getState);
 };
