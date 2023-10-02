@@ -12,7 +12,7 @@ import { isColorByGenotype, decodeColorByGenotype } from "../../util/getGenotype
 import { changeZoom } from "../../actions/signatures";
 import { nucleotide_gene } from "../../util/globals";
 import { getBrighterColor } from "../../util/colorHelpers";
-import { Base, drawGroupMutationsAsTicks, drawGroupSequence, formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy, retrieveSequence, REFERENCE_COLOR } from "./signaturesHelpers";
+import { drawGroupMutationsAsTicks, drawGroupSequence, formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy, retrieveSequence, REFERENCE_COLOR } from "./signaturesHelpers";
 
 /* EntropChart uses D3 for visualisation. There are 2 methods exposed to
  * keep the visualisation in sync with React:
@@ -341,7 +341,8 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       this.offsets,
       this.scales,
       selection,
-      this.zoomCoordinates);
+      this.zoomCoordinates,
+      "Reference Sequence");
   }
 
   let i = 0;
@@ -395,7 +396,8 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
           this.offsets,
           this.scales,
           selection,
-          this.zoomCoordinates);
+          this.zoomCoordinates,
+          categoryElement);
       }
 
     i += 1;

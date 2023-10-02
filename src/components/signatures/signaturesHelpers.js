@@ -1,4 +1,5 @@
-
+import { Base } from "./base";
+import { displayPrimerWindow, generatePrimerWindowContent } from "./primerWindow";
 
 const PARSE_BY_AUTHOR = 'author';
 const PARSE_BY_CITY = 'city';
@@ -8,34 +9,9 @@ const PARSE_BY_ORIGINATING_LAB = 'originating_lab';
 const PARSE_BY_SAMPLING_DATE = 'num_date';
 const PARSE_BY_SUBMITTING_LAB = 'submitting_lab';
 
-const BASE_A = "A";
-const BASE_C = "C";
-const BASE_G = "G";
-const BASE_T = "T";
-const BASE_U = "U";
-
-const BASE_AMBIG_AC = "M";
-const BASE_AMBIG_AG = "R";
-const BASE_AMBIG_AT = "W";
-const BASE_AMBIG_CG = "S";
-const BASE_AMBIG_CT = "Y";
-const BASE_AMBIG_GT = "K";
-const BASE_AMBIG_ACG = "V";
-const BASE_AMBIG_ACT = "H";
-const BASE_AMBIG_AGT = "D";
-const BASE_AMBIG_CGT = "B";
-const BASE_AMBIG_ACGT = "N";
-
-const VALID_BASES = new Set([BASE_A, BASE_C, BASE_G, BASE_T]);
-
 const BLACK = "#000000";
 const WHITE = "#FFFFFF";
 const RED = "#E30202";
-
-const COLOR_A = "#9A9A9A";
-const COLOR_C = "#B5B5B5";
-const COLOR_G = "#D0D0D0";
-const COLOR_T = "#EDEDED";
 
 export const REFERENCE_COLOR = '#808080';
 
@@ -112,6 +88,8 @@ export const parseGroupColoringsBy = (parseBy, inputTree, nodeColors) => {
 /* Parse mutations from a tree object by a filter like clade, city, etc. */
 export const parseCombinedMutationsBy = (parseBy, inputTree) => {
 
+  let groupSizes = new Map();
+
   const nodes = [];
   let groupKey;
   let groupKeys = [];
@@ -147,6 +125,7 @@ export const parseCombinedMutationsBy = (parseBy, inputTree) => {
     
     // Initialize the groupMutations Map.
     for(var i = 0; i < groupKeys.length; i++) {
+      groupSizes.set(groupKeys[i], 0);
       groupMutations.set(groupKeys[i], []);
     }
   
@@ -157,6 +136,8 @@ export const parseCombinedMutationsBy = (parseBy, inputTree) => {
     if(!nodes[node].name.includes("ROOT") && !nodes[node].name.includes("NODE")) {
   
       groupKey = getGroupKey(node, nodes, parseBy);
+      
+      groupSizes.set(groupKey, groupSizes.get(groupKey) + 1);
 
       if (nodes[node].mutations.mutations.nuc != null) {
         for(let i = 0; i < nodes[node].mutations.mutations.nuc.length; i++) {
@@ -167,7 +148,7 @@ export const parseCombinedMutationsBy = (parseBy, inputTree) => {
       groupMutations.set(groupKey, injectParentMutations(node, nodes, groupMutations.get(groupKey)));
     }
   }
-  
+  console.log("GROUP SIZES", groupSizes);
   return groupMutations;
 }
   
@@ -293,14 +274,13 @@ export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementC
         .attr("height", barHeight)
         .attr("fill", categoryElementColor)
         .on("click", function() { signaturesChart.updateSignaturesWithNewZoomMinMax((xPosition - displayBufferSequenceLength), (xPosition + displayBufferSequenceLength)); })
-        //.on("click", function() { signaturesChart._zoom((xPosition - displayBufferSequenceLength), (xPosition + displayBufferSequenceLength)); })
         .enter();
     }
   }
 }
 
 /* Draws the sequence for a single grouping as a row of base-labeled squares. */
-export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, currentSequence, geneLength, groupIndex, offsets, scales, selection, zoomCoordinates) => {
+export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, currentSequence, geneLength, groupIndex, offsets, scales, selection, zoomCoordinates, group) => {
 
   for(let i = 0; i < currentSequence.length; i++) {
 
@@ -308,7 +288,7 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
     
     if(xPosition !== -1) {
 
-      let boxDisplayColor = categoryElementColor;
+      //let boxDisplayColor = categoryElementColor;
       let fontDisplayColor = BLACK;
 
       selection.append("rect")
@@ -319,6 +299,7 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
         .attr("fill", currentSequence[i].getDisplayColor())
         .enter();
 
+
       selection.append("text")
         .attr("x", scales.xNav(xPosition)+ (barHeight / 4))
         .attr("y", offsets.y1Signatures +  ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer) + (barHeight / 2))
@@ -327,6 +308,15 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
         .attr("font-size", "12px")
         .attr("text-align", "left")
         .text(currentSequence[i].getDisplayBase())
+        .style("cursor", "pointer")
+        .on("click", function() { 
+          const primerWindow = displayPrimerWindow();
+          primerWindow.document.body.innerHTML = generatePrimerWindowContent(group, currentSequence, i);
+        })
+        .append("title")
+        .text(function() {
+          return i;
+        })
         .enter();
     }
   }
@@ -353,135 +343,3 @@ export const retrieveSequence = (referenceSequence, mutations) => {
     
   return sequence;
 }
-
-
-export class Base {
-
-  location;
-  originalBase;
-  mutantBases;
-
-  constructor(location, originalBase) {
-
-    this.location = location;
-    this.originalBase = this.verifyBase(originalBase);
-    this.mutantBases = new Set();
-  }
-
-  addMutantBase(mutantBase) {
-
-    this.mutantBases.add(this.verifyBase(mutantBase));
-  }
-
-  // How to implement this is still in discussion. For now let's just print an error message to the console.
-  verifyBase = function(base) {
-
-    base = base.toUpperCase();
-
-    if(base === BASE_U) {
-      base = BASE_T;
-    }
-
-    if(!(VALID_BASES.has(base))) {
-      console.error("INVALID BASE", base);
-    }
-
-    return base;
-  }
-
-
-  hasMutation = function() {
-
-    if(this.mutantBases.size === 0) {
-      return false;
-    }
-
-    return true;
-  }
-
-
-  getDisplayColor = function() {
-
-    if(this.mutantBases.size > 0) {
-      return RED;
-    }
-    else if(this.originalBase === BASE_A) {
-      return COLOR_A;
-    }
-    else if(this.originalBase === BASE_C) {
-      return COLOR_C;
-    }
-    else if(this.originalBase === BASE_G) {
-      return COLOR_G;
-    }
-    else if(this.originalBase === BASE_T) {
-      return COLOR_T;
-    }
-  }
-
-
-
-  getDisplayBase = function() {
-
-    // If there are no mutant varieties return the original base for this location.
-    if(this.mutantBases.size === 0) {
-      return this.originalBase;
-    }
-    // If there is only one mutant variety return it for this location.
-    else if(this.mutantBases.size === 1) {
-      return [...this.mutantBases][0];
-    }
-    // If there are different varieties at this location return the respictive ambigous base representing the respective combination.
-    else if(this.mutantBases.size === 2) {
-      if(this.mutantBases.has(BASE_A)) {
-        // A or C => M
-        if(this.mutantBases.has(BASE_C)) {
-          return BASE_AMBIG_AC;
-        }
-        // A or G => R
-        else if(this.mutantBases.has(BASE_G)) {
-          return BASE_AMBIG_AG;
-        }
-        // A or T => W
-        else {
-          return BASE_AMBIG_AT;
-        }
-      }
-      else if(this.mutantBases.has(BASE_C)) {
-        // C or G => S
-        if(this.mutantBases.has(BASE_G)) {
-          return BASE_AMBIG_CG;
-        }
-        // C or T => Y
-        else {
-          return BASE_AMBIG_CT;
-        }
-      }
-      // G or T => K
-      else {
-        return BASE_AMBIG_GT;
-      }
-    }
-    else if(this.mutantBases.size === 3) {
-      if(this.mutantBases.has(BASE_A)) {
-        // A, C or G => V
-        if(this.mutantBases.has(BASE_C) && this.mutantBases.has(BASE_G)) {
-          return BASE_AMBIG_ACG;
-        }
-        // A, C or T => H
-        else {
-          return BASE_AMBIG_ACT;
-        }
-      } 
-      // C, G or T => B
-      else {
-        return BASE_AMBIG_CGT;
-      }
-    }
-    // A, C, T or G => N
-    else {
-      return BASE_AMBIG_ACGT;
-    }
-  }
-}
-  
