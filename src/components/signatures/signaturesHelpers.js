@@ -312,6 +312,22 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
         .on("click", function() { 
           const primerWindow = displayPrimerWindow();
           primerWindow.document.body.innerHTML = generatePrimerWindowContent(group, currentSequence, i);
+          const primerTypeSelect = primerWindow.document.getElementById("selectPrimerTypes");
+          primerTypeSelect.addEventListener("change", function(evt) {
+            
+            const selectBox = evt.currentTarget;
+            const options = selectBox.options;
+            const selectedIndex = selectBox.selectedIndex;
+
+            for(let i = 0; i < options.length; i++) {
+              if(i === selectedIndex) {
+                primerWindow.document.getElementById(options[i].value).style.display = "block";
+              }
+              else {
+                primerWindow.document.getElementById(options[i].value).style.display = "none";
+              }
+            }
+          });
         })
         .append("title")
         .text(function() {

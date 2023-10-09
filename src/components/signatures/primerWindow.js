@@ -3,8 +3,8 @@ import { Primer } from "./primer";
 
 export const displayPrimerWindow = () => {
 
-    const w = 600;
-    const h = 500;
+    const w = 400;
+    const h = 400;
   
     const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
     const dualScreenTop = window.screenTop !==  undefined   ? window.screenTop  : window.screenY;
@@ -16,21 +16,22 @@ export const displayPrimerWindow = () => {
     const left = (width - w) / 2 / systemZoom + dualScreenLeft;
     const top = (height - h) / 2 / systemZoom + dualScreenTop;
   
-    //window.open("http://cnn.com", "_blank", "width=500,height=400");
-  
     const primerWindow = window.open("", "_blank", 
       `
-      scrollbars=yes,
-      width=${w / systemZoom}, 
-      height=${h / systemZoom}, 
-      top=${top}, 
-      left=${left}
+        scrollbars=yes,
+        width=${w / systemZoom}, 
+        height=${h / systemZoom}, 
+        top=${top}, 
+        left=${left},
+        titlebar=no,
+        toolbar=no,
+        menubar=yes
       `
     );
 
     if (window.focus) primerWindow.focus();
-  
-  
+
+
     return primerWindow;
 }
 
@@ -39,7 +40,7 @@ export const generatePrimerWindowContent = (group, sequence, position) => {
 
     const base = sequence[position];
     const referenceBase = base.getReferenceBase();
-    
+
     let html = "<html>";
 
     // HEAD
@@ -52,6 +53,7 @@ export const generatePrimerWindowContent = (group, sequence, position) => {
     // BODY
 
     html += "<body>";
+    
     html += "<div class=\"wrapper\">";
 
     html += getHeaderDiv(group, position, base);
@@ -60,13 +62,11 @@ export const generatePrimerWindowContent = (group, sequence, position) => {
 
     html += "<div class=\"primerWindow\">";
 
-    //html += getPrimerTypeDropdown();
-
     // REFERENCE ALLELE PRIMER
 
     let primerTypeName = "Reference Allele Primers";
 
-    html += getPrimerTypeDiv(primerTypeName, sequence, position, base.getReferenceBase());
+    html += getPrimerTypeDiv(primerTypeName, sequence, position, base.getReferenceBase(), "block");
 
     // MUTANT ALLELE PRIMERS
 
@@ -74,7 +74,7 @@ export const generatePrimerWindowContent = (group, sequence, position) => {
 
         primerTypeName = referenceBase + position + mutantBase + " Primers";
 
-        html += getPrimerTypeDiv(primerTypeName, sequence, position, mutantBase);
+        html += getPrimerTypeDiv(primerTypeName, sequence, position, mutantBase, "none");
     });
 
     html += "</div>"; // primerWindow DIV
@@ -124,7 +124,7 @@ function getHeaderDiv(group, position, base) {
 function getPrimerTypeDropdown(base) {
 
     let dropdown = " <div class=\"selectWrapper\">";
-    dropdown += "<select class=\"selectBox\" id=\"selectPrimerTypes\" onchange=\"alert(this.value)\">";
+    dropdown += "<select class=\"selectBox\" id=\"selectPrimerTypes\">";
     dropdown += "<option value=\"Reference Allele Primers\">Reference Allele Primers</option>";
     base.getMutantBases().forEach((mutantBase) => {
         let name = `${base.getReferenceBase()}${base.getLocation()}${mutantBase} Primers`;
@@ -137,9 +137,10 @@ function getPrimerTypeDropdown(base) {
 }
 
 
-function getPrimerTypeDiv(primerTypeName, sequence, position, displayBase) {
 
-    let div = "<div class=\"primers\ id=\"" + primerTypeName + "\">";
+function getPrimerTypeDiv(primerTypeName, sequence, position, displayBase, visibility) {
+
+    let div = "<div class=\"primers\" id=\"" + primerTypeName + "\" style=\"display: " +  visibility + "\">";
 
     div += "<h2>" + primerTypeName + "</h2>";
 
@@ -312,7 +313,7 @@ function getPrimerWindowStyle() {
         }
         .primerWindow {
             padding: 0px;
-            width: 60%;
+            width: 75%;
             margin: auto;
             background: "#FDDDE6";
             padding-bottom: 50px;
