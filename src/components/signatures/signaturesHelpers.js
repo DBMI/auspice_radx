@@ -336,38 +336,44 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
           primerDownloadButton.addEventListener("click", async function(event) {
 
             const checkboxes = primerWindow.document.querySelectorAll('input[type=checkbox]:checked')
-            var text = "";
 
-            for(let i = 0; i < checkboxes.length; i++) {
+            if(checkboxes.length > 0) {
+              var text = "";
 
-              const baseHeader = checkboxes[i].id;
-              const fwdHeader = ">" + baseHeader + "|FWDSEQ";
-              const revHeader = ">" + baseHeader + "|REVSEQ";
-              const dataElements = checkboxes[i].value.split("|");
-              const fwdSeq = dataElements[1];
-              const revSeq = dataElements[3];
-              
-              text += fwdHeader + "\n";
-              text += fwdSeq + "\n";
-              text += revHeader + "\n";
-              text += revSeq + "\n";
+              for(let i = 0; i < checkboxes.length; i++) {
+  
+                const baseHeader = checkboxes[i].id;
+                const fwdHeader = ">" + baseHeader + "|FWDSEQ";
+                const revHeader = ">" + baseHeader + "|REVSEQ";
+                const dataElements = checkboxes[i].value.split("|");
+                const fwdSeq = dataElements[1];
+                const revSeq = dataElements[3];
+                
+                text += fwdHeader + "\n";
+                text += fwdSeq + "\n";
+                text += revHeader + "\n";
+                text += revSeq + "\n";
+              }
+  
+              const suggestedFileName = group.replaceAll(" ","-") + "-" + i + ".fna";
+  
+              const opts = {
+                description: 'Primers: ' + suggestedFileName,
+                suggestedName: suggestedFileName,
+                types: [{
+                  accept: {'text/plain': ['.fna', '.txt']},
+                }],
+              };
+              const handle = await primerWindow.showSaveFilePicker(opts);
+              const writable = await handle.createWritable();
+              await writable.write(new Blob([text], { type: 'text/plain' }));
+              await writable.close();
+  
+              primerWindow.close();
             }
-
-            const suggestedFileName = group.replaceAll(" ","-") + "-" + i + ".fna";
-
-            const opts = {
-              description: 'Primers: ' + suggestedFileName,
-              suggestedName: suggestedFileName,
-              types: [{
-                accept: {'text/plain': ['.fna', '.txt']},
-              }],
-            };
-            const handle = await primerWindow.showSaveFilePicker(opts);
-            const writable = await handle.createWritable();
-            await writable.write(new Blob([text], { type: 'text/plain' }));
-            await writable.close();
-
-            primerWindow.close();
+            else {
+              await alert("Please select at least one primer pair!");
+            }
           }, false);
         })
         .append("title")
