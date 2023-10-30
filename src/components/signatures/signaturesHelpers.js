@@ -338,6 +338,9 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
             const checkboxes = primerWindow.document.querySelectorAll('input[type=checkbox]:checked')
 
             if(checkboxes.length > 0) {
+
+              primerWindow.document.getElementById("warningMessages").style.display = 'none';
+
               var text = "";
 
               for(let i = 0; i < checkboxes.length; i++) {
@@ -372,7 +375,7 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
               primerWindow.close();
             }
             else {
-              await alert("Please select at least one primer pair!");
+              primerWindow.document.getElementById("warningMessages").style.display = 'block';
             }
           }, false);
         })

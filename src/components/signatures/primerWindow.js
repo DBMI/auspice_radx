@@ -58,6 +58,10 @@ export const generatePrimerWindowContent = (group, sequence, position) => {
 
     html += getHeaderDiv(group, position, base);
 
+    // WARNINGS
+
+    html += "<div class=\"warningMessages\" id=\"warningMessages\">Please select at least one primer pair!</div>";
+
     // PRIMERS
 
     html += "<div class=\"primerWindow\">";
@@ -343,12 +347,23 @@ function getPrimerWindowStyle() {
         .dataText {
             color: #5DA8A3;
         }
+        .warningMessages {
+            display: none;
+            padding: 20px;
+            background: #FFC1CC;
+            text-align: center;
+            vertical-align: middle;
+            color: #AE0000;
+            font-size: 24px;
+            font-weight: 350;
+            height: 45px;
+        }
         .primerWindow {
             padding: 0px;
             width: 75%;
             margin: auto;
             background: "#FDDDE6";
-            padding-bottom: 50px;
+            padding-bottom: 100px;
         }
         .primers {
             font-family: Lato, &quot;Helvetica Neue&quot;, Helvetica, sans-serif;
