@@ -299,7 +299,6 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
         .attr("fill", currentSequence[i].getDisplayColor())
         .enter();
 
-
       selection.append("text")
         .attr("x", scales.xNav(xPosition)+ (barHeight / 4))
         .attr("y", offsets.y1Signatures +  ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer) + (barHeight / 2))
@@ -310,9 +309,12 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
         .text(currentSequence[i].getDisplayBase())
         .style("cursor", "pointer")
         .on("click", function() { 
+          
           const primerWindow = displayPrimerWindow();
           primerWindow.document.body.innerHTML = generatePrimerWindowContent(group, currentSequence, i);
+          
           const primerTypeSelect = primerWindow.document.getElementById("selectPrimerTypes");
+          
           primerTypeSelect.addEventListener("change", function(evt) {
             
             const selectBox = evt.currentTarget;
@@ -328,6 +330,45 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
               }
             }
           });
+
+          const primerDownloadButton = primerWindow.document.getElementById("downloadPrimersButton");
+
+          primerDownloadButton.addEventListener("click", async function(event) {
+
+            const checkboxes = primerWindow.document.querySelectorAll('input[type=checkbox]:checked')
+            var text = "";
+
+            for(let i = 0; i < checkboxes.length; i++) {
+
+              const baseHeader = checkboxes[i].id;
+              const fwdHeader = ">" + baseHeader + "|FWDSEQ";
+              const revHeader = ">" + baseHeader + "|REVSEQ";
+              const dataElements = checkboxes[i].value.split("|");
+              const fwdSeq = dataElements[1];
+              const revSeq = dataElements[3];
+              
+              text += fwdHeader + "\n";
+              text += fwdSeq + "\n";
+              text += revHeader + "\n";
+              text += revSeq + "\n";
+            }
+
+            const suggestedFileName = group.replaceAll(" ","-") + "-" + i + ".fna";
+
+            const opts = {
+              description: 'Primers: ' + suggestedFileName,
+              suggestedName: suggestedFileName,
+              types: [{
+                accept: {'text/plain': ['.fna', '.txt']},
+              }],
+            };
+            const handle = await primerWindow.showSaveFilePicker(opts);
+            const writable = await handle.createWritable();
+            await writable.write(new Blob([text], { type: 'text/plain' }));
+            await writable.close();
+
+            primerWindow.close();
+          }, false);
         })
         .append("title")
         .text(function() {

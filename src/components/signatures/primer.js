@@ -1,5 +1,6 @@
 export class Primer {
 
+    selectedPosition;
     forwardSequence;
     reverseSequence;
     a;
@@ -21,6 +22,9 @@ export class Primer {
         this.setReverseSequence();
 
         const primerUpperCase = this.forwardSequence.toUpperCase();
+
+        this.selectedPosition = selectedPosition;
+
         this.a = (primerUpperCase.match(/A/g) || []).length;
         this.c = (primerUpperCase.match(/C/g) || []).length;
         this.g = (primerUpperCase.match(/G/g) || []).length;
@@ -112,6 +116,11 @@ export class Primer {
         else {
             return "X";
         }
+    }
+
+
+    getSelectedPosition() {
+        return this.selectedPosition;
     }
 
 

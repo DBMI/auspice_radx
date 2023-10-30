@@ -3,8 +3,8 @@ import { Primer } from "./primer";
 
 export const displayPrimerWindow = () => {
 
-    const w = 400;
-    const h = 400;
+    const w = 675;
+    const h = 700;
   
     const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
     const dualScreenTop = window.screenTop !==  undefined   ? window.screenTop  : window.screenY;
@@ -66,7 +66,7 @@ export const generatePrimerWindowContent = (group, sequence, position) => {
 
     let primerTypeName = "Reference Allele Primers";
 
-    html += getPrimerTypeDiv(primerTypeName, sequence, position, base.getReferenceBase(), "block");
+    html += getPrimerTypeDiv(group, primerTypeName, sequence, position, base.getReferenceBase(), "block");
 
     // MUTANT ALLELE PRIMERS
 
@@ -74,8 +74,10 @@ export const generatePrimerWindowContent = (group, sequence, position) => {
 
         primerTypeName = referenceBase + position + mutantBase + " Primers";
 
-        html += getPrimerTypeDiv(primerTypeName, sequence, position, mutantBase, "none");
+        html += getPrimerTypeDiv(group, primerTypeName, sequence, position, mutantBase, "none");
     });
+
+    html += getPrimerDownloadButtonHtml();
 
     html += "</div>"; // primerWindow DIV
     html += getFooterDiv();
@@ -138,26 +140,26 @@ function getPrimerTypeDropdown(base) {
 
 
 
-function getPrimerTypeDiv(primerTypeName, sequence, position, displayBase, visibility) {
+function getPrimerTypeDiv(group, primerTypeName, sequence, position, displayBase, visibility) {
 
     let div = "<div class=\"primers\" id=\"" + primerTypeName + "\" style=\"display: " +  visibility + "\">";
 
-    div += "<h2>" + primerTypeName + "</h2>";
+    div += "<h2>" + group + " " + position + " " + primerTypeName.replace(/\d+/g, " > ") + "</h2>";
 
     let primer = new Primer(sequence, position, displayBase, 12, 12);
-    div += getPrimerPairHtml(primer);
+    div += getPrimerPairHtml(group, primerTypeName, primer);
     
     primer = new Primer(sequence, position, displayBase, 13, 12);
-    div += getPrimerPairHtml(primer);
+    div += getPrimerPairHtml(group, primerTypeName, primer);
     
     primer = new Primer(sequence, position, displayBase, 13, 13);
-    div += getPrimerPairHtml(primer);
+    div += getPrimerPairHtml(group, primerTypeName, primer);
     
     primer = new Primer(sequence, position, displayBase, 14, 13);
-    div += getPrimerPairHtml(primer);
+    div += getPrimerPairHtml(group, primerTypeName, primer);
     
     primer = new Primer(sequence, position, displayBase, 14, 14);
-    div += getPrimerPairHtml(primer);
+    div += getPrimerPairHtml(group, primerTypeName, primer);
     
     div += "</div>";
 
@@ -165,31 +167,61 @@ function getPrimerTypeDiv(primerTypeName, sequence, position, displayBase, visib
 }
 
 
-function getPrimerPairHtml(primer) {
+function getPrimerPairHtml(group, primerTypeName, primer) {
 
-    let html = "5' ";
+    const value =
+        "GROUP|" + group + "|" +
+        "POSITION|" + primer.getSelectedPosition() + "|" +
+        "TYPE|" + primerTypeName.replace(/ Primers/g, "").replace(/ Allele/g, "") + "|" +
+        "LENGTH|" + primer.getForwardSequence().length + "|" +
+        "TM|" + primer.getTm() + "|" +
+        "GC|" + primer.getGCPercent();
+
+    const data =
+        "FWDSEQ|" + primer.getForwardSequence() + "|" +
+        "REVSEQ|" + primer.getReverseSequence();
+
+    let html = "<br/><div class=\"primerPair\">";
+
+    html += "<div class=\"primerSelect\"><input type=\"checkbox\" id=\"" + value + "\" name=\"" + value + "\" value=\"" + data + "\"></div>";
+    html += "<div class=\"primerSequence\">5' ";
     html += "<span class=\"primerText\">";
     html += primer.getForwardSequence();
     html += "</span>";
-    html += " 3'";
-    html += " Tm: ";
+    html += " 3'</div>";
+    html += "<div class=\"primerMeta\">Tm: ";
     html += primer.getTm();
     html += "&deg;C GC: ";
     html += primer.getGCPercent();
-    html += "%";
+    html += "%</div>";
     html += "<br/>";
 
-    html += "3' ";
+    html += "<div class=\"primerSelect\">&nbsp;</div>";
+    html += "<div class=\"primerSequence\">3' ";
     html += "<span class=\"primerText\">";
     html += primer.getReverseSequence();
     html += "</span>";
-    html += " 5'";
-    html += " Tm: ";
-    html += primer.getTm();
-    html += "&deg;C GC: ";
-    html += primer.getGCPercent();
-    html += "%";
-    html += "<br/><br/>";
+    html += " 5'</div>";
+    html += "<div class=\"primerMeta\">";
+    
+    html += "</div>";
+    html += "</div>"
+
+    html += "<br/>";
+
+    return html;
+}
+
+
+function getPrimerDownloadButtonHtml() {
+
+    let html = "<br/><div class=\"primerPair\">";
+
+    html += "<div class=\"primerSelect\">&nbsp;</div>";
+    html += "<div class=\"primerSequence\">&nbsp;</div>";
+    html += "<div class=\"primerMeta\"><input type=\"button\" class=\"downloadPrimersButton\" id=\"downloadPrimersButton\" value=\"Download Selected\"></div>"
+
+    html += "</div>";
 
     return html;
 }
@@ -337,6 +369,18 @@ function getPrimerWindowStyle() {
             letter-spacing: -0.5px;
             line-height: 1.2;
         }
+        .downloadPrimersButton {
+            background-color: #5DA8A3;
+            border: none;
+            color: white;--#30353F;
+            cursor:pointer;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 15px 15px;
+        }
         .footer {
             margin-top: 0;
             text-align: center;
@@ -360,6 +404,21 @@ function getPrimerWindowStyle() {
         .footer a:visited {
             text-decoration: none;
             color: #D3D3D3;
+        }
+        .primerPair {
+            width: 100%;
+            overflow: hidden; /* will contain if #first is longer than #second */
+        }
+        .primerSelect {
+            width: 10%;
+            float:left; /* add this */
+        }
+        .primerSequence {
+            width: 60%;
+            float:left; /* add this */
+        }
+        .primerMeta {
+            overflow: hidden; /* if you don't want #second to wrap below #first */
         }
     `;
 
