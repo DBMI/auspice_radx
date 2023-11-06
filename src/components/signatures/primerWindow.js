@@ -3,8 +3,8 @@ import { Primer } from "./primer";
 
 export const displayPrimerWindow = () => {
 
-    const w = 750;
-    const h = 750;
+    const w = 600;
+    const h = 600;
   
     const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
     const dualScreenTop = window.screenTop !==  undefined   ? window.screenTop  : window.screenY;
@@ -60,7 +60,7 @@ export const generatePrimerWindowContent = (group, sequence, position) => {
 
     // WARNINGS
 
-    html += "<div class=\"warningMessages\" id=\"warningMessages\">Please select at least one primer pair!</div>";
+    html += "<div class=\"messages\" id=\"messages\"><div class=\"warningMessages\" id=\"warningMessages\">Please select at least one primer pair!</div></div>";
 
     // PRIMERS
 
@@ -347,6 +347,9 @@ function getPrimerWindowStyle() {
         .dataText {
             color: #5DA8A3;
         }
+        .messages {
+            height: 45px;
+        }
         .warningMessages {
             display: none;
             padding: 20px;
@@ -356,13 +359,15 @@ function getPrimerWindowStyle() {
             color: #AE0000;
             font-size: 24px;
             font-weight: 350;
-            height: 45px;
+            width: 100%;
+            margin-bottom: 20px;
         }
         .primerWindow {
             padding: 0px;
             width: 75%;
             margin: auto;
             background: "#FDDDE6";
+            padding-top: 20px;
             padding-bottom: 100px;
         }
         .primers {

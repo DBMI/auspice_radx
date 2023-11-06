@@ -246,6 +246,8 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
   const geneLength = props.geneLength.nuc;
 
+  const yMSA = this.offsets.y1Main + 130;//this.offsets.y1Signatures;
+
   const barHeight = 15;
   const barBuffer = 5;
   const sequenceDisplayMax = Math.round(props.width / (barHeight + barBuffer));
@@ -284,9 +286,11 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     .append("g");
   
   // Signatures Header (not zoomable, static for grouping)
+  console.log("FOOBARESQUE", this.scales.xMain); // KAI HERE
   selection.append("text")
     .attr("x", this.offsets.x1 - (barHeight + barBuffer))
-    .attr("y", this.offsets.y1Signatures - 25)
+    //.attr("y", this.offsets.y1Signatures - 25)
+    .attr("y", yMSA - 30)
     .style("fill", () => "rgb(51, 51, 51)")
     .attr("dy", ".4em")
     .attr("font-size", "14px")
@@ -297,7 +301,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
   // Add the reference display before jumping into the group depiction.
   selection.append("rect")
     .attr("x", this.offsets.x1 - (barHeight + (2 * barBuffer)))
-    .attr("y", this.offsets.y1Signatures)
+    .attr("y", yMSA)
     .attr("width", barHeight)
     .attr("height", barHeight)
     .attr("stroke", REFERENCE_COLOR)
@@ -310,7 +314,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
     selection.append("rect")
       .attr("x", this.offsets.x1)
-      .attr("y", this.offsets.y1Signatures)
+      .attr("y", yMSA)
       .attr("width", props.width - 50)
       .attr("height", barHeight)
       .attr("fill", getBrighterColor(getBrighterColor(REFERENCE_COLOR)))
@@ -319,7 +323,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
 
     selection.append("text")
       .attr("x", this.offsets.x1 + 20)
-      .attr("y", this.offsets.y1Signatures + 7)
+      .attr("y", yMSA + 7)
       .style("fill", () => "rgb(51, 51, 51)")
       .attr("dy", ".4em")
       .attr("font-size", "12px")
@@ -338,7 +342,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       sequence,
       geneLength,
       -1, // => groupIndex
-      this.offsets,
+      yMSA, //this.offsets,
       this.scales,
       selection,
       this.zoomCoordinates,
@@ -354,7 +358,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     // Rectangles representing the groupings (not zoomable, static for grouping)
     selection.append("rect")
       .attr("x", this.offsets.x1 - (barHeight + (2 * barBuffer)))
-      .attr("y", this.offsets.y1Signatures + ((i + 1) * barHeight) + ((i + 1) * barBuffer))
+      .attr("y", yMSA + ((i + 1) * barHeight) + ((i + 1) * barBuffer))
       .attr("width", barHeight)
       .attr("height", barHeight)
       .attr("stroke", categoryElementColor)
@@ -375,7 +379,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
           currentMutations,
           geneLength,
           i, // => groupIndex
-          this.offsets,
+          yMSA, //this.offsets,
           this.scales,
           selection,
           this.zoomCoordinates,
@@ -393,7 +397,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
           sequence,
           geneLength,
           i, // => groupIndex
-          this.offsets,
+          yMSA, //this.offsets,
           this.scales,
           selection,
           this.zoomCoordinates,

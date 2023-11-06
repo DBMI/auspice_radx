@@ -259,7 +259,7 @@ export const parsePositionFromMutationString = (mutation) => {
 }
 
 /* Draws mutations from a single grouping as a single line of ticks. */
-export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementColor, currentMutations, geneLength, groupIndex, offsets, scales, selection, zoomCoordinates, sequenceDisplayMax, signaturesChart) => {
+export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementColor, currentMutations, geneLength, groupIndex, yMSA, scales, selection, zoomCoordinates, sequenceDisplayMax, signaturesChart) => {
 
   var displayBufferSequenceLength = Math.round(sequenceDisplayMax / 2) - 1; // The number of bases on either side of a mutation to show to change to full sequence view.
 
@@ -269,10 +269,11 @@ export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementC
       //signaturesChart.updateSignaturesWithNewZoomMinMax((xPosition - displayBufferSequenceLength), (xPosition + displayBufferSequenceLength));
       selection.append("rect")
         .attr("x", scales.xNav(xPosition))
-        .attr("y", offsets.y1Signatures + ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer))
+        .attr("y", yMSA + ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer))
         .attr("width", 2.5)
         .attr("height", barHeight)
         .attr("fill", categoryElementColor)
+        .style("cursor", "pointer")
         .on("click", function() { signaturesChart.updateSignaturesWithNewZoomMinMax((xPosition - displayBufferSequenceLength), (xPosition + displayBufferSequenceLength)); })
         .enter();
     }
@@ -280,7 +281,7 @@ export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementC
 }
 
 /* Draws the sequence for a single grouping as a row of base-labeled squares. */
-export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, currentSequence, geneLength, groupIndex, offsets, scales, selection, zoomCoordinates, group) => {
+export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, currentSequence, geneLength, groupIndex, yMSA, scales, selection, zoomCoordinates, group) => {
 
   for(let i = 0; i < currentSequence.length; i++) {
 
@@ -293,7 +294,7 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
 
       selection.append("rect")
         .attr("x", scales.xNav(xPosition))
-        .attr("y", offsets.y1Signatures + ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer))
+        .attr("y", yMSA + ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer))
         .attr("width", barHeight)
         .attr("height", barHeight)
         .attr("fill", currentSequence[i].getDisplayColor())
@@ -301,7 +302,7 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
 
       selection.append("text")
         .attr("x", scales.xNav(xPosition)+ (barHeight / 4))
-        .attr("y", offsets.y1Signatures +  ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer) + (barHeight / 2))
+        .attr("y", yMSA +  ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer) + (barHeight / 2))
         .style("fill", fontDisplayColor)
         .attr("dy", ".4em")
         .attr("font-size", "12px")
