@@ -59,5 +59,5 @@ function parseReferenceAlleleFromMutationString(mutation) {
 
 
 function parseMutantAlleleFromMutationString(mutation) {
-    return mutation.charAt(mutation.length -1 ).toUpperCase();
+    return mutation.charAt(mutation.length -1).toUpperCase();
 }

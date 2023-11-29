@@ -244,11 +244,116 @@ function isLeapYear(year) {
 
 
 function convertDecimalDate(decimalDate) {
+
   var year = parseInt(decimalDate);
-  var reminder = decimalDate - year;
+  var remainder = decimalDate - year;
   var daysPerYear = isLeapYear(year) ? 366 : 365;
-  var miliseconds = reminder * daysPerYear * 24 * 60 * 60 * 1000;
-  var yearDate = new Date(year, 0, 1);
+  var days = remainder * daysPerYear; // * 24 * 60 * 60 * 1000;
+  var monthIndex;
+  var day;
+
+  if(isLeapYear(year)) {    // Leap Year
+    if(days <= 31) {        // January
+      monthIndex = 0;
+      day = days;
+    }
+    else if(days <= 60) {   // February 
+      monthIndex = 1;
+      day = days - 31;
+    }
+    else if(days <= 91) {   // March
+      monthIndex = 2;
+      day = days - 60;
+    }
+    else if(days <= 121) {   // April
+      monthIndex = 3;
+      day = days - 91;
+    }
+    else if(days <= 152) {    // May
+      monthIndex = 4;
+      day = days - 121;
+    }
+    else if(days <= 182) {    // June
+      monthIndex = 5;
+      day = days - 152;
+    }
+    else if(days <= 213) {    // July
+      monthIndex = 6;
+      day = days - 182;
+    }
+    else if(days <= 244) {    // August
+      monthIndex = 7;
+      day = days - 213;
+    }
+    else if(days <= 274) {    // September
+      monthIndex = 8;
+      day = days - 244;
+    }
+    else if(days <= 305) {    // October
+      monthIndex = 9;
+      day = days - 274;
+    }
+    else if(days <= 335) {    // November
+      monthIndex = 10;
+      day = days - 305;
+    }
+    else if(days <= 366) {    // December
+      monthIndex = 11;
+      day = days - 335;
+    }
+  }
+  else {                    // Non-Leap Year
+    if(days <= 31) {        // January
+      monthIndex = 0;
+      day = days;
+    }
+    else if(days <= 59) {   // February
+      monthIndex = 1;
+      day = days - 31;
+    }
+    else if(days <= 90) {   // March
+      monthIndex = 2;
+      day = days - 59;
+    }
+    else if(days <= 120) {   // April
+      monthIndex = 3;
+      day = days - 90;
+    }
+    else if(days <= 151) {    // May
+      monthIndex = 4;
+      day = days - 120;
+    }
+    else if(days <= 181) {    // June
+      monthIndex = 5;
+      day = days - 151;
+    }
+    else if(days <= 212) {    // July
+      monthIndex = 6;
+      day = days - 181;
+    }
+    else if(days <= 243) {    // August
+      monthIndex = 7;
+      day = days - 212;
+    }
+    else if(days <= 273) {    // September
+      monthIndex = 8;
+      day = days - 243;
+    }
+    else if(days <= 304) {    // October
+      monthIndex = 9;
+      day = days - 273;
+    }
+    else if(days <= 334) {    // November
+      monthIndex = 10;
+      day = days - 304;
+    }
+    else if(days <= 365) {    // December
+      monthIndex = 11;
+      day = days - 334;
+    }
+  }
+  
+  var yearDate = new Date(year, monthIndex, day);
   return new Date(yearDate).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"});
 }
 

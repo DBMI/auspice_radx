@@ -3,8 +3,8 @@ import { Primer } from "./primer";
 
 export const displayPrimerWindow = () => {
 
-    const w = 600;
-    const h = 600;
+    const w = 700;
+    const h = 750;
   
     const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
     const dualScreenTop = window.screenTop !==  undefined   ? window.screenTop  : window.screenY;
