@@ -326,7 +326,7 @@ export const addGrid = function addGrid() {
       const yAxisPixels = this.yScale.range()[1] - this.yScale.range()[0];
       const temporalGrid = computeTemporalGridPoints(ymin, ymax, yAxisPixels, "y");
       majorGridPoints.push(...temporalGrid.majorGridPoints);
-    } else if (this.layout==="scatter" && !this.scatterVariables.yContinuous) {
+    } else if (this.layout==="scatter" && !this.scatterVariables.y) {
       majorGridPoints.push(...this.yScale.domain().map((name) => ({
         name, visibility: "visible", axis: "y", position: name
       })));

@@ -286,7 +286,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
     .append("g");
   
   // Signatures Header (not zoomable, static for grouping)
-  console.log("FOOBARESQUE", this.scales.xMain); // KAI HERE
+
   selection.append("text")
     .attr("x", this.offsets.x1 - (barHeight + barBuffer))
     //.attr("y", this.offsets.y1Signatures - 25)

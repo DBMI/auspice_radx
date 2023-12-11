@@ -41,6 +41,7 @@ export const calcColorScale = (colorBy, controls, tree, treeToo, metadata) => {
       setGenotype(tree.nodes, genotype.gene, genotype.positions, metadata.rootSequence); /* modifies nodes recursively */
     }
     const scaleType = genotype ? "categorical" : colorings[colorBy].type;
+    console.log("SCALE TYPE", scaleType);
     if (genotype) {
       ({legendValues, colorScale} = createScaleForGenotype(tree.nodes, controls.mutType));
       domain = [...legendValues];
@@ -48,6 +49,10 @@ export const calcColorScale = (colorBy, controls, tree, treeToo, metadata) => {
       if (scaleType === "continuous" || scaleType==="temporal") {
         ({continuous, colorScale, legendBounds, legendValues} =
           createContinuousScale(colorBy, colorings[colorBy].scale, tree.nodes, treeTooNodes, scaleType==="temporal"));
+          console.log("COLOR BY", colorBy);
+          console.log("TREE.NODES", tree.nodes);
+          console.log("TREE TOO NODES", treeTooNodes);
+          console.log("SCALE TYPE === TEMPORAL", scaleType==="temporal");
       } else if (colorings[colorBy].scale) { /* scale set via JSON */
         ({continuous, legendValues, colorScale} =
           createNonContinuousScaleFromProvidedScaleMap(colorBy, colorings[colorBy].scale, tree.nodes, treeTooNodes));
@@ -214,7 +219,10 @@ function createOrdinalScale(colorBy, t1nodes, t2nodes) {
   return {continuous, colorScale, legendValues, legendBounds};
 }
 
-function createContinuousScale(colorBy, providedScale, t1nodes, t2nodes, isTemporal) {
+export function createContinuousScale(colorBy, providedScale, t1nodes, t2nodes, isTemporal) {
+
+  console.log("INPUT", [colorBy, providedScale, t1nodes, t2nodes, isTemporal]);
+
   /* Note that a temporal scale is treated very similar to a continuous one... for the time being.
      In the future it'd be nice to allow YYYY-MM-DD values, but that's for another PR (and comes
      with its own complexities - what about -XX dates?)                     james june 2022    */
@@ -253,14 +261,17 @@ function createContinuousScale(colorBy, providedScale, t1nodes, t2nodes, isTempo
           .map((n) => getTraitFromNode(n, colorBy))
       );
     }
+
     vals = vals.sort();
     domain = [rootDate];
     const n = 10;
     const spaceBetween = parseInt(vals.length / (n - 1), 10);
+
     for (let i = 0; i < (n-1); i++) domain.push(vals[spaceBetween*i]);
     domain.push(vals[vals.length-1]);
     domain = [...new Set(domain)]; /* filter to unique values only */
     range = colors[domain.length]; /* use the right number of colours */
+
   } else {
     range = colors[9];
     domain = genericDomain.map((d) => minMax[0] + d * (minMax[1] - minMax[0]));
@@ -283,6 +294,14 @@ function createContinuousScale(colorBy, providedScale, t1nodes, t2nodes, isTempo
       .filter((el, idx, values) => values.indexOf(el)===idx);
   }
   if (legendValues[0] === -0) legendValues[0] = 0; /* hack to avoid bugs */
+
+  const output = {
+    continuous: true,
+    colorScale: (val) => isValueValid(val) ? scale(val) : unknownColor,
+    legendBounds: createLegendBounds(legendValues),
+    legendValues
+  };
+  console.log("OUTPUT", output);
 
   return {
     continuous: true,

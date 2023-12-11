@@ -205,6 +205,7 @@ function getGroupName(node, nodes, parseBy) {
   else if(parseBy == PARSE_BY_SAMPLING_DATE) {
     if(nodes[node].num_date != null) {
       groupName = nodes[node].num_date.value;
+      console.log("GROUP NAME", groupName);
     }
   }
   else if(parseBy == PARSE_BY_SUBMITTING_LAB) {
