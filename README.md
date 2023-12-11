@@ -4,6 +4,10 @@ RADx has has been developing its own extension of Auspice forked on April 24, 20
 
 ## Differences In Interface
 
+![IMG 01](README_IMG/RADx_Auspice_IMG_01.png)
+
+![IMG 02](README_IMG/RADx_Auspice_IMG_02.png)
+
 ## Differences In Code
 
 ## Differences In JSON Files
