@@ -14,6 +14,8 @@ The additions to Auspice interface are outlined in green in figures A1 and A2
 
 ![FIG A02](README_IMG/RADx_Auspice_IMG_A02.png)
 
+![FIG A03](README_IMG/RADx_Auspice_IMG_A03.png)
+
 
 ## Differences In JSON Input  Files
 
