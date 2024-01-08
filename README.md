@@ -19,6 +19,9 @@ The additions to Auspice interface are outlined in green in figures A1 and A2
 ![FIG A03](README_IMG/RADx_Auspice_IMG_A03.png)
 **Figure A03:** Primer windows when launched from a variant base (in red on MSA) will allow user to choose to use root sequence or variant as basis for oligo design.
 
+![FIG A04](README_IMG/RADx_Auspice_IMG_A04.png)
+**Figure A04:** Saving oligo sequences into FASTA file with default naming of group/type/position.
+
 
 ## Differences In JSON Input  Files
 
