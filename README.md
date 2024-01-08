@@ -13,17 +13,27 @@ The additions to Auspice interface are outlined in green in figures A1 and A2
 ![FIG A01](README_IMG/RADx_Auspice_IMG_A01.png)
 **Figure A01:** MSA in "tick-mode"
 
+-----
+
 ![FIG A02](README_IMG/RADx_Auspice_IMG_A02.png)
 **Figure A02:** Full MSA view with clickable bases to bring up respective primer designer
+
+-----
 
 ![FIG A03](README_IMG/RADx_Auspice_IMG_A03.png)
 **Figure A03:** Primer windows when launched from a variant base (in red on MSA) in global view
 
+-----
+
 ![FIG A04](README_IMG/RADx_Auspice_IMG_A04.png)
 **Figure A04:** Detail view: Primer windows when launched from a variant base (in red on MSA) will allow user to choose to use root sequence or variant as basis for oligo design.
 
+-----
+
 ![FIG A05](README_IMG/RADx_Auspice_IMG_A05.png)
 **Figure A05:** Detail view: Saving oligo sequences into FASTA file with default naming of group/type/position.
+
+-----
 
 
 ## Differences In JSON Input  Files
