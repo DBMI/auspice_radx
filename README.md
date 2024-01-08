@@ -11,10 +11,13 @@ Clicking on any base, both root or variant will bring you to the primer/probe br
 The additions to Auspice interface are outlined in green in figures A1 and A2
 
 ![FIG A01](README_IMG/RADx_Auspice_IMG_A01.png)
+Figure A01: MSA in "tick-mode"
 
 ![FIG A02](README_IMG/RADx_Auspice_IMG_A02.png)
+Figure A02: Full MSA view with clickable bases to bring up respective primer designer.
 
 ![FIG A03](README_IMG/RADx_Auspice_IMG_A03.png)
+Figure A03: Primer windows when launched from a variant base (in red on MSA) will allow user to choose to use root sequence or variant as basis for oligo design.
 
 
 ## Differences In JSON Input  Files
