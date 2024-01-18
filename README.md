@@ -83,6 +83,6 @@ All code incorporatd by RADx RAD is housed in the signatures folder that was add
 
 ## Useful Links
 
+[Developer Installation](https://github.com/nextstrain/auspice/blob/master/DEV_DOCS.md#developer-installation)
+
 [Running Auspice](https://docs.nextstrain.org/projects/auspice/en/stable/introduction/how-to-run.html)
-
-
