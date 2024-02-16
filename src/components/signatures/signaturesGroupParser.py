@@ -46,20 +46,20 @@ def generateGroupings(groups):
 
 ############################################################################
 # Convert the decimal year format used by Augur/Auspice to datetime,
-# including a helper function to retrieve an extra day for leap years.
+# including a helper function to retrieve the number of days for each year.
 ############################################################################
-def getLeapDay(year):
+def getYearDays(year):
 
     if calendar.isleap(year):
-        return 1
+        return 366
     else:
-        return 0
+        return 365
 
 
 def convertDecimalYearToDate(number):
 
     year = int(number)
-    d = timedelta(days = (number - year) * (365 + getLeapDay(year)))
+    d = timedelta(days = (number - year) * getYearDays(year))
     day_one = datetime(year, 1, 1)
     date = d + day_one
 
