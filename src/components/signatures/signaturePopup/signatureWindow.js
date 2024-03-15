@@ -143,18 +143,20 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
 
     // Draw the sequence:
     let displayIndex = 0;
+    let selectedBases = [];
+
     for(let i = start; i <= stop; i++) {
 
         let currentBase = sequence[i];
 
-        let rect = svg.append("rect")
+        let baseRect = svg.append("rect")
             .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
             .attr("y", 100 - (unitHeight / 2))
             .attr("width", unitWidth)
             .attr("height", unitHeight)
             .attr("fill", sequence[i].getDisplayColor());
       
-        svg.append("text")
+        let base = svg.append("text")
             .attr("x", (unitWidthTotal * (displayIndex + 1)) - 4)
             .attr("y", 100)
             .style("fill", fontDisplayColor)
@@ -163,13 +165,21 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
             .attr("text-align", "left")
             .text(sequence[i].getDisplayBase())
             .on("click", function() {
-                //alert("Clicked on position " + (displayIndex + 1) + ".")
-                if(rect.attr("fill") == sequence[i].getDisplayColor()) {
-                    rect.attr("fill", "yellow");
+                if (!selectedBases.includes(base)) {
+                    selectedBases.push(base);
+                    baseRect.attr("fill", "yellow");
                 }
                 else {
-                    rect.attr("fill", sequence[i].getDisplayColor());
+                    selectedBases = selectedBases.filter(selectedBase => selectedBase !== base);
+                    baseRect.attr("fill", sequence[i].getDisplayColor());
                 }
+                /*if(baseRect.attr("fill") == sequence[i].getDisplayColor()) {
+                    baseRect.attr("fill", "yellow");
+                    selectedBases
+                }
+                else {
+                    baseRect.attr("fill", sequence[i].getDisplayColor());
+                }*/
             })
             .append("title")
             .text(function() {
