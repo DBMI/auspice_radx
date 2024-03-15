@@ -4,7 +4,7 @@ import { scaleLinear } from "d3-scale";
 import { select } from "d3-selection";
 
 const w = 800;
-const h = 400;
+const h = 300;
 
 export const displaySignatureWindow = () => {
 
@@ -114,7 +114,7 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
         .tickSize(6); // Specify the length of ticks
     var xAxisGroup = svg.append("g")
         .attr("class", "x-axis")
-        .attr("transform", "translate(0," + h / 6 + ")") // Adjust y position if needed
+        .attr("transform", "translate(0," + h / 8 + ")") // Adjust y position if needed
         .call(xAxis);
     xAxisGroup.selectAll(".tick line")
         .style("stroke", "black"); // Adjust tick color
@@ -124,60 +124,63 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
 
 
     // Draw the X-axis (sequence positions relative to selected position):
-    startX = unitWidthTotal;
-    endX = svgWidth - unitWidthTotal;
-    xDomain = [start - position, stop - position];
-    tickStart = Math.ceil(start - position / 10) * 10;
-    tickStop = Math.floor(stop - position / 10) * 10;
-    xScale = scaleLinear()
-        .domain(xDomain)
-        .range([startX, endX]);
-    var xAxis = axisBottom(xScale)
-        .tickValues(range(tickStart, tickStop + 1, 10))
+    var xScaleRelative = scaleLinear()
+        .domain([-flankingSequenceLength, flankingSequenceLength]) // Range of relative positions
+        .range([startX, endX]); // Same range as the absolute scale
+    var xAxisRelative = axisBottom(xScaleRelative)
+        .tickValues(range(-flankingSequenceLength, flankingSequenceLength + 1, 10)) // this might be problematic if the position chosen is less than flankingSequenceLength from either end.
         .tickSize(6); // Specify the length of ticks
-    var xAxisGroup = svg.append("g")
+    var xAxisGroupRelative = svg.append("g")
         .attr("class", "x-axis")
-        .attr("transform", "translate(0," + h / 3 + ")") // Adjust y position if needed
-        .call(xAxis);
-    xAxisGroup.selectAll(".tick line")
+        .attr("transform", "translate(0," + (h / 2) + ")") // Adjust y position if needed
+        .call(xAxisRelative);
+    xAxisGroupRelative.selectAll(".tick line")
         .style("stroke", "black"); // Adjust tick color
-    xAxisGroup.selectAll(".tick text")
+    xAxisGroupRelative.selectAll(".tick text")
         .style("font-size", "10px") // Adjust font size
         .style("fill", "black"); // Adjust text color
 
-        
+
     // Draw the sequence:
     let displayIndex = 0;
-    for(let i = start; i < stop; i++) {
+    for(let i = start; i <= stop; i++) {
 
         let currentBase = sequence[i];
 
-        svg.append("rect")
-            .attr("x", (unitWidthTotal * (displayIndex + 1)))
+        let rect = svg.append("rect")
+            .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
             .attr("y", 100 - (unitHeight / 2))
             .attr("width", unitWidth)
             .attr("height", unitHeight)
-            .attr("fill", sequence[i].getDisplayColor())
-            .append("title")
-            .text(function() {
-                return displayIndex;
-            });
-            //.enter();
+            .attr("fill", sequence[i].getDisplayColor());
       
         svg.append("text")
-            .attr("x", (unitWidthTotal * (displayIndex + 1)) + 3)
+            .attr("x", (unitWidthTotal * (displayIndex + 1)) - 4)
             .attr("y", 100)
             .style("fill", fontDisplayColor)
             .attr("dy", ".4em")
             .attr("font-size", "12px")
             .attr("text-align", "left")
             .text(sequence[i].getDisplayBase())
+            .on("click", function() {
+                //alert("Clicked on position " + (displayIndex + 1) + ".")
+                if(rect.attr("fill") == sequence[i].getDisplayColor()) {
+                    rect.attr("fill", "yellow");
+                }
+                else {
+                    rect.attr("fill", sequence[i].getDisplayColor());
+                }
+            })
+            .append("title")
+            .text(function() {
+                return i;
+            })
             .style("cursor", "pointer");
 
         displayIndex++;
     }
 
-    content.scrollLeft = (flankingSequenceLength * unitWidthTotal) - (w * 3 / 4);
+    content.scrollLeft = (flankingSequenceLength * unitWidthTotal) - (1.25 * w);
 }
 
 
