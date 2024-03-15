@@ -1,5 +1,6 @@
 import { Base } from "./base";
-import { displayPrimerWindow, generatePrimerWindowContent } from "./primerWindow";
+import { displaySignatureWindow, generateSignatureWindowContent, populateSignatureSequence } from "./signaturePopup/signatureWindow";
+//import { displayPrimerWindow, generatePrimerWindowContent } from "./primerPopup/primerWindow";
 
 const PARSE_BY_AUTHOR = 'author';
 const PARSE_BY_CITY = 'city';
@@ -148,7 +149,7 @@ export const parseCombinedMutationsBy = (parseBy, inputTree) => {
       groupMutations.set(groupKey, injectParentMutations(node, nodes, groupMutations.get(groupKey)));
     }
   }
-  console.log("GROUP SIZES", groupSizes);
+
   return groupMutations;
 }
   
@@ -415,7 +416,12 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
         .attr("text-align", "left")
         .text(currentSequence[i].getDisplayBase())
         .style("cursor", "pointer")
-        .on("click", function() { 
+        .on("click", function() {
+          const signatureWindow = displaySignatureWindow();
+          signatureWindow.document.body.innerHTML = generateSignatureWindowContent(group, i);
+          populateSignatureSequence(signatureWindow, currentSequence, i);
+        })
+        /*.on("click", function() { 
           
           const primerWindow = displayPrimerWindow();
           primerWindow.document.body.innerHTML = generatePrimerWindowContent(group, currentSequence, i);
@@ -485,7 +491,7 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
               primerWindow.document.getElementById("warningMessages").style.display = 'block';
             }
           }, false);
-        })
+        })*/
         .append("title")
         .text(function() {
           return i;
