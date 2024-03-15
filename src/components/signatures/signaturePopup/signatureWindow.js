@@ -203,7 +203,7 @@ function getHeaderDiv(group, position) {
 function getFooterDiv() {
 
     let footer = "<div class=\"footer\">";
-    footer += "<a href=\"https://www.radxrad.org\">RADx Radical DCC 2023</a>";
+    footer += "<a href=\"https://www.radxrad.org\">RADx Radical DCC 2024</a>";
     footer += "</div>";
 
     return footer;
