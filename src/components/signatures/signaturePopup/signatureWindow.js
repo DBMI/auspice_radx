@@ -2,9 +2,16 @@ import { range } from "d3-array";
 import { axisBottom, axisTop } from "d3-axis";
 import { scaleLinear } from "d3-scale";
 import { select } from "d3-selection";
+import { lowerCase } from "lodash";
 
 const w = 800;
-const h = 300;
+const h = 600;
+const unitWidth = 15;
+const unitHeight = unitWidth;
+const unitBuffer = 5;
+const unitWidthTotal = unitWidth + unitBuffer;
+const fontDisplayColor = "#000000";
+const selectedColor = "#FFF200";
 
 export const displaySignatureWindow = () => {
 
@@ -20,7 +27,7 @@ export const displaySignatureWindow = () => {
   
     const signatureWindow = window.open("", "_blank", 
       `
-        scrollbars=yes,
+        scrollbars=no,
         width=${w / systemZoom}, 
         height=${h / systemZoom}, 
         top=${top}, 
@@ -57,7 +64,9 @@ export const generateSignatureWindowContent = (group, position) => {
 
     html += getHeaderDiv(group, position);
 
-    html += "<div id=\"content\" class=\"scrollPane\"></div>";
+    html += "<div id=\"selection\" class=\"scrollPane\"></div>";
+
+    html += "<div id=\"results\" class=\"results\"></div>";
 
     html += getFooterDiv();
 
@@ -73,13 +82,6 @@ export const generateSignatureWindowContent = (group, position) => {
 
 export const populateSignatureSequence = (signatureWindow, sequence, position) => {
 
-    const unitWidth = 15;
-    const unitHeight = unitWidth;
-    const unitBuffer = 5;
-    const unitWidthTotal = unitWidth + unitBuffer;
-    
-    const fontDisplayColor = "#000000";
-
     // Include up to 500 bases to the 5' and 3' of the selected position in the display:
     const flankingSequenceLength = 500;
     let start = 0;
@@ -93,11 +95,17 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
 
     const svgWidth = (stop - start + 2) * unitWidthTotal;
 
-    var content = signatureWindow.document.getElementById('content');
+    var selectionContent = signatureWindow.document.getElementById('selection');
+    var resultsContent = signatureWindow.document.getElementById('results');
 
-    var svg = select(content)
+    var svg = select(selectionContent)
         .append("svg")
         .attr("width", svgWidth)
+        .attr("height", "100%");
+
+    var resultsSvg = select(resultsContent)
+        .append("svg")
+        .attr("width", "100%")
         .attr("height", "100%");
     
     // Draw the X-axis (absolute sequence positions):
@@ -114,7 +122,8 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
         .tickSize(6); // Specify the length of ticks
     var xAxisGroup = svg.append("g")
         .attr("class", "x-axis")
-        .attr("transform", "translate(0," + h / 8 + ")") // Adjust y position if needed
+        //.attr("transform", "translate(0," + h / 12 + ")") // Adjust y position if needed
+        .attr("transform", "translate(0, 50)")
         .call(xAxis);
     xAxisGroup.selectAll(".tick line")
         .style("stroke", "black"); // Adjust tick color
@@ -132,7 +141,8 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
         .tickSize(6); // Specify the length of ticks
     var xAxisGroupRelative = svg.append("g")
         .attr("class", "x-axis")
-        .attr("transform", "translate(0," + (h / 2) + ")") // Adjust y position if needed
+        //.attr("transform", "translate(0," + (h / 4) + ")") // Adjust y position if needed
+        .attr("transform", "translate(0, 110)")
         .call(xAxisRelative);
     xAxisGroupRelative.selectAll(".tick line")
         .style("stroke", "black"); // Adjust tick color
@@ -140,66 +150,173 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
         .style("font-size", "10px") // Adjust font size
         .style("fill", "black"); // Adjust text color
 
+    let selectedBases = [];
+    drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSvg);
+
+    let midpoint = (svgWidth / 2) - (w * 3 / 4)
+
+    setTimeout(() => {
+        selectionContent.scrollLeft = midpoint;
+    }, 100);
+}
+
+
+function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSvg) {
 
     // Draw the sequence:
     let displayIndex = 0;
-    let selectedBases = [];
+    let baseRect = [];
 
-    for(let i = start; i <= stop; i++) {
-
-        let currentBase = sequence[i];
-
-        let baseRect = svg.append("rect")
+    for (let i = start; i <= stop; i++) {
+    
+        baseRect[i] = svg.append("rect")
             .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
-            .attr("y", 100 - (unitHeight / 2))
+            .attr("y", 80 - (unitHeight / 2))
             .attr("width", unitWidth)
             .attr("height", unitHeight)
             .attr("fill", sequence[i].getDisplayColor());
-      
+
         let base = svg.append("text")
             .attr("x", (unitWidthTotal * (displayIndex + 1)) - 4)
-            .attr("y", 100)
+            .attr("y", 80)
             .style("fill", fontDisplayColor)
             .attr("dy", ".4em")
             .attr("font-size", "12px")
-            .attr("text-align", "left")
+            .attr("text-align", "center")
             .text(sequence[i].getDisplayBase())
+            .style("cursor", "pointer")
             .on("click", function() {
-                if (!selectedBases.includes(base)) {
-                    selectedBases.push(base);
-                    baseRect.attr("fill", "yellow");
+                if (!selectedBases.includes(i)) {
+                    if (selectedBases.length >= 2) {
+                        // Clear previous selections
+                        selectedBases.forEach(index => {
+                            baseRect[index].attr("fill", sequence[index].getDisplayColor());
+                        });
+                        selectedBases = [];
+                    }
+                    selectedBases.push(i);
+                    baseRect[i].attr("fill", selectedColor);
                 }
                 else {
-                    selectedBases = selectedBases.filter(selectedBase => selectedBase !== base);
-                    baseRect.attr("fill", sequence[i].getDisplayColor());
+                    selectedBases = selectedBases.filter(selectedBase => selectedBase !== i);
+                    baseRect[i].attr("fill", sequence[i].getDisplayColor());
                 }
-                /*if(baseRect.attr("fill") == sequence[i].getDisplayColor()) {
-                    baseRect.attr("fill", "yellow");
-                    selectedBases
+
+                if (selectedBases.length == 1 && selectedBases[0] == i) {
+                    baseRect[i].attr("fill", selectedColor);
+                }
+
+                if (selectedBases.length == 2) {
+                    selectedBases = selectedBases.sort(function(a, b) {
+                        return a - b;
+                    });
+                    displayResults(resultsSvg, sequence, selectedBases);
+                }
+                else if (selectedBases.length > 2) {
+                    removeResults(resultsSvg);
                 }
                 else {
-                    baseRect.attr("fill", sequence[i].getDisplayColor());
-                }*/
+                    removeResults(resultsSvg);
+                }
             })
             .append("title")
             .text(function() {
                 return i;
-            })
-            .style("cursor", "pointer");
+            });
 
         displayIndex++;
     }
-
-    content.scrollLeft = (flankingSequenceLength * unitWidthTotal) - (1.25 * w);
 }
 
+
+function displayResults(resultsSvg, sequence, selectedBases) {
+
+    removeResults(resultsSvg);
+
+    let seqString = "";
+
+    for(let i = selectedBases[0]; i <= selectedBases[1]; i++) {
+        seqString += getDisplayCase(sequence[i]);
+    }
+
+    resultsSvg.append("text")
+        .attr("x", 100)
+        .attr("y", 25)
+        .style("fill", fontDisplayColor)
+        .attr("dy", "1em")
+        .attr("font-size", "20px")
+        .attr("text-align", "center")    
+        .text(seqString);
+
+    resultsSvg.append("text")
+        .attr("x", 100)
+        .attr("y", 50)
+        .style("fill", fontDisplayColor)
+        .attr("dy", "1em")
+        .attr("font-size", "20px")
+        .attr("text-align", "center")    
+        .text("Start Position: " + selectedBases[0]);
+
+    resultsSvg.append("text")
+        .attr("x", 100)
+        .attr("y", 75)
+        .style("fill", fontDisplayColor)
+        .attr("dy", "1em")
+        .attr("font-size", "20px")
+        .attr("text-align", "center")    
+        .text("Stop Position: " + selectedBases[1]);
+
+    resultsSvg.append("text")
+        .attr("x", 100)
+        .attr("y", 100)
+        .style("fill", fontDisplayColor)
+        .attr("dy", "1em")
+        .attr("font-size", "20px")
+        .attr("text-align", "center")    
+        .text("Length: " + seqString.length);
+
+    resultsSvg.append("text")
+        .attr("x", 100)
+        .attr("y", 125)
+        .style("fill", fontDisplayColor)
+        .attr("dy", "1em")
+        .attr("font-size", "20px")
+        .attr("text-align", "center")    
+        .text("Tm: " + getTm(seqString) + "°");
+
+    resultsSvg.append("text")
+        .attr("x", 100)
+        .attr("y", 150)
+        .style("fill", fontDisplayColor)
+        .attr("dy", "1em")
+        .attr("font-size", "20px")
+        .attr("text-align", "center")    
+        .text("GC: " + getGCPercent(seqString) + "%");
+}
+
+
+// If there are no mutations at this allele return this in lower case designation.
+function getDisplayCase(base) {
+
+    if(!base.containsMutations()) {
+        return base.getDisplayBase().toLowerCase();
+    }
+
+    return base.getDisplayBase();
+}
+
+
+function removeResults(resultsSvg) { 
+
+    resultsSvg.selectAll("*").remove();
+}
 
 
 function getHeaderDiv(group, position) {
 
     let header = "<div class=\"header\">";
     header += "<img src=\"../../../dist/1730310c32752e095ee7.svg\"/>";
-    header += "<h1>Signature Selector</h1>";
+    header += "<h1>Signature Selector</h1><br/>";
     header += "<ul>";
     header += "<li>Sequence Group: <span class=\"dataText\">" + group + "</span></li>";
     header += "<li>Selected Position: <span class=\"dataText\">" + position + "</span></li>";
@@ -217,6 +334,31 @@ function getFooterDiv() {
     footer += "</div>";
 
     return footer;
+}
+
+
+function getTm(sequence) {
+
+    const a = (sequence.toUpperCase().match(/A/g) || []).length;
+    const c = (sequence.toUpperCase().match(/C/g) || []).length;
+    const g = (sequence.toUpperCase().match(/G/g) || []).length;
+    const t = (sequence.toUpperCase().match(/T/g) || []).length;
+
+    const at = a + t;
+    const cg = c + g;
+
+    // https://www.rosalind.bio/en/knowledge/what-formula-is-used-to-calculate-tm
+    
+    return Math.round(64.9 + (41 * (cg - 16.4) / (at + cg)));
+}
+
+
+function getGCPercent(sequence) {
+
+    const c = (sequence.toUpperCase().match(/C/g) || []).length;
+    const g = (sequence.toUpperCase().match(/G/g) || []).length;
+
+    return Math.round(100 * (c + g) / sequence.length);
 }
 
 function getSignatureWindowStyle() {
@@ -267,38 +409,26 @@ function getSignatureWindowStyle() {
             letter-spacing: -0.5px;
             line-height: 1.0;
         }
+        .results {
+            width: 100%;
+            height: 40%;
+            margin: 0 auto; /* Center the results div horizontally */
+            font-family: Lato, &quot;Helvetica Neue&quot;, Helvetica, sans-serif;
+            font-size: 20px;
+            margin-left: 5px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-weight: 350;
+            style="overflow-wrap: break-word;"
+            flex: 1;
+        }
         .scrollPane {
-            width: "100%";
-            height: 225px;
+            width: 100%;
+            height: 60%;
+            flex: 1;
             overflow-x: scroll;
             overflow-y: hidden;
             scrollbar-base-color: "pink";
-        }
-        .selectWrapper{
-            margin-top: 5px;
-            border-radius:5px;
-            display:inline-block;
-            overflow:hidden;
-            background:#cccccc;
-            border:1px solid #cccccc;
-        }
-        .selectBox{
-            font-family: Lato, &quot;Helvetica Neue&quot;, Helvetica, sans-serif;
-            width: 200px;
-            height: 30px;
-            border: 0px;
-            outline: none;
-            font-weight: 350;
-            color: rgb(51, 51, 51);
-            letter-spacing: -0.5px;
-            line-height: 1.2;
-            border: 6px solid transparent;
-            border-color: #fff transparent transparent transparent;
-        }
-        .wrapper {
-            min-height: 100%;
-            display: grid;
-            grid-template-rows: auto 1fr auto;
         }
         .header {
             margin-top: 0;
@@ -307,7 +437,7 @@ function getSignatureWindowStyle() {
             background: #30353F;
             padding: 0px;
             width: 100%;
-            height: 225px;
+            height: 250px;
         }
         .header img {
             float: left;
@@ -320,6 +450,9 @@ function getSignatureWindowStyle() {
             line-height: 20px;
             color: #D3D3D3;
             font-size: 38px;
+            margin-left: 0px;
+            margin-top: 15px;
+            margin-bottom: 15px;
             font-weight: 350;
             letter-spacing: 1.5rem;
         }
@@ -335,67 +468,11 @@ function getSignatureWindowStyle() {
         }
         .header ul {
             margin: 50px 20px;
+            width: 25%;
             text-align: left;
             color: #D3D3D3;
             list-style-type: none;
-        }
-        .dataText {
-            color: #5DA8A3;
-        }
-        .messages {
-            height: 45px;
-        }
-        .warningMessages {
-            display: none;
-            padding: 20px;
-            background: #FFC1CC;
-            text-align: center;
-            vertical-align: middle;
-            color: #AE0000;
-            font-size: 24px;
-            font-weight: 350;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        .primerWindow {
-            padding: 0px;
-            width: 75%;
-            margin: auto;
-            background: "#FDDDE6";
-            padding-top: 20px;
-            padding-bottom: 100px;
-        }
-        .primers {
-            font-family: Lato, &quot;Helvetica Neue&quot;, Helvetica, sans-serif;
-            font-size: 16px;
-        }
-        .primerText {
-            font-family: "courier", "courier new", "serif";
-            font-size: 16px;
-        }
-        .primerWindow h2 {
-            font-family: Lato, &quot;Helvetica Neue&quot;, Helvetica, sans-serif;
-            font-size: 28px;
-            margin-left: 0px;
-            margin-top: 15px;
-            margin-bottom: 15px;
-            font-weight: 350;
-            color: rgb(51, 51, 51);
-            letter-spacing: -0.5px;
-            line-height: 1.2;
-        }
-        .downloadPrimersButton {
-            background-color: #5DA8A3;
-            border: none;
-            color: white;--#30353F;
-            cursor:pointer;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 15px 15px;
-        }
+        } 
         .footer {
             margin-top: 0;
             text-align: center;
@@ -420,20 +497,10 @@ function getSignatureWindowStyle() {
             text-decoration: none;
             color: #D3D3D3;
         }
-        .primerPair {
-            width: 100%;
-            overflow: hidden; /* will contain if #first is longer than #second */
-        }
-        .primerSelect {
-            width: 10%;
-            float:left; /* add this */
-        }
-        .primerSequence {
-            width: 60%;
-            float:left; /* add this */
-        }
-        .primerMeta {
-            overflow: hidden; /* if you don't want #second to wrap below #first */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
     `;
 

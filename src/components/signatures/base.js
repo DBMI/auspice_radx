@@ -81,7 +81,7 @@ export class Base {
     }
   
   
-    hasMutation = function() {
+    containsMutations = function() {
   
       if(this.mutantBases.size === 0) {
         return false;
@@ -107,6 +107,16 @@ export class Base {
       }
       else if(this.originalBase === BASE_T) {
         return COLOR_T;
+      }
+    }
+
+
+    containsMutations = function() {
+      if(this.mutantBases.size === 0) {
+        return false;
+      }
+      else {
+        return true;
       }
     }
   
