@@ -12,6 +12,7 @@ const unitBuffer = 5;
 const unitWidthTotal = unitWidth + unitBuffer;
 const fontDisplayColor = "#000000";
 const selectedColor = "#FFF200";
+const selectedColorMutant = "#ED7014";
 
 export const displaySignatureWindow = () => {
 
@@ -196,7 +197,12 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                 // If the selection is not part of selectedBases push it to selectedBases and change its color to selected.
                 if(!selectedBases.includes(i)) {
                     selectedBases.push(i);
-                    baseRect[i].attr("fill", selectedColor);
+                    if(sequence[i].containsMutations()) {
+                        baseRect[i].attr("fill", selectedColorMutant);
+                    }
+                    else {
+                        baseRect[i].attr("fill", selectedColor);
+                    }
                 }
                 // Otherwise, remove it from selectedBases and change its color back to the original display color.
                 else {
@@ -210,7 +216,13 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                         return a - b;
                     });
                     for(let n = selectedBases[0]; n <= selectedBases[1]; n++) {
-                        baseRect[n].attr("fill", selectedColor);
+                        if(sequence[n].containsMutations()) {
+                            baseRect[n].attr("fill", selectedColorMutant);
+                        }
+                        else {
+                            baseRect[n].attr("fill", selectedColor);
+                        }
+                        //baseRect[n].attr("fill", selectedColor);
                     }
                     displayResults(resultsSvg, sequence, selectedBases);
                 }
@@ -241,7 +253,7 @@ function displayResults(resultsSvg, sequence, selectedBases) {
 
     resultsSvg.append("text")
         .attr("x", 100)
-        .attr("y", 25)
+        .attr("y", 10)
         .style("fill", fontDisplayColor)
         .attr("dy", "1em")
         .attr("font-size", "20px")
@@ -415,6 +427,7 @@ function getSignatureWindowStyle() {
             margin: 0 auto; /* Center the results div horizontally */
             font-family: Lato, &quot;Helvetica Neue&quot;, Helvetica, sans-serif;
             font-size: 20px;
+            letter-spacing: 0.4rem;
             margin-left: 5px;
             margin-top: 5px;
             margin-bottom: 5px;
