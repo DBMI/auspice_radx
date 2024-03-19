@@ -186,30 +186,26 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
             .text(sequence[i].getDisplayBase())
             .style("cursor", "pointer")
             .on("click", function() {
-                if(!selectedBases.includes(i)) {
-                    if (selectedBases.length >= 2) {
-                        // Clear previous selections
-                        for(let m = selectedBases[0]; m <= selectedBases[1]; m++) {
-                            baseRect[m].attr("fill", sequence[m].getDisplayColor());
-                        }
-                        //selectedBases.forEach(index => {
-                        //    baseRect[index].attr("fill", sequence[index].getDisplayColor());
-                        //});
-                        selectedBases = [];
+                // Clear previous selections if we already have two selected bases at this point; we're starting over now.
+                if(selectedBases.length == 2) {
+                    for(let m = selectedBases[0]; m <= selectedBases[1]; m++) {
+                        baseRect[m].attr("fill", sequence[m].getDisplayColor());
                     }
+                    selectedBases = [];
+                }
+                // If the selection is not part of selectedBases push it to selectedBases and change its color to selected.
+                if(!selectedBases.includes(i)) {
                     selectedBases.push(i);
                     baseRect[i].attr("fill", selectedColor);
                 }
+                // Otherwise, remove it from selectedBases and change its color back to the original display color.
                 else {
                     selectedBases = selectedBases.filter(selectedBase => selectedBase !== i);
                     baseRect[i].attr("fill", sequence[i].getDisplayColor());
                 }
-
-                if (selectedBases.length == 1 && selectedBases[0] == i) {
-                    baseRect[i].attr("fill", selectedColor);
-                }
-
-                if (selectedBases.length == 2) {
+                // At this point, if there are two elements in selectedBases, change their colors and those of all in between to selected.
+                // Then, display the results in the resultsSvg.
+                if(selectedBases.length == 2) {
                     selectedBases = selectedBases.sort(function(a, b) {
                         return a - b;
                     });
@@ -218,9 +214,7 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                     }
                     displayResults(resultsSvg, sequence, selectedBases);
                 }
-                else if (selectedBases.length > 2) {
-                    removeResults(resultsSvg);
-                }
+                // Otherwise, clear the resultsSvg.
                 else {
                     removeResults(resultsSvg);
                 }
