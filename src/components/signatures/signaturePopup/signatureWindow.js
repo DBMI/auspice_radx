@@ -4,7 +4,7 @@ import { scaleLinear } from "d3-scale";
 import { select } from "d3-selection";
 import { lowerCase } from "lodash";
 
-const w = 800;
+const w = 900;
 const h = 600;
 const unitWidth = 15;
 const unitHeight = unitWidth;
@@ -186,12 +186,15 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
             .text(sequence[i].getDisplayBase())
             .style("cursor", "pointer")
             .on("click", function() {
-                if (!selectedBases.includes(i)) {
+                if(!selectedBases.includes(i)) {
                     if (selectedBases.length >= 2) {
                         // Clear previous selections
-                        selectedBases.forEach(index => {
-                            baseRect[index].attr("fill", sequence[index].getDisplayColor());
-                        });
+                        for(let m = selectedBases[0]; m <= selectedBases[1]; m++) {
+                            baseRect[m].attr("fill", sequence[m].getDisplayColor());
+                        }
+                        //selectedBases.forEach(index => {
+                        //    baseRect[index].attr("fill", sequence[index].getDisplayColor());
+                        //});
                         selectedBases = [];
                     }
                     selectedBases.push(i);
@@ -210,6 +213,9 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                     selectedBases = selectedBases.sort(function(a, b) {
                         return a - b;
                     });
+                    for(let n = selectedBases[0]; n <= selectedBases[1]; n++) {
+                        baseRect[n].attr("fill", selectedColor);
+                    }
                     displayResults(resultsSvg, sequence, selectedBases);
                 }
                 else if (selectedBases.length > 2) {
