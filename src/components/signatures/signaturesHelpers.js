@@ -388,7 +388,7 @@ export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementC
 }
 
 /* Draws the sequence for a single grouping as a row of base-labeled squares. */
-export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, currentSequence, geneLength, groupIndex, yMSA, scales, selection, zoomCoordinates, group) => {
+export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, currentSequence, geneLength, groupIndex, yMSA, scales, selection, zoomCoordinates, group, groupCategory) => {
 
   for(let i = 0; i < currentSequence.length; i++) {
 
@@ -418,7 +418,7 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
         .style("cursor", "pointer")
         .on("click", function() {
           const signatureWindow = displaySignatureWindow();
-          signatureWindow.document.body.innerHTML = generateSignatureWindowContent(group, i);
+          signatureWindow.document.body.innerHTML = generateSignatureWindowContent(groupCategory, group, i);
           populateSignatureSequence(signatureWindow, currentSequence, i);
         })
         /*.on("click", function() { 

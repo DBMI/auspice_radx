@@ -46,7 +46,7 @@ export const displaySignatureWindow = () => {
 }
 
 
-export const generateSignatureWindowContent = (group, position) => {
+export const generateSignatureWindowContent = (groupCategory, group, position) => {
 
     let html = "<html>";
 
@@ -63,7 +63,7 @@ export const generateSignatureWindowContent = (group, position) => {
 
     html += "<div class=\"wrapper\">";
 
-    html += getHeaderDiv(group, position);
+    html += getHeaderDiv(groupCategory, group, position);
 
     html += "<div id=\"selection\" class=\"scrollPane\"></div>";
 
@@ -222,7 +222,6 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                         else {
                             baseRect[n].attr("fill", selectedColor);
                         }
-                        //baseRect[n].attr("fill", selectedColor);
                     }
                     displayResults(resultsSvg, sequence, selectedBases);
                 }
@@ -324,13 +323,14 @@ function removeResults(resultsSvg) {
 }
 
 
-function getHeaderDiv(group, position) {
+function getHeaderDiv(groupCategory, group, position) {
 
     let header = "<div class=\"header\">";
     header += "<img src=\"../../../dist/1730310c32752e095ee7.svg\"/>";
     header += "<h1>Signature Selector</h1><br/>";
     header += "<ul>";
-    header += "<li>Sequence Group: <span class=\"dataText\">" + group + "</span></li>";
+    header += "<li>Group Category: <span class=\"dataText\">" + groupCategory.charAt(0).toUpperCase() + groupCategory.slice(1) + "</span></li>";
+    header += "<li>Sequence Group: <span class=\"dataText\">" + group.replace(/-/g, ' ') + "</span></li>";
     header += "<li>Selected Position: <span class=\"dataText\">" + position + "</span></li>";
     header += "</ul>"
     header += "</div>";
@@ -464,7 +464,7 @@ function getSignatureWindowStyle() {
             color: #D3D3D3;
             font-size: 38px;
             margin-left: 0px;
-            margin-top: 15px;
+            margin-top: 40px;
             margin-bottom: 15px;
             font-weight: 350;
             letter-spacing: 1.5rem;
@@ -480,6 +480,7 @@ function getSignatureWindowStyle() {
             letter-spacing: 1.5rem;
         }
         .header ul {
+            font-size: 20px;
             margin: 50px 20px;
             width: 25%;
             text-align: left;

@@ -346,7 +346,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       this.scales,
       selection,
       this.zoomCoordinates,
-      "Reference Sequence");
+      "Reference Sequence", "Reference Sequence");
   }
 
   let i = 0;
@@ -401,7 +401,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
           this.scales,
           selection,
           this.zoomCoordinates,
-          categoryElement);
+          categoryElement, colorBy);
       }
 
     i += 1;
