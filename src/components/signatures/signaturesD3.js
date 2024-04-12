@@ -332,7 +332,7 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       .enter();
   }
   else {
-    
+
     let sequence = retrieveSequence(props.metadata.rootSequence.nuc, []);
 
     drawGroupSequence(
@@ -346,7 +346,9 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       this.scales,
       selection,
       this.zoomCoordinates,
-      "Reference Sequence", "Reference Sequence");
+      "Reference Sequence",
+      "Reference Sequence",
+      props.annotations);
   }
 
   let i = 0;
@@ -401,7 +403,12 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
           this.scales,
           selection,
           this.zoomCoordinates,
-          categoryElement, colorBy);
+          categoryElement,
+          colorBy,
+          categoryGroup,
+          mutationsMap,
+          props.metadata.rootSequence.nuc,
+          props.annotations);
       }
 
     i += 1;

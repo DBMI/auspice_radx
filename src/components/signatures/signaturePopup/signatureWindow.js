@@ -3,9 +3,13 @@ import { axisBottom, axisTop } from "d3-axis";
 import { scaleLinear } from "d3-scale";
 import { select } from "d3-selection";
 import { lowerCase } from "lodash";
+import { getAllRestrictionSites, getNonConservedRestrictionSites } from "./helpers/restrictionAnalysis";
+import { getBrighterColor } from "../../../util/colorHelpers";
+import { retrieveSequence } from "./../signaturesHelpers";
+import { getAminoAcidSequence } from "./helpers/dnaToAA";
 
 const w = 900;
-const h = 600;
+const h = 750;
 const unitWidth = 15;
 const unitHeight = unitWidth;
 const unitBuffer = 5;
@@ -14,6 +18,10 @@ const fontDisplayColor = "#000000";
 const selectedColor = "#FFF200";
 const selectedColorMutant = "#ED7014";
 
+let actualWidth = w;    // Reset this when creating the window below.
+let actualHeight = h;   // Reset this when creating the window below.
+
+
 export const displaySignatureWindow = () => {
 
     const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
@@ -21,16 +29,19 @@ export const displaySignatureWindow = () => {
   
     const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
     const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-  
+    
     const systemZoom = width / window.screen.availWidth;
     const left = (width - w) / 2 / systemZoom + dualScreenLeft;
     const top = (height - h) / 2 / systemZoom + dualScreenTop;
-  
+    
+    actualWidth = w / systemZoom;
+    actualHeight = h / systemZoom;
+
     const signatureWindow = window.open("", "_blank", 
       `
         scrollbars=no,
-        width=${w / systemZoom}, 
-        height=${h / systemZoom}, 
+        width=${actualWidth}, 
+        height=${actualHeight}, 
         top=${top}, 
         left=${left},
         titlebar=no,
@@ -39,14 +50,41 @@ export const displaySignatureWindow = () => {
       `
     );
 
-    if (window.focus) signatureWindow.focus();
+    signatureWindow.openTab = function(evt, tabName) {
+        var i, tabcontent, tablinks;
 
+        // Hide all tab content
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Remove the 'active' class from all tab buttons
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the specific tab content
+        document.getElementById(tabName).style.display = "block";
+
+        // Add the 'active' class to the button that opened the tab
+        evt.currentTarget.className += " active";
+    }
+
+    if (window.focus) signatureWindow.focus();
 
     return signatureWindow;
 }
 
 
-export const generateSignatureWindowContent = (groupCategory, group, position) => {
+/*export const initializeSignatureWindow = (groupCategory, group, position, orf) => {
+
+    generateSignatureWindowContent(groupCategory, group, position, orf);
+}*/
+
+
+export const generateSignatureWindowContent = (groupCategory, group, position, orf) => {
 
     let html = "<html>";
 
@@ -61,17 +99,32 @@ export const generateSignatureWindowContent = (groupCategory, group, position) =
 
     html += "<body>";
 
+    html += getHeaderDiv(groupCategory, group, position, orf);
+
     html += "<div class=\"wrapper\">";
 
-    html += getHeaderDiv(groupCategory, group, position);
+    html += getTabDiv();
 
-    html += "<div id=\"selection\" class=\"scrollPane\"></div>";
-
+    html += "<div id=\"ampliconSelection\" class=\"tabcontent\" style=\"display: block;\">";
+    html += "<div id=\"selection\" class=\"horizontalScrollPane\" style=\"width: 100%\"></div>";
     html += "<div id=\"results\" class=\"results\"></div>";
+    html += "</div>";
+
+    html += "<div id=\"restrictionComparison\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
+    html += "<div id=\"nonConservedSites\" class=\"verticalScrollPane\" style=\"height: 40%\"></div>";
+    html += "<div id=\"singleEnzymeSites\" style=\"display: none; height: 60%\"></div>";
+    html += "</div>";
+
+    html += "<div id=\"aaAlignment\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
+    html += "<div id=\"aaMSALegend\" style=\"width: 80px; flex-shrink: 0;\"></div>";
+    html += "<div id=\"aaMSA\" class=\"horizontalScrollPane\" style=\"width: 100%\"></div>";
+    html += "</div>";
+
+    html += "</div>";
 
     html += getFooterDiv();
 
-    html += "</div>";
+ 
 
     html += "</body>";
 
@@ -81,7 +134,80 @@ export const generateSignatureWindowContent = (groupCategory, group, position) =
 }
 
 
+function initializeTabButtons(signatureWindow) {
+
+    const ampliconSelectionDiv = signatureWindow.document.getElementById("ampliconSelection");
+    const restrictionComparisonDiv = signatureWindow.document.getElementById("restrictionComparison");
+    const aaAlignmentDiv = signatureWindow.document.getElementById("aaAlignment");
+
+    const ampliconButton = signatureWindow.document.getElementById("ampliconButton");
+    const restrictionButton = signatureWindow.document.getElementById("restrictionButton");
+    const aaAlignmentButton = signatureWindow.document.getElementById("aaAlignmentButton");
+
+    const selectedBackgroundColor = getBrighterColor(getBrighterColor(getBrighterColor('#30353F')));
+
+    ampliconButton.style.background = selectedBackgroundColor;
+    ampliconButton.style.fontDisplayColor = '##5da8a3';
+
+    restrictionButton.style.background = '#D3D3D3';
+    ampliconButton.style.fontDisplayColor = '#30353F';
+
+    aaAlignmentButton.style.background = '#D3D3D3';
+    aaAlignmentButton.style.fontDisplayColor = '#30353F';
+
+    ampliconButton.addEventListener("click", function() { 
+
+        restrictionComparisonDiv.style.display = "none";
+        ampliconSelectionDiv.style.display = "block";
+        aaAlignmentDiv.style.display = "none";
+
+        ampliconButton.style.background = selectedBackgroundColor;
+        ampliconButton.style.fontDisplayColor = '##5da8a3';
+
+        restrictionButton.style.background = '#D3D3D3';
+        restrictionButton.style.fontDisplayColor = '#30353F';
+
+        aaAlignmentButton.style.background = '#D3D3D3';
+        aaAlignmentButton.style.fontDisplayColor = '#30353F';
+    });
+
+    restrictionButton.addEventListener("click", function() { 
+
+        ampliconSelectionDiv.style.display = "none";
+        restrictionComparisonDiv.style.display = "block";
+        aaAlignmentDiv.style.display = "none";
+
+        ampliconButton.style.background = '#D3D3D3';
+        ampliconButton.style.fontDisplayColor = '#30353F';
+
+        restrictionButton.style.background = selectedBackgroundColor;
+        restrictionButton.style.fontDisplayColor = '##5da8a3';
+
+        aaAlignmentButton.style.background = '#D3D3D3';
+        aaAlignmentButton.style.fontDisplayColor = '#30353F';
+    });
+
+    aaAlignmentButton.addEventListener("click", function() {
+
+        ampliconSelectionDiv.style.display = "none";
+        restrictionComparisonDiv.style.display = "none";
+        aaAlignmentDiv.style.display = "flex";
+
+        ampliconButton.style.background = '#D3D3D3';
+        ampliconButton.style.fontDisplayColor = '#30353F';
+
+        restrictionButton.style.background = '#D3D3D3';
+        restrictionButton.style.fontDisplayColor = '#30353F';
+
+        aaAlignmentButton.style.background = selectedBackgroundColor;
+        aaAlignmentButton.style.fontDisplayColor = '##5da8a3';
+    });
+}
+
+
 export const populateSignatureSequence = (signatureWindow, sequence, position) => {
+
+    initializeTabButtons(signatureWindow);
 
     // Include up to 500 bases to the 5' and 3' of the selected position in the display:
     const flankingSequenceLength = 500;
@@ -124,7 +250,7 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
     var xAxisGroup = svg.append("g")
         .attr("class", "x-axis")
         //.attr("transform", "translate(0," + h / 12 + ")") // Adjust y position if needed
-        .attr("transform", "translate(0, 50)")
+        .attr("transform", "translate(0, 40)")
         .call(xAxis);
     xAxisGroup.selectAll(".tick line")
         .style("stroke", "black"); // Adjust tick color
@@ -142,8 +268,7 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
         .tickSize(6); // Specify the length of ticks
     var xAxisGroupRelative = svg.append("g")
         .attr("class", "x-axis")
-        //.attr("transform", "translate(0," + (h / 4) + ")") // Adjust y position if needed
-        .attr("transform", "translate(0, 110)")
+        .attr("transform", "translate(0, 100)")
         .call(xAxisRelative);
     xAxisGroupRelative.selectAll(".tick line")
         .style("stroke", "black"); // Adjust tick color
@@ -155,8 +280,9 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
     drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSvg);
 
     let midpoint = (svgWidth / 2) - (w * 3 / 4)
-
+    
     setTimeout(() => {
+        console.log("SVG WIDTH DNA", svgWidth);
         selectionContent.scrollLeft = midpoint;
     }, 100);
 }
@@ -172,14 +298,14 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
     
         baseRect[i] = svg.append("rect")
             .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
-            .attr("y", 80 - (unitHeight / 2))
+            .attr("y", 70 - (unitHeight / 2))
             .attr("width", unitWidth)
             .attr("height", unitHeight)
             .attr("fill", sequence[i].getDisplayColor());
 
         let base = svg.append("text")
             .attr("x", (unitWidthTotal * (displayIndex + 1)) - 4)
-            .attr("y", 80)
+            .attr("y", 70)
             .style("fill", fontDisplayColor)
             .attr("dy", ".4em")
             .attr("font-size", "12px")
@@ -252,7 +378,7 @@ function displayResults(resultsSvg, sequence, selectedBases) {
 
     resultsSvg.append("text")
         .attr("x", 100)
-        .attr("y", 10)
+        .attr("y", 0)
         .style("fill", fontDisplayColor)
         .attr("dy", "1em")
         .attr("font-size", "20px")
@@ -261,7 +387,7 @@ function displayResults(resultsSvg, sequence, selectedBases) {
 
     resultsSvg.append("text")
         .attr("x", 100)
-        .attr("y", 50)
+        .attr("y", 40)
         .style("fill", fontDisplayColor)
         .attr("dy", "1em")
         .attr("font-size", "20px")
@@ -270,7 +396,7 @@ function displayResults(resultsSvg, sequence, selectedBases) {
 
     resultsSvg.append("text")
         .attr("x", 100)
-        .attr("y", 75)
+        .attr("y", 65)
         .style("fill", fontDisplayColor)
         .attr("dy", "1em")
         .attr("font-size", "20px")
@@ -279,7 +405,7 @@ function displayResults(resultsSvg, sequence, selectedBases) {
 
     resultsSvg.append("text")
         .attr("x", 100)
-        .attr("y", 100)
+        .attr("y", 90)
         .style("fill", fontDisplayColor)
         .attr("dy", "1em")
         .attr("font-size", "20px")
@@ -287,8 +413,8 @@ function displayResults(resultsSvg, sequence, selectedBases) {
         .text("Length: " + seqString.length);
 
     resultsSvg.append("text")
-        .attr("x", 100)
-        .attr("y", 125)
+        .attr("x", 500)
+        .attr("y", 40)
         .style("fill", fontDisplayColor)
         .attr("dy", "1em")
         .attr("font-size", "20px")
@@ -296,8 +422,8 @@ function displayResults(resultsSvg, sequence, selectedBases) {
         .text("Tm: " + getTm(seqString) + "°");
 
     resultsSvg.append("text")
-        .attr("x", 100)
-        .attr("y", 150)
+        .attr("x", 500)
+        .attr("y", 65)
         .style("fill", fontDisplayColor)
         .attr("dy", "1em")
         .attr("font-size", "20px")
@@ -323,19 +449,317 @@ function removeResults(resultsSvg) {
 }
 
 
-function getHeaderDiv(groupCategory, group, position) {
+export const populateRestrictionMap = (signatureWindow, currentGroup, groups, mutationsMap, rootSequence) => {
+
+    const nonConservedRestrictionSites = getNonConservedRestrictionSites(rootSequence, groups, mutationsMap);
+
+    var nonConservedSitesContent = signatureWindow.document.getElementById('nonConservedSites');
+    var singleEnzymeSitesContent = signatureWindow.document.getElementById('singleEnzymeSites');
+
+    const restrictionWindowDisplayWidth = actualWidth - 100;
+    //const restrictionWindowDisplayHeight = 100 + (groups.length * 25);
+
+    var svgNonConserved = select(nonConservedSitesContent)
+        .append("svg")
+        .style("background-color", "#f0f0f0")
+        .attr("width", "100%")
+        .attr("height", "100%");
+
+    let y = 100;
+    groups.forEach((group) => {
+        let groupKey = group[0];
+        let groupColor = group[1];
+        if(groupKey == currentGroup) {
+            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence.length, nonConservedRestrictionSites[groupKey], 50, currentGroup + " (Selected Group)", groupColor, singleEnzymeSitesContent, groups, signatureWindow);
+        }
+        else {
+            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence.length, nonConservedRestrictionSites[groupKey], y, groupKey, groupColor, singleEnzymeSitesContent, groups, signatureWindow);
+            y += 25;
+        }; 
+    });
+}
+
+
+function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, sequenceLength, groupNonConservedRestrictionSites, y, groupKey, groupColor, singleEnzymeSitesContent, groups, signatureWindow) {
+
+    // Define dimensions
+    const elementHeight = 20;
+    const elementWidth = elementHeight;
+    const tickWidth = 3;
+    const elementSpace = elementHeight + 5;
+
+    // Draw group definition square
+    svg.append("rect")
+        .attr("x", 20)
+        .attr("y", y)
+        .attr("width", elementWidth)
+        .attr("height", elementHeight)
+        .attr("stroke-width", 2)
+        .attr("stroke", groupColor)
+        .attr("fill", getBrighterColor(groupColor))
+        .on("mouseover", function() {
+            groupTooltip.text(groupKey);
+        })
+        .on("mouseout", function() {
+            groupTooltip.text("");
+        });
+
+    var groupTooltip = svg.append("text")
+        .attr("x", 20)
+        .attr("y", 30)
+        .style("fill", "black")
+        .style("font-size", "12px")
+        .style("pointer-events", "none");
+
+    
+    for(const restrictionSiteKey in groupNonConservedRestrictionSites) {
+
+        const restrictionSites = groupNonConservedRestrictionSites[restrictionSiteKey];
+
+        restrictionSites.forEach((position) => {
+
+            svg.append("rect")
+                .attr("x", 100 + (position / sequenceLength) * (restrictionWindowDisplayWidth - 100))
+                .attr("y", y)
+                .attr("width", tickWidth)
+                .attr("height", elementHeight)
+                .attr("fill", groupColor)
+                .style("cursor", "pointer")
+                .on("mouseover", function () {
+                    tooltip.text(restrictionSiteKey + " (" + position + ")");
+                })
+                .on("mouseout", function () {
+                    tooltip.text("");
+                })
+                .on("click", function() {
+                    singleEnzymeSitesContent.style.display = "block";
+                    const singleEnzymeSitesHeader = singleEnzymeSitesContent.querySelector("#singleEnzymeSitesHeader");
+                    //singleEnzymeSitesHeader.innerHTML = "Single Enzyme Restriction Sites For " + restrictionSiteKey;
+                    drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteKey, groupKey, groups, restrictionWindowDisplayWidth, sequenceLength);
+            });
+
+            var tooltip = svg.append("text")
+                .attr("x", 100 + (position / sequenceLength) * (restrictionWindowDisplayWidth - 100))
+                .attr("y", 20)
+                .attr("text-anchor", "middle")
+                .style("fill", "black")
+                .style("font-size", "12px")
+                .style("pointer-events", "none");
+        });
+    }
+}
+
+
+function drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteName, selectedGroup, groups, restrictionWindowDisplayWidth, sequenceLength) {
+
+    const elementHeight = 20;
+    const elementWidth = elementHeight;
+    const tickWidth = 3;
+
+    const allRestrictionSites = getAllRestrictionSites(rootSequence, groups, mutationsMap);
+
+    // Selecting the container for the SVG
+    const singleEnzymeSitesContent = select(signatureWindow.document.getElementById('singleEnzymeSites'));
+    
+    // Clearing previous content
+    singleEnzymeSitesContent.selectAll("*").remove();
+
+    // Index for positioning the groups vertically
+    let index = 0;
+
+    // Loop through each group
+    groups.forEach((group) => {
+        
+        const groupName = group[0];
+        const groupColor = group[1];
+
+        let y = (groupName === selectedGroup) ? 0 : 50 + (index * 25);
+        index++;
+
+        // Append a rectangle representing the group
+        singleEnzymeSitesContent.append("rect")
+            .attr("x", 20)
+            .attr("y", y)
+            .attr("width", elementWidth)
+            .attr("height", elementHeight)
+            .attr("stroke-width", 2)
+            .attr("stroke", groupColor)
+            .attr("fill", getBrighterColor(groupColor));
+
+        // Get the restriction sites for the current group
+        const groupSingleRestrictionSites = allRestrictionSites[groupName][restrictionSiteName];
+        
+        // Draw tick marks for each restriction site
+        groupSingleRestrictionSites.forEach((position) => {
+            singleEnzymeSitesContent.append("rect")
+                .attr("x", 100 + (position / sequenceLength) * (restrictionWindowDisplayWidth - 100))
+                .attr("y", y)
+                .attr("width", tickWidth)
+                .attr("height", elementHeight)
+                .attr("fill", groupColor)
+                .style("cursor", "pointer");
+        });
+    });
+}
+
+
+export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, groups, mutationsMap, rootSequence) => {
+//export const populateAAAlignment = (signatureWindow, currentCDS, groupDNASequence) => {
+
+    // Selecting the container for the SVG
+    const aaAlignmentLegendDiv = signatureWindow.document.getElementById('aaMSALegend');
+    const aaAlignmentDiv = signatureWindow.document.getElementById('aaMSA');
+
+    const baseAASequence = getAminoAcidSequence(currentCDS, retrieveSequence(rootSequence, []));
+    const svgWidth = (baseAASequence.length + 2) * unitWidthTotal;
+
+    const start = 1;
+    const stop = baseAASequence.length;
+
+    var svgAAAlignmentLegend = select(aaAlignmentLegendDiv)
+        .append("svg")
+        .attr("width", "100%")
+        .attr("height", "100%");
+        //.style("background-color", "pink");
+
+    var svgAAAlignment = select(aaAlignmentDiv)
+        .append("svg")
+        .attr("width", svgWidth)
+        .attr("height", "100%");
+
+    // Draw the X-axis (absolute sequence positions):
+    let startX = unitWidthTotal;
+    let endX = svgWidth - unitWidthTotal;
+    let xDomain = [start, stop];
+    let tickStart = Math.ceil(start / 10) * 10;
+    let tickStop = Math.floor(stop / 10) * 10;
+    var xScale = scaleLinear()
+        .domain(xDomain)
+        .range([startX, endX]);
+    var xAxis = axisTop(xScale)
+        .tickValues(range(tickStart, tickStop + 1, 10))
+        .tickSize(6); // Specify the length of ticks
+    var xAxisGroup = svgAAAlignment.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", "translate(0, 40)")
+        .call(xAxis);
+    xAxisGroup.selectAll(".tick line")
+        .style("stroke", "black"); // Adjust tick color
+    xAxisGroup.selectAll(".tick text")
+        .style("font-size", "10px") // Adjust font size
+        .style("fill", "black"); // Adjust text color
+
+    let yIndex = 110;
+
+    for(var i = 0; i < groups.length; i++) {
+
+        const currentGroup = groups[i];
+        const currentGroupName = currentGroup[0];
+        const currentGroupColor = currentGroup[1];
+        const currentGroupDNASequence = retrieveSequence(rootSequence, mutationsMap.get(currentGroupName));
+        const currentGroupAASequence = getAminoAcidSequence(currentCDS, currentGroupDNASequence);
+        
+        let y = yIndex;
+
+        if(currentGroupName === selectedGroup) {
+            y = 80;
+        }
+        else {
+            yIndex += 20;
+        }
+
+        // Draw the sequence:
+        let displayIndex = 0;
+        let aaRect = [];
+            
+        for (let i = 0; i < currentGroupAASequence.length; i++) {
+        
+            // Append a rectangle representing the group
+            svgAAAlignmentLegend.append("rect")
+                .attr("x", 20)
+                .attr("y", y - (unitHeight / 2))
+                .attr("width", unitWidth)
+                .attr("height", unitHeight)
+                .attr("stroke-width", 2)
+                .attr("stroke", currentGroupColor)
+                .attr("fill", getBrighterColor(currentGroupColor))
+                .on("mouseover", function() {
+                    groupTooltip.text(currentGroupName);
+                })
+                .on("mouseout", function() {
+                    groupTooltip.text("");
+                });
+        
+            var groupTooltip = svgAAAlignmentLegend.append("text")
+                .attr("x", 20)
+                .attr("y", 50)
+                .style("fill", "black")
+                .style("font-size", "12px")
+                .style("pointer-events", "none");
+                
+            aaRect[i] = svgAAAlignment.append("rect")
+                .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
+                .attr("y", y - (unitHeight / 2))
+                .attr("width", unitWidth)
+                .attr("height", unitHeight)
+                .attr("fill", currentGroupAASequence[i].getDisplayColor());
+            
+            let aa = svgAAAlignment.append("text")
+                .attr("x", (unitWidthTotal * (displayIndex + 1)) - 4)
+                .attr("y", y)
+                .style("fill", fontDisplayColor)
+                .attr("dy", ".4em")
+                .attr("font-size", "12px")
+                .attr("text-align", "center")
+                .text(currentGroupAASequence[i].getDisplayAminoAcid())
+                .style("cursor", "pointer");
+        
+            displayIndex++;
+        }
+    }
+}
+
+
+function getHeaderDiv(groupCategory, group, position, orf) {
 
     let header = "<div class=\"header\">";
     header += "<img src=\"../../../dist/1730310c32752e095ee7.svg\"/>";
     header += "<h1>Signature Selector</h1><br/>";
     header += "<ul>";
     header += "<li>Group Category: <span class=\"dataText\">" + groupCategory.charAt(0).toUpperCase() + groupCategory.slice(1) + "</span></li>";
-    header += "<li>Sequence Group: <span class=\"dataText\">" + group.replace(/-/g, ' ') + "</span></li>";
+    header += "<li>Sequence Group: <span class=\"dataText\">" + trimDisplayString(group.replace(/-/g, ' ')) + "</span></li>";
     header += "<li>Selected Position: <span class=\"dataText\">" + position + "</span></li>";
+    header += "<li>Selected Protein: <span class=\"dataText\">" + orf + "</span></li>";
     header += "</ul>"
     header += "</div>";
 
     return header;
+}
+
+
+function trimDisplayString(displayString) {
+
+    const maxLength = 50;
+
+    var trimmedDisplayString = displayString.substring(0, maxLength);
+
+    if(displayString.length > maxLength) {
+        trimmedDisplayString += ' ...';
+    }
+
+    return trimmedDisplayString;
+}
+
+
+function getTabDiv() {
+
+    let tabs = "<div class=\"tab\">";
+    tabs += "<button id=\"ampliconButton\" class=\"tablinks\" style=\"font-weight: bold;\">Amplicon Selection</button>";
+    tabs += "<button id=\"aaAlignmentButton\" class=\"tablinks\" style=\"font-weight: bold;\">ORF AA Alignments</button>";
+    tabs += "<button id=\"restrictionButton\" class=\"tablinks\" style=\"font-weight: bold;\">Restriction Comparison</button>";
+    tabs += "</div>";
+
+    return tabs;
 }
 
 
@@ -387,7 +811,10 @@ function getSignatureWindowStyle() {
         body {
             margin: 0;
             padding: 0;
-        }
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure the body takes at least the full height of the viewport */
+          }
         h2 {
             font-family: Lato, &quot;Helvetica Neue&quot;, Helvetica, sans-serif;
             font-size: 28px;
@@ -402,10 +829,10 @@ function getSignatureWindowStyle() {
         h4 {
             font-family: Lato, &quot;Helvetica Neue&quot;, Helvetica, sans-serif;
             font-size: 16px;
-            margin-left: 0px;
+            margin-left: 20px;
             margin-top: 10px;
             margin-bottom: 10px;
-            font-weight: 350;
+            font-weight: 500;
             color: rgb(51, 51, 51);
             letter-spacing: -0.5px;
             line-height: 1.2;
@@ -435,12 +862,35 @@ function getSignatureWindowStyle() {
             style="overflow-wrap: break-word;"
             flex: 1;
         }
-        .scrollPane {
+        /*.restrictionComparison {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            font-family: Lato, &quot;Helvetica Neue&quot;, Helvetica, sans-serif;
+            font-size: 20px;
+            letter-spacing: 0.4rem;
+            margin-left: 5px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-weight: 350;
+            overflow-y: scroll;
+            style="overflow-wrap: break-word;"
+            flex: 1;
+        }*/
+        .horizontalScrollPane {
             width: 100%;
             height: 60%;
             flex: 1;
             overflow-x: scroll;
             overflow-y: hidden;
+            scrollbar-base-color: "pink";
+        }
+        .verticalScrollPane {
+            width: 100%;
+            height: 60%;
+            flex: 1;
+            overflow-x: hidden;
+            overflow-y: scroll;
             scrollbar-base-color: "pink";
         }
         .header {
@@ -482,11 +932,14 @@ function getSignatureWindowStyle() {
         .header ul {
             font-size: 20px;
             margin: 50px 20px;
-            width: 25%;
+            width: 100%;
             text-align: left;
             color: #D3D3D3;
             list-style-type: none;
-        } 
+        }
+        .header ul li {
+            width: 100%;
+        }
         .footer {
             margin-top: 0;
             text-align: center;
@@ -502,6 +955,7 @@ function getSignatureWindowStyle() {
             font-weight: 400;
             position: relative;
             margin-top: -50px;
+            position: fixed; bottom: 0;
         }
         .footer a:link {
             text-decoration: none;
@@ -515,6 +969,20 @@ function getSignatureWindowStyle() {
             display: flex;
             flex-direction: column;
             height: 100%;
+        }
+        .tab {
+            overflow: hidden;
+            //border: 1px solid #ccc;
+            //background-color: #f1f1f1;
+        }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
         }
     `;
 

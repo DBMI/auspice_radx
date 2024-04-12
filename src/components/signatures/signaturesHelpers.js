@@ -1,5 +1,5 @@
 import { Base } from "./base";
-import { displaySignatureWindow, generateSignatureWindowContent, populateSignatureSequence } from "./signaturePopup/signatureWindow";
+import { displaySignatureWindow, generateSignatureWindowContent, populateSignatureSequence, populateRestrictionMap, populateAAAlignment } from "./signaturePopup/signatureWindow";
 //import { displayPrimerWindow, generatePrimerWindowContent } from "./primerPopup/primerWindow";
 
 const PARSE_BY_AUTHOR = 'author';
@@ -388,16 +388,16 @@ export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementC
 }
 
 /* Draws the sequence for a single grouping as a row of base-labeled squares. */
-export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, currentSequence, geneLength, groupIndex, yMSA, scales, selection, zoomCoordinates, group, groupCategory) => {
-
+export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, currentSequence, geneLength, groupIndex, yMSA, scales, selection, zoomCoordinates, group, groupCategory, categoryGroup, mutationsMap, rootSequence, genomeAnnotations) => {
+  
   for(let i = 0; i < currentSequence.length; i++) {
 
     let xPosition = getZoomXPosition(i, zoomCoordinates[0], zoomCoordinates[1], geneLength);
     
     if(xPosition !== -1) {
 
-      //let boxDisplayColor = categoryElementColor;
       let fontDisplayColor = BLACK;
+      let currentCDS = getCurrentCds(i, genomeAnnotations);
 
       selection.append("rect")
         .attr("x", scales.xNav(xPosition))
@@ -418,80 +418,13 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
         .style("cursor", "pointer")
         .on("click", function() {
           const signatureWindow = displaySignatureWindow();
-          signatureWindow.document.body.innerHTML = generateSignatureWindowContent(groupCategory, group, i);
+          signatureWindow.document.body.innerHTML = generateSignatureWindowContent(groupCategory, group, i, currentCDS.prot);
           populateSignatureSequence(signatureWindow, currentSequence, i);
+          setTimeout(function() {
+            populateRestrictionMap(signatureWindow, group, categoryGroup, mutationsMap, rootSequence);
+            populateAAAlignment(signatureWindow, currentCDS, group, categoryGroup, mutationsMap, rootSequence);
+          }, 1000);
         })
-        /*.on("click", function() { 
-          
-          const primerWindow = displayPrimerWindow();
-          primerWindow.document.body.innerHTML = generatePrimerWindowContent(group, currentSequence, i);
-          
-          const primerTypeSelect = primerWindow.document.getElementById("selectPrimerTypes");
-          
-          primerTypeSelect.addEventListener("change", function(evt) {
-            
-            const selectBox = evt.currentTarget;
-            const options = selectBox.options;
-            const selectedIndex = selectBox.selectedIndex;
-
-            for(let i = 0; i < options.length; i++) {
-              if(i === selectedIndex) {
-                primerWindow.document.getElementById(options[i].value).style.display = "block";
-              }
-              else {
-                primerWindow.document.getElementById(options[i].value).style.display = "none";
-              }
-            }
-          });
-
-          const primerDownloadButton = primerWindow.document.getElementById("downloadPrimersButton");
-
-          primerDownloadButton.addEventListener("click", async function(event) {
-
-            const checkboxes = primerWindow.document.querySelectorAll('input[type=checkbox]:checked')
-
-            if(checkboxes.length > 0) {
-
-              primerWindow.document.getElementById("warningMessages").style.display = 'none';
-
-              var text = "";
-
-              for(let i = 0; i < checkboxes.length; i++) {
-  
-                const baseHeader = checkboxes[i].id;
-                const fwdHeader = ">" + baseHeader + "|FWDSEQ";
-                const revHeader = ">" + baseHeader + "|REVSEQ";
-                const dataElements = checkboxes[i].value.split("|");
-                const fwdSeq = dataElements[1];
-                const revSeq = dataElements[3];
-                
-                text += fwdHeader + "\n";
-                text += fwdSeq + "\n";
-                text += revHeader + "\n";
-                text += revSeq + "\n";
-              }
-  
-              const suggestedFileName = group.replaceAll(" ","-") + "-" + i + ".fna";
-  
-              const opts = {
-                description: 'Primers: ' + suggestedFileName,
-                suggestedName: suggestedFileName,
-                types: [{
-                  accept: {'text/plain': ['.fna', '.txt']},
-                }],
-              };
-              const handle = await primerWindow.showSaveFilePicker(opts);
-              const writable = await handle.createWritable();
-              await writable.write(new Blob([text], { type: 'text/plain' }));
-              await writable.close();
-  
-              primerWindow.close();
-            }
-            else {
-              primerWindow.document.getElementById("warningMessages").style.display = 'block';
-            }
-          }, false);
-        })*/
         .append("title")
         .text(function() {
           return i;
@@ -499,6 +432,29 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
         .enter();
     }
   }
+}
+
+
+function getCurrentCds(sequenceIndex, genomeAnnotations) {
+
+  if(genomeAnnotations === undefined) {
+    return null;
+  }
+
+  for(let key of Object.keys(genomeAnnotations)) {
+    if(genomeAnnotations[key].strand === '+') {
+      if(genomeAnnotations[key].start <= sequenceIndex && sequenceIndex <= genomeAnnotations[key].end) {
+        return genomeAnnotations[key];
+      }
+    }
+    else {
+      if(genomeAnnotations[key].start >= sequenceIndex && sequenceIndex >= genomeAnnotations[key].end) {
+        return genomeAnnotations[key];
+      }
+    }
+  }
+
+  return null;
 }
 
 
