@@ -3,7 +3,7 @@ import { axisBottom, axisTop } from "d3-axis";
 import { scaleLinear } from "d3-scale";
 import { select } from "d3-selection";
 import { lowerCase } from "lodash";
-import { getAllRestrictionSites, getNonConservedRestrictionSites } from "./helpers/restrictionAnalysis";
+import { getAllRestrictionSites, getNonConservedRestrictionSites, getRestrictionSiteLength } from "./helpers/restrictionAnalysis";
 import { getBrighterColor } from "../../../util/colorHelpers";
 import { retrieveSequence } from "./../signaturesHelpers";
 import { getAminoAcidSequence } from "./helpers/dnaToAA";
@@ -78,11 +78,6 @@ export const displaySignatureWindow = () => {
 }
 
 
-/*export const initializeSignatureWindow = (groupCategory, group, position, orf) => {
-
-    generateSignatureWindowContent(groupCategory, group, position, orf);
-}*/
-
 
 export const generateSignatureWindowContent = (groupCategory, group, position, orf) => {
 
@@ -112,7 +107,7 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
 
     html += "<div id=\"restrictionComparison\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
     html += "<div id=\"nonConservedSites\" class=\"verticalScrollPane\" style=\"height: 40%\"></div>";
-    html += "<div id=\"singleEnzymeSites\" style=\"display: none; height: 60%\"></div>";
+    html += "<div id=\"restrictionSiteDetails\" style=\"display: none; height: 60%\"></div>";
     html += "</div>";
 
     html += "<div id=\"aaAlignment\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
@@ -132,6 +127,7 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
 
     return html;
 }
+
 
 
 function initializeTabButtons(signatureWindow) {
@@ -449,15 +445,16 @@ function removeResults(resultsSvg) {
 }
 
 
-export const populateRestrictionMap = (signatureWindow, currentGroup, groups, mutationsMap, rootSequence) => {
 
+export const populateRestrictionMap = (signatureWindow, currentGroup, groups, mutationsMap, rootSequence, genomeAnnotations) => {
+
+    const elementHeight = 20;
     const nonConservedRestrictionSites = getNonConservedRestrictionSites(rootSequence, groups, mutationsMap);
-
-    var nonConservedSitesContent = signatureWindow.document.getElementById('nonConservedSites');
-    var singleEnzymeSitesContent = signatureWindow.document.getElementById('singleEnzymeSites');
-
     const restrictionWindowDisplayWidth = actualWidth - 100;
     //const restrictionWindowDisplayHeight = 100 + (groups.length * 25);
+
+    var nonConservedSitesContent = signatureWindow.document.getElementById('nonConservedSites');
+    var restrictionSiteDetailsContent = signatureWindow.document.getElementById('restrictionSiteDetails');
 
     var svgNonConserved = select(nonConservedSitesContent)
         .append("svg")
@@ -465,22 +462,58 @@ export const populateRestrictionMap = (signatureWindow, currentGroup, groups, mu
         .attr("width", "100%")
         .attr("height", "100%");
 
-    let y = 100;
+    // Draw the blocks representing the ORFs for the different potein coding regions:
+    genomeAnnotations.forEach((orf) => {
+        
+        const orfProtein = orf['prot'];
+        const orfDirection = orf['strand'];
+        const orfStart = orf['start'];
+        const orfEnd = orf['end'];
+        const orfColor = orf['fill'];
+
+        var orfX = (orfStart / rootSequence.length) * (restrictionWindowDisplayWidth - 100);
+        var orfWidth = ((orfEnd / rootSequence.length) * (restrictionWindowDisplayWidth - 100)) - orfX;
+
+        svgNonConserved.append("rect")
+            .attr("x", 100 + orfX)
+            .attr("y", 30)
+            .attr("width", orfWidth)
+            .attr("height", elementHeight)
+            .attr("fill", orfColor)
+            .style("cursor", "pointer")
+            .on("mouseover", function () {
+                tooltip.text(orfProtein + ' (' + orfDirection + ')');
+            })
+            .on("mouseout", function () {
+                tooltip.text("");
+            });
+
+        var tooltip = svgNonConserved.append("text")
+            .attr("x", 100 + orfX + (orfWidth / 2))
+            .attr("y", 25)
+            .attr("text-anchor", "middle")
+            .style("fill", "black")
+            .style("font-size", "12px")
+            .style("pointer-events", "none");
+    });
+
+    let y = 125;
     groups.forEach((group) => {
         let groupKey = group[0];
         let groupColor = group[1];
         if(groupKey == currentGroup) {
-            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence, nonConservedRestrictionSites[groupKey], 50, currentGroup + " (Selected Group)", groupColor, singleEnzymeSitesContent, groups, signatureWindow);
+            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence, nonConservedRestrictionSites[groupKey], 75, currentGroup, groupColor, restrictionSiteDetailsContent, groups, signatureWindow, genomeAnnotations, mutationsMap);
         }
         else {
-            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence, nonConservedRestrictionSites[groupKey], y, groupKey, groupColor, singleEnzymeSitesContent, groups, signatureWindow);
+            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence, nonConservedRestrictionSites[groupKey], y, groupKey, groupColor, restrictionSiteDetailsContent, groups, signatureWindow, genomeAnnotations, mutationsMap);
             y += 25;
         }; 
     });
 }
 
 
-function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequence, groupNonConservedRestrictionSites, y, groupKey, groupColor, singleEnzymeSitesContent, groups, signatureWindow) {
+
+function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequence, groupNonConservedRestrictionSites, y, groupKey, groupColor, restrictionSiteDetailsContent, groups, signatureWindow, genomeAnnotations, mutationsMap) {
 
     // Define dimensions
     const elementHeight = 20;
@@ -488,6 +521,14 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
     const tickWidth = 3;
     const elementSpace = elementHeight + 5;
     const sequenceLength = rootSequence.length;
+
+    const groupDNASequence = retrieveSequence(rootSequence, mutationsMap.get(groupKey));
+    
+    var svgRestrictionSiteDetails = select(restrictionSiteDetailsContent)
+        .append("svg")
+        .style("background-color", "#f0f0f0")
+        .attr("width", "100%")
+        .attr("height", "100%");
 
     // Draw group definition square
     svg.append("rect")
@@ -507,7 +548,7 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
 
     var groupTooltip = svg.append("text")
         .attr("x", 20)
-        .attr("y", 30)
+        .attr("y", 65)
         .style("fill", "black")
         .style("font-size", "12px")
         .style("pointer-events", "none");
@@ -533,15 +574,17 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
                     tooltip.text("");
                 })
                 .on("click", function() {
-                    singleEnzymeSitesContent.style.display = "block";
-                    const singleEnzymeSitesHeader = singleEnzymeSitesContent.querySelector("#singleEnzymeSitesHeader");
+                    restrictionSiteDetailsContent.style.display = "block";
+                    drawRestrictionSiteDetails(svgRestrictionSiteDetails, groupDNASequence.slice(position, position + getRestrictionSiteLength(restrictionSiteKey)));
+                    //console.log(restrictionSiteKey + ' ' + getRestrictionSiteLength(restrictionSiteKey), groupDNASequence.slice(position, position + getRestrictionSiteLength(restrictionSiteKey)));
+                    //const singleEnzymeSitesHeader = restrictionSiteDetailsContent.querySelector("#singleEnzymeSitesHeader");
                     //singleEnzymeSitesHeader.innerHTML = "Single Enzyme Restriction Sites For " + restrictionSiteKey;
-                    drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteKey, groupKey, groups, restrictionWindowDisplayWidth, rootSequence);
+                    //drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteKey, groupKey, groups, restrictionWindowDisplayWidth, rootSequence);
             });
 
             var tooltip = svg.append("text")
                 .attr("x", 100 + (position / sequenceLength) * (restrictionWindowDisplayWidth - 100))
-                .attr("y", 20)
+                .attr("y", 65)
                 .attr("text-anchor", "middle")
                 .style("fill", "black")
                 .style("font-size", "12px")
@@ -551,7 +594,33 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
 }
 
 
-function drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteName, selectedGroup, groups, restrictionWindowDisplayWidth, rootSequence) {
+
+function drawRestrictionSiteDetails(svgRestrictionSiteDetails, restrictionSequence) {
+
+    svgRestrictionSiteDetails.selectAll("*").remove();
+
+    for(let i = 0; i < restrictionSequence.length; i++) {
+    
+        svgRestrictionSiteDetails.append("rect")
+            .attr("x", 200 + (unitWidthTotal * (i + 1)) - 7)
+            .attr("y", 70 - (unitHeight / 2))
+            .attr("width", unitWidth)
+            .attr("height", unitHeight)
+            .attr("fill", restrictionSequence[i].getDisplayColor());
+
+        svgRestrictionSiteDetails.append("text")
+            .attr("x", 200 + (unitWidthTotal * (i + 1)) - 4)
+            .attr("y", 70)
+            .style("fill", fontDisplayColor)
+            .attr("dy", ".4em")
+            .attr("font-size", "12px")
+            .attr("text-align", "center")
+            .text(restrictionSequence[i].getDisplayBase())
+    }
+}
+
+
+/*function drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteName, selectedGroup, groups, restrictionWindowDisplayWidth, rootSequence) {
 
     const elementHeight = 20;
     const elementWidth = elementHeight;
@@ -603,11 +672,11 @@ function drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteN
                 .style("cursor", "pointer");
         });
     });
-}
+}*/
 
 
 export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, groups, mutationsMap, rootSequence) => {
-//export const populateAAAlignment = (signatureWindow, currentCDS, groupDNASequence) => {
+
 
     // Selecting the container for the SVG
     const aaAlignmentLegendDiv = signatureWindow.document.getElementById('aaMSALegend');

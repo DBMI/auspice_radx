@@ -421,7 +421,7 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
           signatureWindow.document.body.innerHTML = generateSignatureWindowContent(groupCategory, group, i, currentCDS.prot);
           populateSignatureSequence(signatureWindow, currentSequence, i);
           setTimeout(function() {
-            populateRestrictionMap(signatureWindow, group, categoryGroup, mutationsMap, rootSequence);
+            populateRestrictionMap(signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
             populateAAAlignment(signatureWindow, currentCDS, group, categoryGroup, mutationsMap, rootSequence);
           }, 1000);
         })

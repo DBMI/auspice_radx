@@ -23,6 +23,12 @@ const restrictionSites = {
 };
 
 
+export const getRestrictionSiteLength = (restrictionSiteName) => {
+
+    return (restrictionSites[restrictionSiteName][0].match(/\[/g) || []).length;
+}
+
+
 export const getAllRestrictionSites = (rootSequence, groups, mutationsMap) => {
 
     const allRestrictionSites = {}; // All restriction sites for all groups.
