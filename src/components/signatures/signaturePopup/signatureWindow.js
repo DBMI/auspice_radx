@@ -456,7 +456,15 @@ export const populateRestrictionMap = (signatureWindow, currentGroup, groups, mu
     var nonConservedSitesContent = signatureWindow.document.getElementById('nonConservedSites');
     var restrictionSiteDetailsContent = signatureWindow.document.getElementById('restrictionSiteDetails');
 
+    restrictionSiteDetailsContent.style.display = "block";
+
     var svgNonConserved = select(nonConservedSitesContent)
+        .append("svg")
+        .style("background-color", "#f0f0f0")
+        .attr("width", "100%")
+        .attr("height", "100%");
+
+    var svgRestrictionSiteDetails = select(restrictionSiteDetailsContent)
         .append("svg")
         .style("background-color", "#f0f0f0")
         .attr("width", "100%")
@@ -502,10 +510,10 @@ export const populateRestrictionMap = (signatureWindow, currentGroup, groups, mu
         let groupKey = group[0];
         let groupColor = group[1];
         if(groupKey == currentGroup) {
-            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence, nonConservedRestrictionSites[groupKey], 75, currentGroup, groupColor, restrictionSiteDetailsContent, groups, signatureWindow, genomeAnnotations, mutationsMap);
+            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence, nonConservedRestrictionSites[groupKey], 75, currentGroup, groupColor, svgRestrictionSiteDetails, groups, signatureWindow, genomeAnnotations, mutationsMap);
         }
         else {
-            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence, nonConservedRestrictionSites[groupKey], y, groupKey, groupColor, restrictionSiteDetailsContent, groups, signatureWindow, genomeAnnotations, mutationsMap);
+            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence, nonConservedRestrictionSites[groupKey], y, groupKey, groupColor, svgRestrictionSiteDetails, groups, signatureWindow, genomeAnnotations, mutationsMap);
             y += 25;
         }; 
     });
@@ -513,8 +521,8 @@ export const populateRestrictionMap = (signatureWindow, currentGroup, groups, mu
 
 
 
-function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequence, groupNonConservedRestrictionSites, y, groupKey, groupColor, restrictionSiteDetailsContent, groups, signatureWindow, genomeAnnotations, mutationsMap) {
-
+function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequence, groupNonConservedRestrictionSites, y, groupKey, groupColor, svgRestrictionSiteDetails, groups, signatureWindow, genomeAnnotations, mutationsMap) {
+    
     // Define dimensions
     const elementHeight = 20;
     const elementWidth = elementHeight;
@@ -523,12 +531,6 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
     const sequenceLength = rootSequence.length;
 
     const groupDNASequence = retrieveSequence(rootSequence, mutationsMap.get(groupKey));
-    
-    var svgRestrictionSiteDetails = select(restrictionSiteDetailsContent)
-        .append("svg")
-        .style("background-color", "#f0f0f0")
-        .attr("width", "100%")
-        .attr("height", "100%");
 
     // Draw group definition square
     svg.append("rect")
@@ -574,7 +576,7 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
                     tooltip.text("");
                 })
                 .on("click", function() {
-                    restrictionSiteDetailsContent.style.display = "block";
+                    //restrictionSiteDetailsContent.style.display = "block";
                     drawRestrictionSiteDetails(svgRestrictionSiteDetails, groupDNASequence.slice(position, position + getRestrictionSiteLength(restrictionSiteKey)));
                     //console.log(restrictionSiteKey + ' ' + getRestrictionSiteLength(restrictionSiteKey), groupDNASequence.slice(position, position + getRestrictionSiteLength(restrictionSiteKey)));
                     //const singleEnzymeSitesHeader = restrictionSiteDetailsContent.querySelector("#singleEnzymeSitesHeader");
@@ -615,7 +617,7 @@ function drawRestrictionSiteDetails(svgRestrictionSiteDetails, restrictionSequen
             .attr("dy", ".4em")
             .attr("font-size", "12px")
             .attr("text-align", "center")
-            .text(restrictionSequence[i].getDisplayBase())
+            .text(restrictionSequence[i].getDisplayBase());
     }
 }
 
