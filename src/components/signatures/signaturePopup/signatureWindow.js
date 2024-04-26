@@ -470,23 +470,24 @@ export const populateRestrictionMap = (signatureWindow, currentGroup, groups, mu
         let groupKey = group[0];
         let groupColor = group[1];
         if(groupKey == currentGroup) {
-            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence.length, nonConservedRestrictionSites[groupKey], 50, currentGroup + " (Selected Group)", groupColor, singleEnzymeSitesContent, groups, signatureWindow);
+            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence, nonConservedRestrictionSites[groupKey], 50, currentGroup + " (Selected Group)", groupColor, singleEnzymeSitesContent, groups, signatureWindow);
         }
         else {
-            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence.length, nonConservedRestrictionSites[groupKey], y, groupKey, groupColor, singleEnzymeSitesContent, groups, signatureWindow);
+            drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence, nonConservedRestrictionSites[groupKey], y, groupKey, groupColor, singleEnzymeSitesContent, groups, signatureWindow);
             y += 25;
         }; 
     });
 }
 
 
-function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, sequenceLength, groupNonConservedRestrictionSites, y, groupKey, groupColor, singleEnzymeSitesContent, groups, signatureWindow) {
+function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequence, groupNonConservedRestrictionSites, y, groupKey, groupColor, singleEnzymeSitesContent, groups, signatureWindow) {
 
     // Define dimensions
     const elementHeight = 20;
     const elementWidth = elementHeight;
     const tickWidth = 3;
     const elementSpace = elementHeight + 5;
+    const sequenceLength = rootSequence.length;
 
     // Draw group definition square
     svg.append("rect")
@@ -535,7 +536,7 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, sequenceLen
                     singleEnzymeSitesContent.style.display = "block";
                     const singleEnzymeSitesHeader = singleEnzymeSitesContent.querySelector("#singleEnzymeSitesHeader");
                     //singleEnzymeSitesHeader.innerHTML = "Single Enzyme Restriction Sites For " + restrictionSiteKey;
-                    drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteKey, groupKey, groups, restrictionWindowDisplayWidth, sequenceLength);
+                    drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteKey, groupKey, groups, restrictionWindowDisplayWidth, rootSequence);
             });
 
             var tooltip = svg.append("text")
@@ -550,11 +551,13 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, sequenceLen
 }
 
 
-function drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteName, selectedGroup, groups, restrictionWindowDisplayWidth, sequenceLength) {
+function drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteName, selectedGroup, groups, restrictionWindowDisplayWidth, rootSequence) {
 
     const elementHeight = 20;
     const elementWidth = elementHeight;
     const tickWidth = 3;
+
+    const sequenceLength = rootSequence.length;
 
     const allRestrictionSites = getAllRestrictionSites(rootSequence, groups, mutationsMap);
 
