@@ -23,6 +23,14 @@ const restrictionSites = {
 };
 
 
+// External function to check if a sequence contains a specific restriction site pattern
+export const hasRestrictionSite = (restrictionSiteName, sequence) => {
+    const regexPattern = restrictionSites[restrictionSiteName][0]; // Get the regex pattern for the specified restriction site
+    const regex = new RegExp(regexPattern, "g");
+    return regex.test(sequence);
+};
+
+
 export const getRestrictionSiteLength = (restrictionSiteName) => {
 
     return (restrictionSites[restrictionSiteName][0].match(/\[/g) || []).length;

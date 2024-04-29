@@ -3,10 +3,10 @@ import { axisBottom, axisTop } from "d3-axis";
 import { scaleLinear } from "d3-scale";
 import { select } from "d3-selection";
 import { lowerCase } from "lodash";
-import { getAllRestrictionSites, getNonConservedRestrictionSites, getRestrictionSiteLength } from "./helpers/restrictionAnalysis";
+import { getAllRestrictionSites, getNonConservedRestrictionSites, getRestrictionSiteLength, hasRestrictionSite } from "./helpers/restrictionAnalysis";
 import { getBrighterColor } from "../../../util/colorHelpers";
 import { retrieveSequence } from "./../signaturesHelpers";
-import { getAminoAcidSequence } from "./helpers/dnaToAA";
+import { getAminoAcidSequence, getReplacementCodons } from "./helpers/dnaToAA";
 
 const w = 900;
 const h = 750;
@@ -607,14 +607,14 @@ function drawRestrictionSiteDetails(svgRestrictionSiteDetails, restricitionStart
     svgRestrictionSiteDetails.selectAll("*").remove();
 
     svgRestrictionSiteDetails.append('rect')
-        .attr("x", 200 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7)
+        .attr("x", 50 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7)
         .attr("y", 10 - (unitHeight / 2))
         .attr("width", unitWidthTotal * (restrictionStop - restricitionStart))
         .attr("height", unitHeight)
         .attr("fill", getBrighterColor(groupColor));
 
     svgRestrictionSiteDetails.append("text")
-        .attr("x", 200 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7 + (unitWidthTotal * (restrictionStop - restricitionStart)) / 2) // Center horizontally
+        .attr("x", 50 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7 + (unitWidthTotal * (restrictionStop - restricitionStart)) / 2) // Center horizontally
         .attr("y", 10)
         .style("fill", fontDisplayColor)
         .attr("dy", ".4em")
@@ -625,20 +625,84 @@ function drawRestrictionSiteDetails(svgRestrictionSiteDetails, restricitionStart
     for(let i = 0; i < restrictionFrameSequence.length; i++) {
     
         svgRestrictionSiteDetails.append("rect")
-            .attr("x", 200 + (unitWidthTotal * (i + 1)) - 7)
+            .attr("x", 50 + (unitWidthTotal * (i + 1)) - 7)
             .attr("y", 40 - (unitHeight / 2))
             .attr("width", unitWidth)
             .attr("height", unitHeight)
             .attr("fill", restrictionFrameSequence[i].getDisplayColor());
 
         svgRestrictionSiteDetails.append("text")
-            .attr("x", 200 + (unitWidthTotal * (i + 1)) - 4)
+            .attr("x", 50 + (unitWidthTotal * (i + 1)) - 4)
             .attr("y", 40)
             .style("fill", fontDisplayColor)
             .attr("dy", ".4em")
             .attr("font-size", "12px")
             .attr("text-align", "center")
             .text(restrictionFrameSequence[i].getDisplayBase());
+    }
+
+    var restrictionFrameSequenceString = '';
+    restrictionFrameSequence.forEach((base) => {
+        restrictionFrameSequenceString = restrictionFrameSequenceString + base.getDisplayBase();
+    });
+
+    // Grab all matching replacementCodons for each codon in a 2D array.
+    var codonIndex = 0;
+    var replacementCodons = [];
+    for(let i = 0; i < restrictionFrameSequenceString.length; i += 3) {
+        const codon = restrictionFrameSequenceString.substring(i, i + 3);
+        replacementCodons[codonIndex++] = getReplacementCodons(codon, 'ec', 0.05);
+    }
+
+    // Create an array of all possible codon combinations as strings.
+    var possibleSequenceStrings = [];
+    generateCombinations(replacementCodons, 0, [], possibleSequenceStrings);
+    
+    // Iterate over each string in possibleSequenceStrings
+    var sequenceStringsNotContainingRestrictionSite = [];
+    possibleSequenceStrings.forEach((sequence) => {
+        // Check if the sequence string does not contain the restriction site pattern
+        if (!hasRestrictionSite(restrictionSiteName, sequence)) {
+            // If it doesn't, add it to sequenceStringsNotContainingRestrictionSite
+            sequenceStringsNotContainingRestrictionSite.push(sequence);
+        }
+    });
+
+    const columnWidth = 200; // Width of each column
+    const lineHeight = 30; // Height of each line
+    const maxColumns = 6; // Maximum number of columns
+    
+    // Loop over sequenceStringsNotContainingRestrictionSite
+    sequenceStringsNotContainingRestrictionSite.forEach((sequence, index) => {
+        // Calculate position based on index and column width
+        const column = index % maxColumns; // Determine the column
+        const x = 50 + column * columnWidth; // Calculate x position
+        const y = 80 + Math.floor(index / maxColumns) * lineHeight; // Calculate y position
+    
+        // Append text to SVG
+        svgRestrictionSiteDetails.append("text")
+            .attr("x", x)
+            .attr("y", y)
+            .style("fill", "black")
+            .attr("font-family", "Courier") // Use Courier font
+            .attr("font-size", "16px")
+            .text(sequence);
+    });
+}
+
+
+
+// Recursive function to generate all combinations
+function generateCombinations(arrays, currentIndex, currentCombination, allCombinations) {
+    if (currentIndex === arrays.length) {
+        // Base case: All sub-arrays have been processed, add current combination to the result
+        allCombinations.push(currentCombination.join(''));
+        return;
+    }
+    // Iterate over the current sub-array
+    for (let i = 0; i < arrays[currentIndex].length; i++) {
+        // Recursively call the function with the next sub-array
+        generateCombinations(arrays, currentIndex + 1, currentCombination.concat(arrays[currentIndex][i]), allCombinations);
     }
 }
 
@@ -648,7 +712,7 @@ function getRestrictionFrame(groupDNASequence, restrictionStart, restrictionStop
 
     const orf = getCurrentOrf(restrictionStart, restrictionStop, genomeAnnotations);
     const restrictionLength = restrictionStop - restrictionStart;
-    const orfStart = orf['start'];
+    const orfStart = orf['start'] + 1;
     const restrictionFrameOffset = orfStart % 3;
     const restrictionFrameStart = restrictionStart - restrictionFrameOffset;
     const restrictionFrameStop = restrictionFrameStart + restrictionLength + (3 - (restrictionLength % 3));
@@ -666,7 +730,7 @@ function getCurrentOrf(start, stop, genomeAnnotations) {
 
     return genomeAnnotations.find((orf) => {
         if (orf['strand'] === '+') {
-            if (orf['start'] <= start && orf['end'] >= stop) {
+            if(orf['start'] <= start && orf['end'] >= stop) {
                 return true; // This indicates to Array.find() that the item was found
             }
         }

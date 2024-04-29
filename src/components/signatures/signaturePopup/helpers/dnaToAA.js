@@ -89,9 +89,9 @@ export const getAminoAcidSequence = (cds, dnaSequence) => {
                 aminoAcidSequence[aminoAcidSequenceIndex].addMutantAminoAcid(translate(mutantCodon));
             }
 
-            if(referenceCodon === 'CGG') {
+            /*if(referenceCodon === 'CGG') {
                 console.log("REPLACEMENT CODONS", getReplacementCodons(referenceCodon, 'ec', 0.05));
-            }
+            }*/
 
             aminoAcidSequenceIndex++;
         }
@@ -110,17 +110,17 @@ function translate(dnaCodon) {
 }
 
 
-function getReplacementCodons(codon, organism, cutoff) {
+export const getReplacementCodons = (codon, organism, cutoff) => {
 
     let repacementCodons = Object.keys(geneticCode).filter(key => {
         const codonInfo = geneticCode[key];
         return codonInfo['aa'] === translate(codon) && codonInfo[organism] >= cutoff;
     });
 
-    if(repacementCodons.includes(codon)) {
+    /*if(repacementCodons.includes(codon)) {
         const index = repacementCodons.indexOf(codon);
         repacementCodons.splice(index, 1);
-    }
+    }*/
 
     return repacementCodons;
 }
