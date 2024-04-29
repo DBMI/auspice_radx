@@ -577,7 +577,7 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
                 })
                 .on("click", function() {
                     //restrictionSiteDetailsContent.style.display = "block";
-                    drawRestrictionSiteDetails(svgRestrictionSiteDetails, groupDNASequence.slice(position, position + getRestrictionSiteLength(restrictionSiteKey)));
+                    drawRestrictionSiteDetails(svgRestrictionSiteDetails, position, restrictionSiteKey, groupColor, groupDNASequence, genomeAnnotations);
                     //console.log(restrictionSiteKey + ' ' + getRestrictionSiteLength(restrictionSiteKey), groupDNASequence.slice(position, position + getRestrictionSiteLength(restrictionSiteKey)));
                     //const singleEnzymeSitesHeader = restrictionSiteDetailsContent.querySelector("#singleEnzymeSitesHeader");
                     //singleEnzymeSitesHeader.innerHTML = "Single Enzyme Restriction Sites For " + restrictionSiteKey;
@@ -597,28 +597,81 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
 
 
 
-function drawRestrictionSiteDetails(svgRestrictionSiteDetails, restrictionSequence) {
+function drawRestrictionSiteDetails(svgRestrictionSiteDetails, restricitionStart, restrictionSiteName, groupColor, groupDNASequence, genomeAnnotations) {
+
+    const restrictionStop = restricitionStart + getRestrictionSiteLength(restrictionSiteName);
+    const restrictionFrame = getRestrictionFrame(groupDNASequence, restricitionStart, restrictionStop, genomeAnnotations);
+    const restrictionRelativeStart = restrictionFrame['restrictionRelativeStart'];
+    const restrictionFrameSequence = restrictionFrame['restrictionFrameSequence'];
 
     svgRestrictionSiteDetails.selectAll("*").remove();
 
-    for(let i = 0; i < restrictionSequence.length; i++) {
+    svgRestrictionSiteDetails.append('rect')
+        .attr("x", 200 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7)
+        .attr("y", 10 - (unitHeight / 2))
+        .attr("width", unitWidthTotal * (restrictionStop - restricitionStart))
+        .attr("height", unitHeight)
+        .attr("fill", getBrighterColor(groupColor));
+
+    svgRestrictionSiteDetails.append("text")
+        .attr("x", 200 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7 + (unitWidthTotal * (restrictionStop - restricitionStart)) / 2) // Center horizontally
+        .attr("y", 10)
+        .style("fill", fontDisplayColor)
+        .attr("dy", ".4em")
+        .attr("font-size", "12px")
+        .attr("text-anchor", "middle") // Set text anchor to middle for horizontal centering
+        .text(restrictionSiteName);
+
+    for(let i = 0; i < restrictionFrameSequence.length; i++) {
     
         svgRestrictionSiteDetails.append("rect")
             .attr("x", 200 + (unitWidthTotal * (i + 1)) - 7)
-            .attr("y", 70 - (unitHeight / 2))
+            .attr("y", 40 - (unitHeight / 2))
             .attr("width", unitWidth)
             .attr("height", unitHeight)
-            .attr("fill", restrictionSequence[i].getDisplayColor());
+            .attr("fill", restrictionFrameSequence[i].getDisplayColor());
 
         svgRestrictionSiteDetails.append("text")
             .attr("x", 200 + (unitWidthTotal * (i + 1)) - 4)
-            .attr("y", 70)
+            .attr("y", 40)
             .style("fill", fontDisplayColor)
             .attr("dy", ".4em")
             .attr("font-size", "12px")
             .attr("text-align", "center")
-            .text(restrictionSequence[i].getDisplayBase());
+            .text(restrictionFrameSequence[i].getDisplayBase());
     }
+}
+
+
+
+function getRestrictionFrame(groupDNASequence, restrictionStart, restrictionStop, genomeAnnotations) {
+
+    const orf = getCurrentOrf(restrictionStart, restrictionStop, genomeAnnotations);
+    const restrictionLength = restrictionStop - restrictionStart;
+    const orfStart = orf['start'];
+    const restrictionFrameOffset = orfStart % 3;
+    const restrictionFrameStart = restrictionStart - restrictionFrameOffset;
+    const restrictionFrameStop = restrictionFrameStart + restrictionLength + (3 - (restrictionLength % 3));
+    const restrictionFrameSequence = groupDNASequence.slice(restrictionFrameStart, restrictionFrameStop);
+    const restrictionFrame = { restrictionRelativeStart: (restrictionStart - restrictionFrameStart) , restrictionFrameSequence: restrictionFrameSequence };
+
+    console.log("RESTRICTION FRAME LENGTH", restrictionFrameSequence.length)
+
+    return restrictionFrame;
+}
+
+
+
+function getCurrentOrf(start, stop, genomeAnnotations) {
+
+    return genomeAnnotations.find((orf) => {
+        if (orf['strand'] === '+') {
+            if (orf['start'] <= start && orf['end'] >= stop) {
+                return true; // This indicates to Array.find() that the item was found
+            }
+        }
+        return false; // If condition not met, indicate to Array.find() to continue searching
+    }) || null; // Return null if no matching ORF is found
 }
 
 
