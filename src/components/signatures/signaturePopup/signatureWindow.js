@@ -118,14 +118,14 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
     html += "</div>";
 
     html += "<div id=\"restrictionDesign\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
-    html += "<div id=\"restrictionDesignSelect\" style=\"height: 2%\">";
+    /*html += "<div id=\"restrictionDesignSelect\" style=\"height: 2%\">";
     html += "<select id=\"selectRestrictionSite\" onchange=\"changeRestrictionSite()\">";
     html += "<option value=\"\" disabled selected>Select Restriction Site</option>";
     restrictionSiteNames.forEach((restrictionSiteName) => {
         html += "<option value=\"" + restrictionSiteName + "\">" + restrictionSiteName + "</option>";
     });
     html += "</select>";
-    html += "</div>";
+    html += "</div>";*/
     html += "<div id=\"restrictionDesignDetails\" class=\"verticalScrollPane\" style=\"height: 15%\"></div>";
     html += "</div>";
 
@@ -156,6 +156,8 @@ function initializeTabButtons(signatureWindow) {
     const restrictionButton = signatureWindow.document.getElementById("restrictionButton");
     const restrictionDesignButton = signatureWindow.document.getElementById("restrictionDesignButton");
 
+    signatureWindow.document.getElementById('selectRestrictionSite').disabled = true;
+
     const selectedBackgroundColor = getBrighterColor(getBrighterColor(getBrighterColor('#30353F')));
 
     ampliconButton.style.background = selectedBackgroundColor;
@@ -176,6 +178,7 @@ function initializeTabButtons(signatureWindow) {
         aaAlignmentDiv.style.display = "none";
         restrictionComparisonDiv.style.display = "none";
         restrictionDesignDiv.style.display = "none";
+        signatureWindow.document.getElementById('selectRestrictionSite').disabled = true;
 
         ampliconButton.style.background = selectedBackgroundColor;
         ampliconButton.style.fontDisplayColor = '##5da8a3';
@@ -196,6 +199,7 @@ function initializeTabButtons(signatureWindow) {
         aaAlignmentDiv.style.display = "flex";
         restrictionComparisonDiv.style.display = "none";
         restrictionDesignDiv.style.display = "none";
+        signatureWindow.document.getElementById('selectRestrictionSite').disabled = true;
 
         ampliconButton.style.background = '#D3D3D3';
         ampliconButton.style.fontDisplayColor = '#30353F';
@@ -216,6 +220,7 @@ function initializeTabButtons(signatureWindow) {
         aaAlignmentDiv.style.display = "none";
         restrictionComparisonDiv.style.display = "block";
         restrictionDesignDiv.style.display = "none";
+        signatureWindow.document.getElementById('selectRestrictionSite').disabled = true;
 
         ampliconButton.style.background = '#D3D3D3';
         ampliconButton.style.fontDisplayColor = '#30353F';
@@ -236,6 +241,7 @@ function initializeTabButtons(signatureWindow) {
         aaAlignmentDiv.style.display = "none";
         restrictionComparisonDiv.style.display = "none";
         restrictionDesignDiv.style.display = "block";
+        signatureWindow.document.getElementById('selectRestrictionSite').disabled = false;
         
         ampliconButton.style.background = '#D3D3D3';
         ampliconButton.style.fontDisplayColor = '#30353F';
@@ -1089,6 +1095,14 @@ function getHeaderDiv(groupCategory, group, position, orf) {
     header += "<li>Selected Position: <span class=\"dataText\">" + position + "</span></li>";
     header += "<li>Selected Protein: <span class=\"dataText\">" + orf + "</span></li>";
     header += "</ul>"
+    header += "<select id=\"selectRestrictionSite\">";
+    header += "<option value=\"\" disabled selected>Select Restriction Site</option>";
+    getRestrictionSiteNames().forEach((restrictionSiteName) => {
+        header += "<option value=\"" + restrictionSiteName + "\">" + restrictionSiteName + "</option>";
+    });
+    header += "</select>";
+    
+
     header += "</div>";
 
     return header;
@@ -1342,6 +1356,11 @@ function getSignatureWindowStyle() {
             cursor: pointer;
             padding: 14px 16px;
             transition: 0.3s;
+        }
+        #selectRestrictionSite {
+            position: absolute;
+            left: 800px; /* Adjust left position */
+            top: 200px; /* Adjust top position */
         }
     `;
 
