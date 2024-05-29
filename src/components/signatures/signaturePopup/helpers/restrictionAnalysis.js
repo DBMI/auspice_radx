@@ -7,6 +7,8 @@ const restrictionSites = {
     AgeIHF: ["[Aa][Cc][Cc][Gg][Gg][TUtu]"],
     AluI: ["[Aa][Gg][Cc][TUtu]"],
     BglII: ["[Aa][Gg][Aa][TUtu][Cc][TUtu]"],
+    BsalHFv2: ["[Gg][Gg][TtUu][Cc][TtUu][Cc]", "[Gg][Aa][Gg][Aa][Cc][Cc]"],
+    BsmBIv2: ["[Cc][Gg][TUtu][Cc][TUtu][Cc]", "[Gg][Aa][Gg][Aa][Cc][Gg]"],
     EcoRI: ["[Gg][Aa][Aa][TUtu][TUtu][Cc]"],
     EcoRV: ["[Gg][Aa][TUtu][Aa][TUtu][Cc]"],
     HindIII: ["[Aa][Aa][Gg][Cc][TUtu][TUtu]"],
@@ -16,6 +18,7 @@ const restrictionSites = {
     MseI: ["[TUtu][TUtu][Aa][Aa]"],
     NdeI: ["[Cc][Aa][TUtu][Aa][TUtu][Gg]"],
     PacI: ["[TUtu][TUtu][Aa][Aa][TUtu][TUtu][Aa][Aa]"],
+    PaqCI: ["[Cc][Aa][Cc][Cc][TtUu][Gg][Cc]", "[Gg][Cc][Aa][Gg][Gg][TtUu][Gg]"],
     PciI: ["[Aa][Cc][Aa][TUtu][Gg][TUtu]"],
     SacII: ["[Cc][Cc][Gg][Cc][Gg][Gg]"],
     SexAI: ["[Aa][Cc][Cc][ATUatu][Gg][Gg][TUtu]"],
@@ -31,9 +34,34 @@ export const hasRestrictionSite = (restrictionSiteName, sequence) => {
 };
 
 
+export const getRestrictionSiteNames = () => {
+    return Object.keys(restrictionSites);
+};
+
+
 export const getRestrictionSiteLength = (restrictionSiteName) => {
 
     return (restrictionSites[restrictionSiteName][0].match(/\[/g) || []).length;
+}
+
+
+export const getRestrictionSites = (restrictionSiteName, rootSequence, group, mutationsMap) => {
+
+    let groupSequenceObjectArray = retrieveSequence(rootSequence, mutationsMap.get(group[0]));
+    let groupSequence = "";
+    for(var i = 0; i < groupSequenceObjectArray.length; i++) {
+        groupSequence += groupSequenceObjectArray[i].getDisplayBase();
+    }
+    let matches = [];
+    restrictionSites[restrictionSiteName].forEach(function(restrictionPattern) {
+        const regex = new RegExp(restrictionPattern, "g");
+        let match;
+        while ((match = regex.exec(groupSequence)) !== null) {
+            matches.push(match.index);
+        }
+    });
+
+    return matches;
 }
 
 
@@ -42,6 +70,7 @@ export const getAllRestrictionSites = (rootSequence, groups, mutationsMap) => {
     const allRestrictionSites = {}; // All restriction sites for all groups.
 
     groups.forEach((group) => {
+
         let allGroupRestrictionSites = {};
         let groupSequenceObjectArray = retrieveSequence(rootSequence, mutationsMap.get(group[0]));
         let groupSequence = "";

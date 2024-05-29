@@ -1,5 +1,5 @@
 import { Base } from "./base";
-import { displaySignatureWindow, generateSignatureWindowContent, populateSignatureSequence, populateRestrictionMap, populateAAAlignment } from "./signaturePopup/signatureWindow";
+import { displaySignatureWindow, generateSignatureWindowContent, populateSignatureSequence, populateRestrictionComparisonMap, populateRestrictionDesignMap, populateAAAlignment } from "./signaturePopup/signatureWindow";
 //import { displayPrimerWindow, generatePrimerWindowContent } from "./primerPopup/primerWindow";
 
 const PARSE_BY_AUTHOR = 'author';
@@ -421,8 +421,9 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
           signatureWindow.document.body.innerHTML = generateSignatureWindowContent(groupCategory, group, i, currentCDS.prot);
           populateSignatureSequence(signatureWindow, currentSequence, i);
           setTimeout(function() {
-            populateRestrictionMap(signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
             populateAAAlignment(signatureWindow, currentCDS, group, categoryGroup, mutationsMap, rootSequence);
+            populateRestrictionComparisonMap(signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
+            populateRestrictionDesignMap('BsalHFv2', signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
           }, 1000);
         })
         .append("title")

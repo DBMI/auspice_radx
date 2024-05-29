@@ -3,7 +3,7 @@ import { axisBottom, axisTop } from "d3-axis";
 import { scaleLinear } from "d3-scale";
 import { select } from "d3-selection";
 import { lowerCase } from "lodash";
-import { getAllRestrictionSites, getNonConservedRestrictionSites, getRestrictionSiteLength, hasRestrictionSite } from "./helpers/restrictionAnalysis";
+import { getRestrictionSiteNames, getRestrictionSites, getNonConservedRestrictionSites, getRestrictionSiteLength, hasRestrictionSite } from "./helpers/restrictionAnalysis";
 import { getBrighterColor } from "../../../util/colorHelpers";
 import { retrieveSequence } from "./../signaturesHelpers";
 import { getAminoAcidSequence, getReplacementCodons } from "./helpers/dnaToAA";
@@ -81,6 +81,8 @@ export const displaySignatureWindow = () => {
 
 export const generateSignatureWindowContent = (groupCategory, group, position, orf) => {
 
+    const restrictionSiteNames = getRestrictionSiteNames();
+
     let html = "<html>";
 
     // HEAD
@@ -105,14 +107,26 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
     html += "<div id=\"results\" class=\"results\"></div>";
     html += "</div>";
 
+    html += "<div id=\"aaAlignment\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
+    html += "<div id=\"aaMSALegend\" style=\"width: 80px; flex-shrink: 0;\"></div>";
+    html += "<div id=\"aaMSA\" class=\"horizontalScrollPane\" style=\"width: 100%\"></div>";
+    html += "</div>";
+
     html += "<div id=\"restrictionComparison\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
     html += "<div id=\"nonConservedSites\" class=\"verticalScrollPane\" style=\"height: 40%\"></div>";
     html += "<div id=\"restrictionSiteDetails\" style=\"display: none; height: 60%\"></div>";
     html += "</div>";
 
-    html += "<div id=\"aaAlignment\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
-    html += "<div id=\"aaMSALegend\" style=\"width: 80px; flex-shrink: 0;\"></div>";
-    html += "<div id=\"aaMSA\" class=\"horizontalScrollPane\" style=\"width: 100%\"></div>";
+    html += "<div id=\"restrictionDesign\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
+    html += "<div id=\"restrictionDesignSelect\" style=\"height: 2%\">";
+    html += "<select id=\"selectRestrictionSite\" onchange=\"changeRestrictionSite()\">";
+    html += "<option value=\"\" disabled selected>Select Restriction Site</option>";
+    restrictionSiteNames.forEach((restrictionSiteName) => {
+        html += "<option value=\"" + restrictionSiteName + "\">" + restrictionSiteName + "</option>";
+    });
+    html += "</select>";
+    html += "</div>";
+    html += "<div id=\"restrictionDesignDetails\" class=\"verticalScrollPane\" style=\"height: 15%\"></div>";
     html += "</div>";
 
     html += "</div>";
@@ -133,70 +147,107 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
 function initializeTabButtons(signatureWindow) {
 
     const ampliconSelectionDiv = signatureWindow.document.getElementById("ampliconSelection");
-    const restrictionComparisonDiv = signatureWindow.document.getElementById("restrictionComparison");
     const aaAlignmentDiv = signatureWindow.document.getElementById("aaAlignment");
+    const restrictionComparisonDiv = signatureWindow.document.getElementById("restrictionComparison");
+    const restrictionDesignDiv = signatureWindow.document.getElementById("restrictionDesign");
 
     const ampliconButton = signatureWindow.document.getElementById("ampliconButton");
-    const restrictionButton = signatureWindow.document.getElementById("restrictionButton");
     const aaAlignmentButton = signatureWindow.document.getElementById("aaAlignmentButton");
+    const restrictionButton = signatureWindow.document.getElementById("restrictionButton");
+    const restrictionDesignButton = signatureWindow.document.getElementById("restrictionDesignButton");
 
     const selectedBackgroundColor = getBrighterColor(getBrighterColor(getBrighterColor('#30353F')));
 
     ampliconButton.style.background = selectedBackgroundColor;
     ampliconButton.style.fontDisplayColor = '##5da8a3';
 
-    restrictionButton.style.background = '#D3D3D3';
-    ampliconButton.style.fontDisplayColor = '#30353F';
-
     aaAlignmentButton.style.background = '#D3D3D3';
     aaAlignmentButton.style.fontDisplayColor = '#30353F';
 
+    restrictionButton.style.background = '#D3D3D3';
+    restrictionButton.style.fontDisplayColor = '#30353F';
+
+    restrictionDesignButton.style.background = '#D3D3D3';
+    restrictionDesignButton.style.fontDisplayColor = '#30353F';
+
     ampliconButton.addEventListener("click", function() { 
 
-        restrictionComparisonDiv.style.display = "none";
         ampliconSelectionDiv.style.display = "block";
         aaAlignmentDiv.style.display = "none";
+        restrictionComparisonDiv.style.display = "none";
+        restrictionDesignDiv.style.display = "none";
 
         ampliconButton.style.background = selectedBackgroundColor;
         ampliconButton.style.fontDisplayColor = '##5da8a3';
 
+        aaAlignmentButton.style.background = '#D3D3D3';
+        aaAlignmentButton.style.fontDisplayColor = '#30353F';
+
         restrictionButton.style.background = '#D3D3D3';
         restrictionButton.style.fontDisplayColor = '#30353F';
 
-        aaAlignmentButton.style.background = '#D3D3D3';
-        aaAlignmentButton.style.fontDisplayColor = '#30353F';
-    });
-
-    restrictionButton.addEventListener("click", function() { 
-
-        ampliconSelectionDiv.style.display = "none";
-        restrictionComparisonDiv.style.display = "block";
-        aaAlignmentDiv.style.display = "none";
-
-        ampliconButton.style.background = '#D3D3D3';
-        ampliconButton.style.fontDisplayColor = '#30353F';
-
-        restrictionButton.style.background = selectedBackgroundColor;
-        restrictionButton.style.fontDisplayColor = '##5da8a3';
-
-        aaAlignmentButton.style.background = '#D3D3D3';
-        aaAlignmentButton.style.fontDisplayColor = '#30353F';
+        restrictionDesignButton.style.background = '#D3D3D3';
+        restrictionDesignButton.style.fontDisplayColor = '#30353F';
     });
 
     aaAlignmentButton.addEventListener("click", function() {
 
         ampliconSelectionDiv.style.display = "none";
-        restrictionComparisonDiv.style.display = "none";
         aaAlignmentDiv.style.display = "flex";
+        restrictionComparisonDiv.style.display = "none";
+        restrictionDesignDiv.style.display = "none";
 
         ampliconButton.style.background = '#D3D3D3';
         ampliconButton.style.fontDisplayColor = '#30353F';
 
+        aaAlignmentButton.style.background = selectedBackgroundColor;
+        aaAlignmentButton.style.fontDisplayColor = '##5da8a3';
+
         restrictionButton.style.background = '#D3D3D3';
         restrictionButton.style.fontDisplayColor = '#30353F';
 
-        aaAlignmentButton.style.background = selectedBackgroundColor;
-        aaAlignmentButton.style.fontDisplayColor = '##5da8a3';
+        restrictionDesignButton.style.background = '#D3D3D3';
+        restrictionDesignButton.style.fontDisplayColor = '#30353F';
+    });
+
+    restrictionButton.addEventListener("click", function() { 
+
+        ampliconSelectionDiv.style.display = "none";
+        aaAlignmentDiv.style.display = "none";
+        restrictionComparisonDiv.style.display = "block";
+        restrictionDesignDiv.style.display = "none";
+
+        ampliconButton.style.background = '#D3D3D3';
+        ampliconButton.style.fontDisplayColor = '#30353F';
+
+        aaAlignmentButton.style.background = '#D3D3D3';
+        aaAlignmentButton.style.fontDisplayColor = '#30353F';
+
+        restrictionButton.style.background = selectedBackgroundColor;
+        restrictionButton.style.fontDisplayColor = '##5da8a3';
+
+        restrictionDesignButton.style.background = '#D3D3D3';
+        restrictionDesignButton.style.fontDisplayColor = '#30353F';
+    });
+
+    restrictionDesignButton.addEventListener("click", function() { 
+
+        ampliconSelectionDiv.style.display = "none";
+        aaAlignmentDiv.style.display = "none";
+        restrictionComparisonDiv.style.display = "none";
+        restrictionDesignDiv.style.display = "block";
+        
+        ampliconButton.style.background = '#D3D3D3';
+        ampliconButton.style.fontDisplayColor = '#30353F';
+
+        aaAlignmentButton.style.background = '#D3D3D3';
+        aaAlignmentButton.style.fontDisplayColor = '#30353F';
+
+        restrictionButton.style.background = '#D3D3D3';
+        restrictionButton.style.fontDisplayColor = '##5da8a3';
+
+        restrictionDesignButton.style.background = selectedBackgroundColor;
+        restrictionDesignButton.style.fontDisplayColor = '#30353F';
     });
 }
 
@@ -446,12 +497,11 @@ function removeResults(resultsSvg) {
 
 
 
-export const populateRestrictionMap = (signatureWindow, currentGroup, groups, mutationsMap, rootSequence, genomeAnnotations) => {
+export const populateRestrictionComparisonMap = (signatureWindow, currentGroup, groups, mutationsMap, rootSequence, genomeAnnotations) => {
 
     const elementHeight = 20;
     const nonConservedRestrictionSites = getNonConservedRestrictionSites(rootSequence, groups, mutationsMap);
     const restrictionWindowDisplayWidth = actualWidth - 100;
-    //const restrictionWindowDisplayHeight = 100 + (groups.length * 25);
 
     var nonConservedSitesContent = signatureWindow.document.getElementById('nonConservedSites');
     var restrictionSiteDetailsContent = signatureWindow.document.getElementById('restrictionSiteDetails');
@@ -470,40 +520,7 @@ export const populateRestrictionMap = (signatureWindow, currentGroup, groups, mu
         .attr("width", "100%")
         .attr("height", "100%");
 
-    // Draw the blocks representing the ORFs for the different potein coding regions:
-    genomeAnnotations.forEach((orf) => {
-        
-        const orfProtein = orf['prot'];
-        const orfDirection = orf['strand'];
-        const orfStart = orf['start'];
-        const orfEnd = orf['end'];
-        const orfColor = orf['fill'];
-
-        var orfX = (orfStart / rootSequence.length) * (restrictionWindowDisplayWidth - 100);
-        var orfWidth = ((orfEnd / rootSequence.length) * (restrictionWindowDisplayWidth - 100)) - orfX;
-
-        svgNonConserved.append("rect")
-            .attr("x", 100 + orfX)
-            .attr("y", 30)
-            .attr("width", orfWidth)
-            .attr("height", elementHeight)
-            .attr("fill", orfColor)
-            .style("cursor", "pointer")
-            .on("mouseover", function () {
-                tooltip.text(orfProtein + ' (' + orfDirection + ')');
-            })
-            .on("mouseout", function () {
-                tooltip.text("");
-            });
-
-        var tooltip = svgNonConserved.append("text")
-            .attr("x", 100 + orfX + (orfWidth / 2))
-            .attr("y", 25)
-            .attr("text-anchor", "middle")
-            .style("fill", "black")
-            .style("font-size", "12px")
-            .style("pointer-events", "none");
-    });
+    drawORFMap(restrictionWindowDisplayWidth, svgNonConserved, elementHeight, rootSequence, genomeAnnotations);
 
     let y = 125;
     groups.forEach((group) => {
@@ -516,6 +533,46 @@ export const populateRestrictionMap = (signatureWindow, currentGroup, groups, mu
             drawGroupRestrictionMap(svgNonConserved, restrictionWindowDisplayWidth, rootSequence, nonConservedRestrictionSites[groupKey], y, groupKey, groupColor, svgRestrictionSiteDetails, groups, signatureWindow, genomeAnnotations, mutationsMap);
             y += 25;
         }; 
+    });
+}
+
+
+function drawORFMap(restrictionWindowDisplayWidth, svg, elementHeight, rootSequence, genomeAnnotations) {
+
+    // Draws the blocks representing the ORFs for the different potein coding regions.
+
+    genomeAnnotations.forEach((orf) => {
+        
+        const orfProtein = orf['prot'];
+        const orfDirection = orf['strand'];
+        const orfStart = orf['start'];
+        const orfEnd = orf['end'];
+        const orfColor = orf['fill'];
+    
+        var orfX = (orfStart / rootSequence.length) * (restrictionWindowDisplayWidth - 100);
+        var orfWidth = ((orfEnd / rootSequence.length) * (restrictionWindowDisplayWidth - 100)) - orfX;
+    
+        svg.append("rect")
+            .attr("x", 100 + orfX)
+            .attr("y", 30)
+            .attr("width", orfWidth)
+            .attr("height", elementHeight)
+            .attr("fill", orfColor)
+            .style("cursor", "pointer")
+            .on("mouseover", function () {
+                tooltip.text(orfProtein + ' (' + orfDirection + ')');
+            })
+            .on("mouseout", function () {
+                tooltip.text("");
+            });
+    
+        var tooltip = svg.append("text")
+            .attr("x", 100 + orfX + (orfWidth / 2))
+            .attr("y", 25)
+            .attr("text-anchor", "middle")
+            .style("fill", "black")
+            .style("font-size", "12px")
+            .style("pointer-events", "none");
     });
 }
 
@@ -576,13 +633,8 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
                     tooltip.text("");
                 })
                 .on("click", function() {
-                    //restrictionSiteDetailsContent.style.display = "block";
                     drawRestrictionSiteDetails(svgRestrictionSiteDetails, position, restrictionSiteKey, groupColor, groupDNASequence, genomeAnnotations);
-                    //console.log(restrictionSiteKey + ' ' + getRestrictionSiteLength(restrictionSiteKey), groupDNASequence.slice(position, position + getRestrictionSiteLength(restrictionSiteKey)));
-                    //const singleEnzymeSitesHeader = restrictionSiteDetailsContent.querySelector("#singleEnzymeSitesHeader");
-                    //singleEnzymeSitesHeader.innerHTML = "Single Enzyme Restriction Sites For " + restrictionSiteKey;
-                    //drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteKey, groupKey, groups, restrictionWindowDisplayWidth, rootSequence);
-            });
+                });
 
             var tooltip = svg.append("text")
                 .attr("x", 100 + (position / sequenceLength) * (restrictionWindowDisplayWidth - 100))
@@ -651,7 +703,7 @@ function drawRestrictionSiteDetails(svgRestrictionSiteDetails, restricitionStart
     var replacementCodons = [];
     for(let i = 0; i < restrictionFrameSequenceString.length; i += 3) {
         const codon = restrictionFrameSequenceString.substring(i, i + 3);
-        replacementCodons[codonIndex++] = getReplacementCodons(codon, 'ec', 0.05);
+        replacementCodons[codonIndex++] = getReplacementCodons(codon, 'hs', 0.10);
     }
 
     // Create an array of all possible codon combinations as strings.
@@ -792,6 +844,121 @@ function getCurrentOrf(start, stop, genomeAnnotations) {
         });
     });
 }*/
+
+
+export const populateRestrictionDesignMap = (restrictionSiteName, signatureWindow, currentGroup, groups, mutationsMap, rootSequence, genomeAnnotations) => {
+
+    const elementHeight = 20;
+    const tickWidth = 3;
+    const restrictionWindowDisplayWidth = actualWidth - 100;
+    const group = getGroup(groups, currentGroup);
+    const groupColor = group[1];
+    const sequenceLength = rootSequence.length;
+
+    var restrictionDesignDetailsContent = signatureWindow.document.getElementById('restrictionDesignDetails');
+
+    restrictionDesignDetailsContent.style.display = "block";
+
+    // Clear existing SVG content
+    restrictionDesignDetailsContent.innerHTML = '';
+
+    var svgRestrictionDesign = select(restrictionDesignDetailsContent)
+        .append("svg")
+        .style("background-color", "#f0f0f0")
+        .attr("width", "100%")
+        .attr("height", "100%");
+
+    svgRestrictionDesign.append("text")
+        .text(restrictionSiteName)
+        .attr("x", 15)
+        .attr("y", 20)
+        .style("fill", "black")
+        .style("font-size", "18px")
+        .style("pointer-events", "none");
+
+    drawORFMap(restrictionWindowDisplayWidth, svgRestrictionDesign, elementHeight, rootSequence, genomeAnnotations);
+
+    const restrictionSites = getRestrictionSites(restrictionSiteName, rootSequence, group, mutationsMap);
+    
+    var y = 80;
+
+    svgRestrictionDesign.append("rect")
+        .attr("x", 20)
+        .attr("y", y)
+        .attr("width", elementHeight)
+        .attr("height", elementHeight)
+        .attr("stroke-width", 2)
+        .attr("stroke", groupColor)
+        .attr("fill", getBrighterColor(groupColor))
+        .on("mouseover", function() {
+            groupTooltip.text(currentGroup);
+        })
+        .on("mouseout", function() {
+            groupTooltip.text("");
+        });
+
+    var groupTooltip = svgRestrictionDesign.append("text")
+        .attr("x", 20)
+        .attr("y", y - 15)
+        .style("fill", "black")
+        .style("font-size", "12px")
+        .style("pointer-events", "none");
+
+    restrictionSites.forEach((position) => {
+
+        svgRestrictionDesign.append("rect")
+            .attr("x", 100 + (position / sequenceLength) * (restrictionWindowDisplayWidth - 100))
+            .attr("y", y)
+            .attr("width", tickWidth)
+            .attr("height", elementHeight)
+            .attr("fill", groupColor)
+            .style("cursor", "pointer")
+            .on("mouseover", function () {
+                tooltip.text(restrictionSiteName + " (" + position + ")");
+            })
+            .on("mouseout", function () {
+                tooltip.text("");
+            })
+            .on("click", function() {
+                //drawRestrictionSiteDetails(svgRestrictionSiteDetails, position, restrictionSiteKey, groupColor, groupDNASequence, genomeAnnotations);
+            });
+
+        var tooltip = svgRestrictionDesign.append("text")
+            .attr("x", 100 + (position / sequenceLength) * (restrictionWindowDisplayWidth - 100))
+            .attr("y", y - 5)
+            .attr("text-anchor", "middle")
+            .style("fill", "black")
+            .style("font-size", "12px")
+            .style("pointer-events", "none");
+    });
+
+    // Get the select element and set its value
+    var selectRestrictionSite = signatureWindow.document.getElementById('selectRestrictionSite');
+    selectRestrictionSite.value = restrictionSiteName;
+
+    // Remove any existing event listeners on the select element
+    var newSelectRestrictionSite = selectRestrictionSite.cloneNode(true);
+    selectRestrictionSite.parentNode.replaceChild(newSelectRestrictionSite, selectRestrictionSite);
+
+    // Add a new event listener for the change event
+    newSelectRestrictionSite.addEventListener('change', function() {
+        populateRestrictionDesignMap(this.value, signatureWindow, currentGroup, groups, mutationsMap, rootSequence, genomeAnnotations);
+    });
+}
+
+
+function getGroup(groups, groupName) {
+
+    const arrays = Object.values(groups);
+
+    for(let arr of arrays) {
+       if (arr[0] === groupName) {
+         return arr;
+       }
+    }
+
+    return null;
+}
 
 
 export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, groups, mutationsMap, rootSequence) => {
@@ -948,6 +1115,7 @@ function getTabDiv() {
     tabs += "<button id=\"ampliconButton\" class=\"tablinks\" style=\"font-weight: bold;\">Amplicon Selection</button>";
     tabs += "<button id=\"aaAlignmentButton\" class=\"tablinks\" style=\"font-weight: bold;\">ORF AA Alignments</button>";
     tabs += "<button id=\"restrictionButton\" class=\"tablinks\" style=\"font-weight: bold;\">Restriction Comparison</button>";
+    tabs += "<button id=\"restrictionDesignButton\" class=\"tablinks\" style=\"font-weight: bold;\">Restriction Design</button>";
     tabs += "</div>";
 
     return tabs;
