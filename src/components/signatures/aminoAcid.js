@@ -27,14 +27,16 @@ const ROOT_COLORS = {
 
 export class AminoAcid {
 
-    //location;
+    proteinAAPosition; // Position within Protein
+    genomeCodonStartPosition; // Position of first Nucleic Acid of Codon within entire Genome.
     originalAminoAcid;
     mutantAminoAcids;
   
 
-    constructor(originalAminoAcid) {
+    constructor(originalAminoAcid, proteinAAPosition, genomeCodonStartPosition) {
   
-      //this.location = location;
+      this.proteinAAPosition = proteinAAPosition;
+      this.genomeCodonStartPosition = genomeCodonStartPosition;
       this.originalAminoAcid = originalAminoAcid;
       this.mutantAminoAcids = new Set();
     }

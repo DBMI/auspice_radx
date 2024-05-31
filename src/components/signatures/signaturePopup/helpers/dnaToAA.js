@@ -84,7 +84,7 @@ export const getAminoAcidSequence = (cds, dnaSequence) => {
             mutantCodon = mutantCodon + dnaSequence[i + 1].getDisplayBase();
             mutantCodon = mutantCodon + dnaSequence[i + 2].getDisplayBase();
 
-            aminoAcidSequence[aminoAcidSequenceIndex] = new AminoAcid(translate(referenceCodon));
+            aminoAcidSequence[aminoAcidSequenceIndex] = new AminoAcid(translate(referenceCodon), aminoAcidSequenceIndex, i);
 
             if(translate(referenceCodon) != translate(mutantCodon)) {
                 aminoAcidSequence[aminoAcidSequenceIndex].addMutantAminoAcid(translate(mutantCodon));

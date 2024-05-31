@@ -127,6 +127,7 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
     html += "</select>";
     html += "</div>";*/
     html += "<div id=\"restrictionDesignDetails\" class=\"verticalScrollPane\" style=\"height: 15%\"></div>";
+    html += "<div id=\"restrictionDesignSiteDetails\" height: 40%\"></div>";
     html += "</div>";
 
     html += "</div>";
@@ -639,7 +640,7 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
                     tooltip.text("");
                 })
                 .on("click", function() {
-                    drawRestrictionSiteDetails(svgRestrictionSiteDetails, position, restrictionSiteKey, groupColor, groupDNASequence, genomeAnnotations);
+                    //drawRestrictionSiteDetails(svgRestrictionSiteDetails, position, restrictionSiteKey, groupColor, groupDNASequence, genomeAnnotations);
                 });
 
             var tooltip = svg.append("text")
@@ -862,11 +863,13 @@ export const populateRestrictionDesignMap = (restrictionSiteName, signatureWindo
     const sequenceLength = rootSequence.length;
 
     var restrictionDesignDetailsContent = signatureWindow.document.getElementById('restrictionDesignDetails');
+    var restrictionDesignSiteDetailsContent = signatureWindow.document.getElementById('restrictionDesignSiteDetails');
 
     restrictionDesignDetailsContent.style.display = "block";
 
     // Clear existing SVG content
     restrictionDesignDetailsContent.innerHTML = '';
+    restrictionDesignSiteDetailsContent.innerHTML = '';
 
     var svgRestrictionDesign = select(restrictionDesignDetailsContent)
         .append("svg")
@@ -877,14 +880,21 @@ export const populateRestrictionDesignMap = (restrictionSiteName, signatureWindo
     svgRestrictionDesign.append("text")
         .text(restrictionSiteName)
         .attr("x", 15)
-        .attr("y", 20)
+        .attr("y", 25)
         .style("fill", "black")
         .style("font-size", "18px")
         .style("pointer-events", "none");
 
     drawORFMap(restrictionWindowDisplayWidth, svgRestrictionDesign, elementHeight, rootSequence, genomeAnnotations);
 
+    var svgRestrictionSiteDetails = select(restrictionDesignSiteDetailsContent)
+        .append("svg")
+        .style("background-color", "#f0f0f0")
+        .attr("width", "100%")
+        .attr("height", "40%");
+
     const restrictionSites = getRestrictionSites(restrictionSiteName, rootSequence, group, mutationsMap);
+    const groupDNASequence = retrieveSequence(rootSequence, mutationsMap.get(currentGroup));
     
     var y = 80;
 
@@ -926,7 +936,7 @@ export const populateRestrictionDesignMap = (restrictionSiteName, signatureWindo
                 tooltip.text("");
             })
             .on("click", function() {
-                //drawRestrictionSiteDetails(svgRestrictionSiteDetails, position, restrictionSiteKey, groupColor, groupDNASequence, genomeAnnotations);
+                drawRestrictionSiteDetails(svgRestrictionSiteDetails, position, restrictionSiteName, groupColor, groupDNASequence, genomeAnnotations);
             });
 
         var tooltip = svgRestrictionDesign.append("text")
@@ -1032,34 +1042,34 @@ export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, 
             yIndex += 20;
         }
 
+        // Append a rectangle representing the group
+        svgAAAlignmentLegend.append("rect")
+            .attr("x", 20)
+            .attr("y", y - (unitHeight / 2))
+            .attr("width", unitWidth)
+            .attr("height", unitHeight)
+            .attr("stroke-width", 2)
+            .attr("stroke", currentGroupColor)
+            .attr("fill", getBrighterColor(currentGroupColor))
+            .on("mouseover", function() {
+                groupTooltip.text(currentGroupName);
+            })
+            .on("mouseout", function() {
+                groupTooltip.text("");
+            });
+        
+        var groupTooltip = svgAAAlignmentLegend.append("text")
+            .attr("x", 20)
+            .attr("y", 50)
+            .style("fill", "black")
+            .style("font-size", "12px")
+            .style("pointer-events", "none");
+
         // Draw the sequence:
         let displayIndex = 0;
         let aaRect = [];
             
         for (let i = 0; i < currentGroupAASequence.length; i++) {
-        
-            // Append a rectangle representing the group
-            svgAAAlignmentLegend.append("rect")
-                .attr("x", 20)
-                .attr("y", y - (unitHeight / 2))
-                .attr("width", unitWidth)
-                .attr("height", unitHeight)
-                .attr("stroke-width", 2)
-                .attr("stroke", currentGroupColor)
-                .attr("fill", getBrighterColor(currentGroupColor))
-                .on("mouseover", function() {
-                    groupTooltip.text(currentGroupName);
-                })
-                .on("mouseout", function() {
-                    groupTooltip.text("");
-                });
-        
-            var groupTooltip = svgAAAlignmentLegend.append("text")
-                .attr("x", 20)
-                .attr("y", 50)
-                .style("fill", "black")
-                .style("font-size", "12px")
-                .style("pointer-events", "none");
                 
             aaRect[i] = svgAAAlignment.append("rect")
                 .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
@@ -1076,7 +1086,10 @@ export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, 
                 .attr("font-size", "12px")
                 .attr("text-align", "center")
                 .text(currentGroupAASequence[i].getDisplayAminoAcid())
-                .style("cursor", "pointer");
+                .style("cursor", "pointer")
+                .on("click", function() {
+                    console.log("AA ALIGNMENT: " + currentGroupName, currentGroupAASequence[i])
+                });
         
             displayIndex++;
         }
@@ -1359,8 +1372,14 @@ function getSignatureWindowStyle() {
         }
         #selectRestrictionSite {
             position: absolute;
-            left: 800px; /* Adjust left position */
-            top: 200px; /* Adjust top position */
+            right: 100px; /* Adjust left position */
+            top: 150px; /* Adjust top position */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px; /* Padding inside the select box */
+            border: 1px solid #ccc; /* Border color and width */
+            background-color: #f9f9f9; /* Background color */
+            font-size: 14px; /* Font size */
+            color: #333; /* Text color */
         }
     `;
 
