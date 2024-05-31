@@ -108,8 +108,12 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
     html += "</div>";
 
     html += "<div id=\"aaAlignment\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
+    html += "<div style=\"display: flex; height: 25%;\">";
     html += "<div id=\"aaMSALegend\" style=\"width: 80px; flex-shrink: 0;\"></div>";
-    html += "<div id=\"aaMSA\" class=\"horizontalScrollPane\" style=\"width: 100%\"></div>";
+    html += "<div id=\"aaMSA\" style=\"width: calc(100% - 80px); height: 100%; overflow-x: scroll; overflow-y: hidden;\"></div>";
+    html += "</div>";
+    html += "<div id=\"aaSelection\" style=\"width: 100%; height: 25%; background: purple;\"></div>";
+    html += "<div id=\"aaResults\" style=\"width: 100%; height: 25%; background: pink;\"></div>";
     html += "</div>";
 
     html += "<div id=\"restrictionComparison\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
@@ -118,14 +122,6 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
     html += "</div>";
 
     html += "<div id=\"restrictionDesign\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
-    /*html += "<div id=\"restrictionDesignSelect\" style=\"height: 2%\">";
-    html += "<select id=\"selectRestrictionSite\" onchange=\"changeRestrictionSite()\">";
-    html += "<option value=\"\" disabled selected>Select Restriction Site</option>";
-    restrictionSiteNames.forEach((restrictionSiteName) => {
-        html += "<option value=\"" + restrictionSiteName + "\">" + restrictionSiteName + "</option>";
-    });
-    html += "</select>";
-    html += "</div>";*/
     html += "<div id=\"restrictionDesignDetails\" class=\"verticalScrollPane\" style=\"height: 15%\"></div>";
     html += "<div id=\"restrictionDesignSiteDetails\" height: 40%\"></div>";
     html += "</div>";
@@ -197,7 +193,7 @@ function initializeTabButtons(signatureWindow) {
     aaAlignmentButton.addEventListener("click", function() {
 
         ampliconSelectionDiv.style.display = "none";
-        aaAlignmentDiv.style.display = "flex";
+        aaAlignmentDiv.style.display = "block";//"flex";
         restrictionComparisonDiv.style.display = "none";
         restrictionDesignDiv.style.display = "none";
         signatureWindow.document.getElementById('selectRestrictionSite').disabled = true;
@@ -259,7 +255,7 @@ function initializeTabButtons(signatureWindow) {
 }
 
 
-export const populateSignatureSequence = (signatureWindow, sequence, position) => {
+export const populateSignatureSequence = (signatureWindow, sequence, position, selectionDiv, ResultsDiv) => {
 
     initializeTabButtons(signatureWindow);
 
@@ -276,8 +272,8 @@ export const populateSignatureSequence = (signatureWindow, sequence, position) =
 
     const svgWidth = (stop - start + 2) * unitWidthTotal;
 
-    var selectionContent = signatureWindow.document.getElementById('selection');
-    var resultsContent = signatureWindow.document.getElementById('results');
+    var selectionContent = signatureWindow.document.getElementById(selectionDiv);
+    var resultsContent = signatureWindow.document.getElementById(ResultsDiv);
 
     var svg = select(selectionContent)
         .append("svg")
@@ -994,7 +990,6 @@ export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, 
         .append("svg")
         .attr("width", "100%")
         .attr("height", "100%");
-        //.style("background-color", "pink");
 
     var svgAAAlignment = select(aaAlignmentDiv)
         .append("svg")
