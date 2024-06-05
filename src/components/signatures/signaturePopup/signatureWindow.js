@@ -122,10 +122,10 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
     html += "</div>";
 
     html += "<div id=\"restrictionDesign\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
-    html += "<div id=\"restrictionDesignDetails\" style=\"height: 13%\"></div>";
-    html += "<div id=\"restrictionDesignSiteDetails\" class=\"verticalScrollPane\" style=\"height: 29%; width: 100%;\"></div>";
-    html += "<div id=\"restrictionDesignSiteSelection\" style=\"height: 29%; width: 100%; background: pink;\"></div>";
-    html += "<div id=\"restrictionDesignSiteSelectionResults\" style=\"height: 29%; width: 100%; background: blue;\"></div>";
+    html += "<div id=\"restrictionDesignDetails\" style=\"height: 12%\"></div>";
+    html += "<div id=\"restrictionDesignSiteDetails\" class=\"horizontalScrollPane\" style=\"height: 24%; width: 100%;\"></div>";
+    html += "<div id=\"restrictionDesignSiteSelection\" class=\"horizontalScrollPane\" style=\"height: 20%; width: 100%;\"><svg id=\"restrictionDesignSelectionSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/></div>";
+    html += "<div id=\"restrictionDesignSiteSelectionResults\" style=\"height: 44%; width: 100%;\"><svg id=\"restrictionDesignSelectionSvg\" style=\"height: 100%; width: 100%; background: violet;\"/></div>";
     html += "</div>";
     html += "</div>";
 
@@ -444,7 +444,7 @@ function displayResults(resultsSvg, sequence, selectedBases, resultsContent) {
     removeResults(resultsSvg);
 
     resultsSvg.style("width", svgWidth + "px");
-
+    
     let seqString = "";
 
     for(let i = selectedBases[0]; i <= selectedBases[1]; i++) {
@@ -677,24 +677,40 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
 
 
 
-function drawRestrictionSiteDetails(svgRestrictionSiteDetails, restricitionStart, restrictionSiteName, groupColor, groupDNASequence, genomeAnnotations) {
+function drawRestrictionSiteDetails(signatureWindow, svgRestrictionSiteDetails, restrictionStart, restrictionSiteName, groupName, groupColor, groupDNASequence, genomeAnnotations) {
 
-    const restrictionStop = restricitionStart + getRestrictionSiteLength(restrictionSiteName);
-    const restrictionFrame = getRestrictionFrame(groupDNASequence, restricitionStart, restrictionStop, genomeAnnotations);
+    const restrictionStop = restrictionStart + getRestrictionSiteLength(restrictionSiteName);
+    const restrictionFrame = getRestrictionFrame(groupDNASequence, restrictionStart, restrictionStop, genomeAnnotations);
     const restrictionRelativeStart = restrictionFrame['restrictionRelativeStart'];
     const restrictionFrameSequence = restrictionFrame['restrictionFrameSequence'];
 
     svgRestrictionSiteDetails.selectAll("*").remove();
 
+    svgRestrictionSiteDetails.append('text')
+        .attr("x", 25)
+        .attr("y", 10)
+        .style("fill", fontDisplayColor)
+        .attr("dy", ".4em")
+        .attr("font-size", "16px")
+        .text(groupName + " (" + restrictionStart + ")");
+
+    svgRestrictionSiteDetails.append('text')
+        .attr("x", 25)
+        .attr("y", 40)
+        .style("fill", fontDisplayColor)
+        .attr("dy", ".4em")
+        .attr("font-size", "14px")
+        .text("Select Replacement Sequence");
+    
     svgRestrictionSiteDetails.append('rect')
-        .attr("x", 50 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7)
+        .attr("x", 300 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7)
         .attr("y", 10 - (unitHeight / 2))
-        .attr("width", unitWidthTotal * (restrictionStop - restricitionStart))
+        .attr("width", unitWidthTotal * (restrictionStop - restrictionStart))
         .attr("height", unitHeight)
         .attr("fill", getBrighterColor(groupColor));
 
     svgRestrictionSiteDetails.append("text")
-        .attr("x", 50 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7 + (unitWidthTotal * (restrictionStop - restricitionStart)) / 2) // Center horizontally
+        .attr("x", 300 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7 + (unitWidthTotal * (restrictionStop - restrictionStart)) / 2) // Center horizontally
         .attr("y", 10)
         .style("fill", fontDisplayColor)
         .attr("dy", ".4em")
@@ -705,14 +721,14 @@ function drawRestrictionSiteDetails(svgRestrictionSiteDetails, restricitionStart
     for(let i = 0; i < restrictionFrameSequence.length; i++) {
     
         svgRestrictionSiteDetails.append("rect")
-            .attr("x", 50 + (unitWidthTotal * (i + 1)) - 7)
+            .attr("x", 300 + (unitWidthTotal * (i + 1)) - 7)
             .attr("y", 40 - (unitHeight / 2))
             .attr("width", unitWidth)
             .attr("height", unitHeight)
             .attr("fill", restrictionFrameSequence[i].getDisplayColor());
 
         svgRestrictionSiteDetails.append("text")
-            .attr("x", 50 + (unitWidthTotal * (i + 1)) - 4)
+            .attr("x", 300 + (unitWidthTotal * (i + 1)) - 4)
             .attr("y", 40)
             .style("fill", fontDisplayColor)
             .attr("dy", ".4em")
@@ -750,15 +766,20 @@ function drawRestrictionSiteDetails(svgRestrictionSiteDetails, restricitionStart
 
     const columnWidth = 200; // Width of each column
     const lineHeight = 30; // Height of each line
-    const maxColumns = 6; // Maximum number of columns
-    
+    const maxRows = 5; // Maximum rows per column
+    const maxColumns = Math.ceil(sequenceStringsNotContainingRestrictionSite.length / maxRows); // Maximum number of columns
+    const svgWidth = (maxColumns + 1) * columnWidth;
+
+    svgRestrictionSiteDetails.style("width", svgWidth + "px");
+
     // Loop over sequenceStringsNotContainingRestrictionSite
-    sequenceStringsNotContainingRestrictionSite.forEach((sequence, index) => {
+    sequenceStringsNotContainingRestrictionSite.forEach((replacementSequence, index) => {
         // Calculate position based on index and column width
-        const column = index % maxColumns; // Determine the column
+        const column = Math.floor(index / maxRows); // Determine the column
+        const rowInColumn = index % maxRows; // Determine the row within the column
         const x = 50 + column * columnWidth; // Calculate x position
-        const y = 80 + Math.floor(index / maxColumns) * lineHeight; // Calculate y position
-    
+        const y = 90 + rowInColumn * lineHeight; // Calculate y position
+
         // Append text to SVG
         svgRestrictionSiteDetails.append("text")
             .attr("x", x)
@@ -766,7 +787,14 @@ function drawRestrictionSiteDetails(svgRestrictionSiteDetails, restricitionStart
             .style("fill", "black")
             .attr("font-family", "Courier") // Use Courier font
             .attr("font-size", "16px")
-            .text(sequence);
+            .text(replacementSequence)
+            .style("cursor", "pointer")
+            .on("click", function() {
+                console.log("REPLACEMENT SEQUENCE", replacementSequence);
+                console.log("RESTRICTION FRAME SEQUENCE", restrictionFrameSequence);
+                const restrictionFrameStart = restrictionFrameSequence[0]['location'];
+                populateSignatureSequence(signatureWindow, groupDNASequence, restrictionFrameStart, 'restrictionDesignSiteSelection', 'restrictionDesignSiteSelectionResults', 'restrictionDesignSelectionSvg', 'restrictionDesignSelectionSvg', null);               
+            });
     });
 }
 
@@ -878,6 +906,7 @@ export const populateRestrictionDesignMap = (restrictionSiteName, signatureWindo
     const tickWidth = 3;
     const restrictionWindowDisplayWidth = actualWidth - 100;
     const group = getGroup(groups, currentGroup);
+    const groupName = group[0];
     const groupColor = group[1];
     const sequenceLength = rootSequence.length;
 
@@ -955,7 +984,7 @@ export const populateRestrictionDesignMap = (restrictionSiteName, signatureWindo
                 tooltip.text("");
             })
             .on("click", function() {
-                drawRestrictionSiteDetails(svgRestrictionSiteDetails, position, restrictionSiteName, groupColor, groupDNASequence, genomeAnnotations);
+                drawRestrictionSiteDetails(signatureWindow, svgRestrictionSiteDetails, position, restrictionSiteName, groupName, groupColor, groupDNASequence, genomeAnnotations);
             });
 
         var tooltip = svgRestrictionDesign.append("text")
