@@ -7,6 +7,7 @@ import { getRestrictionSiteNames, getRestrictionSites, getNonConservedRestrictio
 import { getBrighterColor } from "../../../util/colorHelpers";
 import { retrieveSequence } from "./../signaturesHelpers";
 import { getAminoAcidSequence, getReplacementCodons } from "./helpers/dnaToAA";
+import { replaceSequence } from "./helpers/sequenceTools";
 
 const w = 900;
 const h = 750;
@@ -793,7 +794,8 @@ function drawRestrictionSiteDetails(signatureWindow, svgRestrictionSiteDetails, 
                 console.log("REPLACEMENT SEQUENCE", replacementSequence);
                 console.log("RESTRICTION FRAME SEQUENCE", restrictionFrameSequence);
                 const restrictionFrameStart = restrictionFrameSequence[0]['location'];
-                populateSignatureSequence(signatureWindow, groupDNASequence, restrictionFrameStart, 'restrictionDesignSiteSelection', 'restrictionDesignSiteSelectionResults', 'restrictionDesignSelectionSvg', 'restrictionDesignSelectionSvg', null);               
+                const newGroupDNASequence = replaceSequence(groupDNASequence, restrictionFrameSequence, replacementSequence);
+                populateSignatureSequence(signatureWindow, newGroupDNASequence, restrictionFrameStart, 'restrictionDesignSiteSelection', 'restrictionDesignSiteSelectionResults', 'restrictionDesignSelectionSvg', 'restrictionDesignSelectionSvg', null);               
             });
     });
 }
