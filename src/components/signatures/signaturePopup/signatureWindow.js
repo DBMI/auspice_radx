@@ -102,9 +102,9 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
 
     html += getTabDiv();
 
-    html += "<div id=\"ampliconSelection\" class=\"tabcontent\" style=\"display: block;\">";
-    html += "<div id=\"selection\" class=\"horizontalScrollPane\" style=\"width: 100%\"></div>";
-    html += "<div id=\"results\" class=\"results\"></div>";
+    html += "<div id=\"ampliconSelection\" class=\"tabcontent\" style=\"display: block; height: 100%;\">";
+    html += "<div id=\"selection\" class=\"horizontalScrollPane\" style=\"width: 100%; height: 30%;\"><svg id=\"selectionSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/></div>";
+    html += "<div id=\"results\" class=\"results horizontalScrollPane\" style=\"width: 100%; height: 50%;\"><svg id=\"resultsSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/></div>";
     html += "</div>";
 
     html += "<div id=\"aaAlignment\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
@@ -112,8 +112,8 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
     html += "<div id=\"aaMSALegend\" style=\"width: 80px; flex-shrink: 0;\"></div>";
     html += "<div id=\"aaMSA\" style=\"width: calc(100% - 80px); height: 100%; overflow-x: scroll; overflow-y: hidden;\"></div>";
     html += "</div>";
-    html += "<div id=\"aaSelection\" style=\"width: 100%; height: 25%; background: purple;\"></div>";
-    html += "<div id=\"aaResults\" style=\"width: 100%; height: 25%; background: pink;\"></div>";
+    html += "<div id=\"aaSelection\" class=\"results horizontalScrollPane\" style=\"width: 100%; height: 25%; \"><svg id=\"aaSelectionSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/></div>";
+    html += "<div id=\"aaResults\" class=\"results horizontalScrollPane\" style=\"width: 100%; height: 25%;\"><svg id=\"aaResultsSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/></div>";
     html += "</div>";
 
     html += "<div id=\"restrictionComparison\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
@@ -122,10 +122,11 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
     html += "</div>";
 
     html += "<div id=\"restrictionDesign\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
-    html += "<div id=\"restrictionDesignDetails\" class=\"verticalScrollPane\" style=\"height: 15%\"></div>";
-    html += "<div id=\"restrictionDesignSiteDetails\" height: 40%\"></div>";
+    html += "<div id=\"restrictionDesignDetails\" style=\"height: 13%\"></div>";
+    html += "<div id=\"restrictionDesignSiteDetails\" class=\"verticalScrollPane\" style=\"height: 29%; width: 100%;\"></div>";
+    html += "<div id=\"restrictionDesignSiteSelection\" style=\"height: 29%; width: 100%; background: pink;\"></div>";
+    html += "<div id=\"restrictionDesignSiteSelectionResults\" style=\"height: 29%; width: 100%; background: blue;\"></div>";
     html += "</div>";
-
     html += "</div>";
 
     html += getFooterDiv();
@@ -141,7 +142,7 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
 
 
 
-function initializeTabButtons(signatureWindow) {
+export const initializeTabButtons = (signatureWindow) => {
 
     const ampliconSelectionDiv = signatureWindow.document.getElementById("ampliconSelection");
     const aaAlignmentDiv = signatureWindow.document.getElementById("aaAlignment");
@@ -155,10 +156,10 @@ function initializeTabButtons(signatureWindow) {
 
     signatureWindow.document.getElementById('selectRestrictionSite').disabled = true;
 
-    const selectedBackgroundColor = getBrighterColor(getBrighterColor(getBrighterColor('#30353F')));
+    const selectedBackgroundColor = "#f0f0f0";
 
     ampliconButton.style.background = selectedBackgroundColor;
-    ampliconButton.style.fontDisplayColor = '##5da8a3';
+    ampliconButton.style.fontDisplayColor = '#5da8a3';
 
     aaAlignmentButton.style.background = '#D3D3D3';
     aaAlignmentButton.style.fontDisplayColor = '#30353F';
@@ -255,9 +256,7 @@ function initializeTabButtons(signatureWindow) {
 }
 
 
-export const populateSignatureSequence = (signatureWindow, sequence, position, selectionDiv, ResultsDiv) => {
-
-    initializeTabButtons(signatureWindow);
+export const populateSignatureSequence = (signatureWindow, sequence, position, selectionDiv, resultsDiv, selectionSvgId, resultsSvgId, aaSequence) => {
 
     // Include up to 500 bases to the 5' and 3' of the selected position in the display:
     const flankingSequenceLength = 500;
@@ -273,18 +272,15 @@ export const populateSignatureSequence = (signatureWindow, sequence, position, s
     const svgWidth = (stop - start + 2) * unitWidthTotal;
 
     var selectionContent = signatureWindow.document.getElementById(selectionDiv);
-    var resultsContent = signatureWindow.document.getElementById(ResultsDiv);
+    var resultsContent = signatureWindow.document.getElementById(resultsDiv);
 
-    var svg = select(selectionContent)
-        .append("svg")
-        .attr("width", svgWidth)
-        .attr("height", "100%");
-
-    var resultsSvg = select(resultsContent)
-        .append("svg")
-        .attr("width", "100%")
-        .attr("height", "100%");
+    var svg = select(signatureWindow.document.querySelector(`#${selectionSvgId}`));
+    svg.selectAll("*").remove();
+    svg.style("width", svgWidth + "px");
     
+    var resultsSvg = select(signatureWindow.document.querySelector(`#${resultsSvgId}`));
+    resultsSvg.selectAll("*").remove();
+
     // Draw the X-axis (absolute sequence positions):
     let startX = unitWidthTotal;
     let endX = svgWidth - unitWidthTotal;
@@ -300,7 +296,7 @@ export const populateSignatureSequence = (signatureWindow, sequence, position, s
     var xAxisGroup = svg.append("g")
         .attr("class", "x-axis")
         //.attr("transform", "translate(0," + h / 12 + ")") // Adjust y position if needed
-        .attr("transform", "translate(0, 40)")
+        .attr("transform", "translate(0, 70)")
         .call(xAxis);
     xAxisGroup.selectAll(".tick line")
         .style("stroke", "black"); // Adjust tick color
@@ -318,7 +314,7 @@ export const populateSignatureSequence = (signatureWindow, sequence, position, s
         .tickSize(6); // Specify the length of ticks
     var xAxisGroupRelative = svg.append("g")
         .attr("class", "x-axis")
-        .attr("transform", "translate(0, 100)")
+        .attr("transform", "translate(0, 150)")
         .call(xAxisRelative);
     xAxisGroupRelative.selectAll(".tick line")
         .style("stroke", "black"); // Adjust tick color
@@ -327,35 +323,58 @@ export const populateSignatureSequence = (signatureWindow, sequence, position, s
         .style("fill", "black"); // Adjust text color
 
     let selectedBases = [];
-    drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSvg);
+    drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSvg, resultsContent, aaSequence);
 
     let midpoint = (svgWidth / 2) - (w * 3 / 4)
     
     setTimeout(() => {
-        console.log("SVG WIDTH DNA", svgWidth);
         selectionContent.scrollLeft = midpoint;
     }, 100);
 }
 
 
-function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSvg) {
+function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSvg, resultsContent, aaSequence) {
 
     // Draw the sequence:
     let displayIndex = 0;
     let baseRect = [];
 
     for (let i = start; i <= stop; i++) {
+
+        // If an AA sequence is provided draw it just above the respective codons in the DNA sequence.
+        if(aaSequence !== null) {
+
+            var aminoAcid = aaSequence.find(aminoAcid => aminoAcid.genomeCodonStartPosition === i);
+            if(aminoAcid) {
+
+                svg.append("rect")
+                    .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
+                    .attr("y", 95 - (unitHeight / 2))
+                    .attr("width", unitWidth)
+                    .attr("height", unitHeight)
+                    .attr("fill", aminoAcid.getDisplayColor());
+
+                svg.append("text")
+                    .attr("x", (unitWidthTotal * (displayIndex + 1)) - 4)
+                    .attr("y", 95)
+                    .style("fill", fontDisplayColor)
+                    .attr("dy", ".4em")
+                    .attr("font-size", "12px")
+                    .attr("text-align", "center")
+                    .text(aminoAcid.getDisplayAminoAcid())
+            }
+        }
     
         baseRect[i] = svg.append("rect")
             .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
-            .attr("y", 70 - (unitHeight / 2))
+            .attr("y", 120 - (unitHeight / 2))
             .attr("width", unitWidth)
             .attr("height", unitHeight)
             .attr("fill", sequence[i].getDisplayColor());
 
         let base = svg.append("text")
             .attr("x", (unitWidthTotal * (displayIndex + 1)) - 4)
-            .attr("y", 70)
+            .attr("y", 120)
             .style("fill", fontDisplayColor)
             .attr("dy", ".4em")
             .attr("font-size", "12px")
@@ -399,7 +418,7 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                             baseRect[n].attr("fill", selectedColor);
                         }
                     }
-                    displayResults(resultsSvg, sequence, selectedBases);
+                    displayResults(resultsSvg, sequence, selectedBases, resultsContent);
                 }
                 // Otherwise, clear the resultsSvg.
                 else {
@@ -416,9 +435,15 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
 }
 
 
-function displayResults(resultsSvg, sequence, selectedBases) {
+function displayResults(resultsSvg, sequence, selectedBases, resultsContent) {
 
+    const start = Math.min(selectedBases[0], selectedBases[1]);
+    const stop = Math.max(selectedBases[0], selectedBases[1]);
+    const svgWidth = Math.max(((stop - start + 2) * unitWidthTotal), resultsContent.offsetWidth);
+    
     removeResults(resultsSvg);
+
+    resultsSvg.style("width", svgWidth + "px");
 
     let seqString = "";
 
@@ -774,8 +799,6 @@ function getRestrictionFrame(groupDNASequence, restrictionStart, restrictionStop
     const restrictionFrameSequence = groupDNASequence.slice(restrictionFrameStart, restrictionFrameStop);
     const restrictionFrame = { restrictionRelativeStart: (restrictionStart - restrictionFrameStart) , restrictionFrameSequence: restrictionFrameSequence };
 
-    console.log("RESTRICTION FRAME LENGTH", restrictionFrameSequence.length)
-
     return restrictionFrame;
 }
 
@@ -887,7 +910,7 @@ export const populateRestrictionDesignMap = (restrictionSiteName, signatureWindo
         .append("svg")
         .style("background-color", "#f0f0f0")
         .attr("width", "100%")
-        .attr("height", "40%");
+        .attr("height", "100%");
 
     const restrictionSites = getRestrictionSites(restrictionSiteName, rootSequence, group, mutationsMap);
     const groupDNASequence = retrieveSequence(rootSequence, mutationsMap.get(currentGroup));
@@ -975,7 +998,6 @@ function getGroup(groups, groupName) {
 
 export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, groups, mutationsMap, rootSequence) => {
 
-
     // Selecting the container for the SVG
     const aaAlignmentLegendDiv = signatureWindow.document.getElementById('aaMSALegend');
     const aaAlignmentDiv = signatureWindow.document.getElementById('aaMSA');
@@ -988,11 +1010,13 @@ export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, 
 
     var svgAAAlignmentLegend = select(aaAlignmentLegendDiv)
         .append("svg")
+        .style("background-color", "#f0f0f0")
         .attr("width", "100%")
         .attr("height", "100%");
 
     var svgAAAlignment = select(aaAlignmentDiv)
         .append("svg")
+        .style("background-color", "#f0f0f0")
         .attr("width", svgWidth)
         .attr("height", "100%");
 
@@ -1083,7 +1107,7 @@ export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, 
                 .text(currentGroupAASequence[i].getDisplayAminoAcid())
                 .style("cursor", "pointer")
                 .on("click", function() {
-                    console.log("AA ALIGNMENT: " + currentGroupName, currentGroupAASequence[i])
+                    populateSignatureSequence(signatureWindow, currentGroupDNASequence, currentGroupAASequence[i]['genomeCodonStartPosition'], 'aaSelection', 'aaResults', 'aaSelectionSvg', 'aaResultsSvg', currentGroupAASequence);
                 });
         
             displayIndex++;
@@ -1134,10 +1158,10 @@ function trimDisplayString(displayString) {
 function getTabDiv() {
 
     let tabs = "<div class=\"tab\">";
-    tabs += "<button id=\"ampliconButton\" class=\"tablinks\" style=\"font-weight: bold;\">Amplicon Selection</button>";
-    tabs += "<button id=\"aaAlignmentButton\" class=\"tablinks\" style=\"font-weight: bold;\">ORF AA Alignments</button>";
     tabs += "<button id=\"restrictionButton\" class=\"tablinks\" style=\"font-weight: bold;\">Restriction Comparison</button>";
     tabs += "<button id=\"restrictionDesignButton\" class=\"tablinks\" style=\"font-weight: bold;\">Restriction Design</button>";
+    tabs += "<button id=\"aaAlignmentButton\" class=\"tablinks\" style=\"font-weight: bold;\">ORF AA Alignments</button>";
+    tabs += "<button id=\"ampliconButton\" class=\"tablinks\" style=\"font-weight: bold;\">Amplicon Selection</button>";
     tabs += "</div>";
 
     return tabs;
@@ -1231,14 +1255,14 @@ function getSignatureWindowStyle() {
         }
         .results {
             width: 100%;
-            height: 40%;
+            height: 100%;
             margin: 0 auto; /* Center the results div horizontally */
             font-family: Lato, &quot;Helvetica Neue&quot;, Helvetica, sans-serif;
             font-size: 20px;
             letter-spacing: 0.4rem;
-            margin-left: 5px;
-            margin-top: 5px;
-            margin-bottom: 5px;
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
             font-weight: 350;
             style="overflow-wrap: break-word;"
             flex: 1;
@@ -1355,15 +1379,22 @@ function getSignatureWindowStyle() {
             overflow: hidden;
             //border: 1px solid #ccc;
             //background-color: #f1f1f1;
+            background: #30353F;
+            text-align: right;
+            horizontal-align: right;
+            float: right;
         }
         .tab button {
             background-color: inherit;
-            float: left;
+            float: right;
             border: none;
             outline: none;
             cursor: pointer;
             padding: 14px 16px;
             transition: 0.3s;
+        }
+        .tablinks {
+            border-radius: 10px 10px 0 0; /* Rounded corners on top */
         }
         #selectRestrictionSite {
             position: absolute;
@@ -1372,7 +1403,7 @@ function getSignatureWindowStyle() {
             border-radius: 5px; /* Rounded corners */
             padding: 10px; /* Padding inside the select box */
             border: 1px solid #ccc; /* Border color and width */
-            background-color: #f9f9f9; /* Background color */
+            background-color: ##f0f0f0; /* Background color */
             font-size: 14px; /* Font size */
             color: #333; /* Text color */
         }

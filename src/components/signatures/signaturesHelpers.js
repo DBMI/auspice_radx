@@ -1,5 +1,5 @@
 import { Base } from "./base";
-import { displaySignatureWindow, generateSignatureWindowContent, populateSignatureSequence, populateRestrictionComparisonMap, populateRestrictionDesignMap, populateAAAlignment } from "./signaturePopup/signatureWindow";
+import { displaySignatureWindow, generateSignatureWindowContent, initializeTabButtons, populateSignatureSequence, populateRestrictionComparisonMap, populateRestrictionDesignMap, populateAAAlignment } from "./signaturePopup/signatureWindow";
 //import { displayPrimerWindow, generatePrimerWindowContent } from "./primerPopup/primerWindow";
 
 const PARSE_BY_AUTHOR = 'author';
@@ -419,7 +419,8 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
         .on("click", function() {
           const signatureWindow = displaySignatureWindow();
           signatureWindow.document.body.innerHTML = generateSignatureWindowContent(groupCategory, group, i, currentCDS.prot);
-          populateSignatureSequence(signatureWindow, currentSequence, i, 'selection', 'results');
+          initializeTabButtons(signatureWindow);
+          populateSignatureSequence(signatureWindow, currentSequence, i, 'selection', 'results', 'selectionSvg', 'resultsSvg', null);
           setTimeout(function() {
             populateAAAlignment(signatureWindow, currentCDS, group, categoryGroup, mutationsMap, rootSequence);
             populateRestrictionComparisonMap(signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
