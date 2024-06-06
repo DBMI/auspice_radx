@@ -384,7 +384,7 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                 .attr("dy", ".4em")
                 .attr("font-size", "12px")
                 .attr("text-anchor", "middle") // Set text anchor to middle for horizontal centering
-                .text(restrictionSiteInfo.restrictionSiteName);
+                .text("(" + restrictionSiteInfo.restrictionSiteName + ")");
         }
         // TODO STOP
     
