@@ -26,6 +26,16 @@ const restrictionSites = {
 };
 
 
+export class RestrictionSiteInfo {
+    
+    constructor(restrictionSiteName, startPosition, displayColor) {
+        this.restrictionSiteName = restrictionSiteName;
+        this.startPosition = startPosition;
+        this.length = (restrictionSites[restrictionSiteName][0].match(/\[/g) || []).length;
+        this.displayColor = displayColor;
+    }
+}
+
 // External function to check if a sequence contains a specific restriction site pattern
 export const hasRestrictionSite = (restrictionSiteName, sequence) => {
     const regexPattern = restrictionSites[restrictionSiteName][0]; // Get the regex pattern for the specified restriction site

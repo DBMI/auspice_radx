@@ -3,7 +3,7 @@ import { axisBottom, axisTop } from "d3-axis";
 import { scaleLinear } from "d3-scale";
 import { select } from "d3-selection";
 import { lowerCase } from "lodash";
-import { getRestrictionSiteNames, getRestrictionSites, getNonConservedRestrictionSites, getRestrictionSiteLength, hasRestrictionSite } from "./helpers/restrictionAnalysis";
+import { RestrictionSiteInfo, getRestrictionSiteNames, getRestrictionSites, getNonConservedRestrictionSites, getRestrictionSiteLength, hasRestrictionSite } from "./helpers/restrictionAnalysis";
 import { getBrighterColor } from "../../../util/colorHelpers";
 import { retrieveSequence } from "./../signaturesHelpers";
 import { getAminoAcidSequence, getReplacementCodons } from "./helpers/dnaToAA";
@@ -18,6 +18,7 @@ const unitWidthTotal = unitWidth + unitBuffer;
 const fontDisplayColor = "#000000";
 const selectedColor = "#FFF200";
 const selectedColorMutant = "#ED7014";
+const selectedColorIntroducedMutant = '#03AC13';
 
 let actualWidth = w;    // Reset this when creating the window below.
 let actualHeight = h;   // Reset this when creating the window below.
@@ -123,10 +124,10 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
     html += "</div>";
 
     html += "<div id=\"restrictionDesign\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
-    html += "<div id=\"restrictionDesignDetails\" style=\"height: 12%\"></div>";
-    html += "<div id=\"restrictionDesignSiteDetails\" class=\"horizontalScrollPane\" style=\"height: 24%; width: 100%;\"></div>";
-    html += "<div id=\"restrictionDesignSiteSelection\" class=\"horizontalScrollPane\" style=\"height: 20%; width: 100%;\"><svg id=\"restrictionDesignSelectionSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/></div>";
-    html += "<div id=\"restrictionDesignSiteSelectionResults\" style=\"height: 44%; width: 100%;\"><svg id=\"restrictionDesignSelectionSvg\" style=\"height: 100%; width: 100%; background: violet;\"/></div>";
+    html += "<div id=\"restrictionDesignDetails\" style=\"height: 14%\"></div>";
+    html += "<div id=\"restrictionDesignSiteDetails\" class=\"horizontalScrollPane\" style=\"height: 18%; width: 100%;\"></div>";
+    html += "<div id=\"restrictionDesignSiteSelection\" class=\"horizontalScrollPane\" style=\"height: 18%; width: 100%;\"><svg id=\"restrictionDesignSelectionSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/></div>";
+    html += "<div id=\"restrictionDesignSiteSelectionResults\" style=\"height: 50%; width: 100%;\"><svg id=\"restrictionDesignSelectionResultsSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/></div>";
     html += "</div>";
     html += "</div>";
 
@@ -257,7 +258,7 @@ export const initializeTabButtons = (signatureWindow) => {
 }
 
 
-export const populateSignatureSequence = (signatureWindow, sequence, position, selectionDiv, resultsDiv, selectionSvgId, resultsSvgId, aaSequence) => {
+export const populateSignatureSequence = (signatureWindow, sequence, position, selectionDiv, resultsDiv, selectionSvgId, resultsSvgId, aaSequence, restrictionSiteInfo) => {
 
     // Include up to 500 bases to the 5' and 3' of the selected position in the display:
     const flankingSequenceLength = 500;
@@ -324,7 +325,7 @@ export const populateSignatureSequence = (signatureWindow, sequence, position, s
         .style("fill", "black"); // Adjust text color
 
     let selectedBases = [];
-    drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSvg, resultsContent, aaSequence);
+    drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSvg, resultsContent, aaSequence, restrictionSiteInfo);
 
     let midpoint = (svgWidth / 2) - (w * 3 / 4)
     
@@ -334,7 +335,7 @@ export const populateSignatureSequence = (signatureWindow, sequence, position, s
 }
 
 
-function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSvg, resultsContent, aaSequence) {
+function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSvg, resultsContent, aaSequence, restrictionSiteInfo) {
 
     // Draw the sequence:
     let displayIndex = 0;
@@ -365,6 +366,27 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                     .text(aminoAcid.getDisplayAminoAcid())
             }
         }
+
+        // TODO START
+        if((restrictionSiteInfo !== null) && (sequence[i].location == restrictionSiteInfo.startPosition)) {
+
+            svg.append('rect')
+                .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
+                .attr("y", 95 - (unitHeight / 2))
+                .attr("width", unitWidthTotal * (restrictionSiteInfo.length))
+                .attr("height", unitHeight)
+                .attr("fill", getBrighterColor(restrictionSiteInfo.displayColor));
+
+            svg.append("text")
+                .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7 + (unitWidthTotal * (restrictionSiteInfo.length)) / 2) // Center horizontally
+                .attr("y", 95)
+                .style("fill", fontDisplayColor)
+                .attr("dy", ".4em")
+                .attr("font-size", "12px")
+                .attr("text-anchor", "middle") // Set text anchor to middle for horizontal centering
+                .text(restrictionSiteInfo.restrictionSiteName);
+        }
+        // TODO STOP
     
         baseRect[i] = svg.append("rect")
             .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
@@ -393,8 +415,14 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                 // If the selection is not part of selectedBases push it to selectedBases and change its color to selected.
                 if(!selectedBases.includes(i)) {
                     selectedBases.push(i);
-                    if(sequence[i].containsMutations()) {
+                    if(sequence[i].containsIntroducedMutations()) {
+                        baseRect[i].attr("fill", selectedColorIntroducedMutant);
+                    }
+                    else if(sequence[i].containsMutations()) {
                         baseRect[i].attr("fill", selectedColorMutant);
+                    }
+                    else if(sequence[i].containsIntroducedMutations()) {
+                        baseRect[i].attr("fill", selectedColorIntroducedMutant);
                     }
                     else {
                         baseRect[i].attr("fill", selectedColor);
@@ -412,7 +440,10 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                         return a - b;
                     });
                     for(let n = selectedBases[0]; n <= selectedBases[1]; n++) {
-                        if(sequence[n].containsMutations()) {
+                        if(sequence[n].containsIntroducedMutations()) {
+                            baseRect[n].attr("fill", selectedColorIntroducedMutant);
+                        }
+                        else if(sequence[n].containsMutations()) {
                             baseRect[n].attr("fill", selectedColorMutant);
                         }
                         else {
@@ -678,12 +709,13 @@ function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequenc
 
 
 
-function drawRestrictionSiteDetails(signatureWindow, svgRestrictionSiteDetails, restrictionStart, restrictionSiteName, groupName, groupColor, groupDNASequence, genomeAnnotations) {
+function drawRestrictionSiteDetails(signatureWindow, divRestrictionSiteDetails, svgRestrictionSiteDetails, restrictionStart, restrictionSiteName, groupName, groupColor, groupDNASequence, genomeAnnotations) {
 
     const restrictionStop = restrictionStart + getRestrictionSiteLength(restrictionSiteName);
     const restrictionFrame = getRestrictionFrame(groupDNASequence, restrictionStart, restrictionStop, genomeAnnotations);
     const restrictionRelativeStart = restrictionFrame['restrictionRelativeStart'];
     const restrictionFrameSequence = restrictionFrame['restrictionFrameSequence'];
+    const restrictionSiteInfo = new RestrictionSiteInfo(restrictionSiteName, restrictionStart, groupColor);
 
     svgRestrictionSiteDetails.selectAll("*").remove();
 
@@ -767,10 +799,9 @@ function drawRestrictionSiteDetails(signatureWindow, svgRestrictionSiteDetails, 
 
     const columnWidth = 200; // Width of each column
     const lineHeight = 30; // Height of each line
-    const maxRows = 5; // Maximum rows per column
+    const maxRows = 3; // Maximum rows per column
     const maxColumns = Math.ceil(sequenceStringsNotContainingRestrictionSite.length / maxRows); // Maximum number of columns
-    const svgWidth = (maxColumns + 1) * columnWidth;
-
+    const svgWidth = Math.max(((maxColumns + 1) * columnWidth), divRestrictionSiteDetails.offsetWidth);
     svgRestrictionSiteDetails.style("width", svgWidth + "px");
 
     // Loop over sequenceStringsNotContainingRestrictionSite
@@ -793,13 +824,15 @@ function drawRestrictionSiteDetails(signatureWindow, svgRestrictionSiteDetails, 
             .on("click", function() {
                 console.log("REPLACEMENT SEQUENCE", replacementSequence);
                 console.log("RESTRICTION FRAME SEQUENCE", restrictionFrameSequence);
+                // Clear existing SVG content
+                select(signatureWindow.document.querySelector(`#restrictionDesignSelectionSvg`)).selectAll("*").remove();
+                select(signatureWindow.document.querySelector(`#restrictionDesignSelectionResultsSvg`)).selectAll("*").remove();
                 const restrictionFrameStart = restrictionFrameSequence[0]['location'];
                 const newGroupDNASequence = replaceSequence(groupDNASequence, restrictionFrameSequence, replacementSequence);
-                populateSignatureSequence(signatureWindow, newGroupDNASequence, restrictionFrameStart, 'restrictionDesignSiteSelection', 'restrictionDesignSiteSelectionResults', 'restrictionDesignSelectionSvg', 'restrictionDesignSelectionSvg', null);               
+                populateSignatureSequence(signatureWindow, newGroupDNASequence, restrictionFrameStart, 'restrictionDesignSiteSelection', 'restrictionDesignSiteSelectionResults', 'restrictionDesignSelectionSvg', 'restrictionDesignSelectionResultsSvg', null, restrictionSiteInfo);               
             });
     });
 }
-
 
 
 // Recursive function to generate all combinations
@@ -917,9 +950,13 @@ export const populateRestrictionDesignMap = (restrictionSiteName, signatureWindo
 
     restrictionDesignDetailsContent.style.display = "block";
 
-    // Clear existing SVG content
+    // Clear existing DIV content
     restrictionDesignDetailsContent.innerHTML = '';
     restrictionDesignSiteDetailsContent.innerHTML = '';
+
+    // Clear existing SVG content
+    select(signatureWindow.document.querySelector(`#restrictionDesignSelectionSvg`)).selectAll("*").remove();
+    select(signatureWindow.document.querySelector(`#restrictionDesignSelectionResultsSvg`)).selectAll("*").remove();
 
     var svgRestrictionDesign = select(restrictionDesignDetailsContent)
         .append("svg")
@@ -986,7 +1023,7 @@ export const populateRestrictionDesignMap = (restrictionSiteName, signatureWindo
                 tooltip.text("");
             })
             .on("click", function() {
-                drawRestrictionSiteDetails(signatureWindow, svgRestrictionSiteDetails, position, restrictionSiteName, groupName, groupColor, groupDNASequence, genomeAnnotations);
+                drawRestrictionSiteDetails(signatureWindow, restrictionDesignSiteDetailsContent, svgRestrictionSiteDetails, position, restrictionSiteName, groupName, groupColor, groupDNASequence, genomeAnnotations);
             });
 
         var tooltip = svgRestrictionDesign.append("text")
@@ -1138,7 +1175,7 @@ export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, 
                 .text(currentGroupAASequence[i].getDisplayAminoAcid())
                 .style("cursor", "pointer")
                 .on("click", function() {
-                    populateSignatureSequence(signatureWindow, currentGroupDNASequence, currentGroupAASequence[i]['genomeCodonStartPosition'], 'aaSelection', 'aaResults', 'aaSelectionSvg', 'aaResultsSvg', currentGroupAASequence);
+                    populateSignatureSequence(signatureWindow, currentGroupDNASequence, currentGroupAASequence[i]['genomeCodonStartPosition'], 'aaSelection', 'aaResults', 'aaSelectionSvg', 'aaResultsSvg', currentGroupAASequence, null);
                 });
         
             displayIndex++;

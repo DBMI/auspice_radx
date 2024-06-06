@@ -20,7 +20,9 @@ const VALID_BASES = new Set([BASE_A, BASE_C, BASE_G, BASE_T]);
 
 const BLACK = "#000000";
 const WHITE = "#FFFFFF";
+const BLUE = '#82EEFD'; //'#1338BE';
 const RED = "#E30202";
+const GREEN = '#03AC13';
 
 const COLOR_A = "#9A9A9A";
 const COLOR_C = "#B5B5B5";
@@ -32,18 +34,26 @@ export class Base {
 
     location;
     originalBase;
-    mutantBases;
+    mutantBases;  // Mutations that came from the JSON file, as observed in real life.
+    introducedMutantBases;  // Artificially introduced by researchers using this application.
   
     constructor(location, originalBase) {
   
       this.location = location;
       this.originalBase = this.verifyBase(originalBase);
       this.mutantBases = new Set();
+      this.introducedMutantBases = new Set();
     }
   
     addMutantBase(mutantBase) {
   
       this.mutantBases.add(this.verifyBase(mutantBase));
+    }
+
+
+    addIntroducedMutantBase(introducedMutantBase) {
+
+      this.introducedMutantBases.add(this.verifyBase(introducedMutantBase));
     }
   
   
@@ -79,11 +89,27 @@ export class Base {
   
       return this.mutantBases;
     }
+
+
+    getIntroducedMutantBases() {
+
+      return this.introducedMutantBases;
+    }
   
   
     containsMutations = function() {
   
-      if(this.mutantBases.size === 0) {
+      if(this.mutantBases.size == 0) {
+        return false;
+      }
+  
+      return true;
+    }
+
+
+    containsIntroducedMutations = function() {
+  
+      if(this.introducedMutantBases.size == 0) {
         return false;
       }
   
@@ -93,7 +119,10 @@ export class Base {
   
     getDisplayColor = function() {
   
-      if(this.mutantBases.size > 0) {
+      if(this.introducedMutantBases.size > 0) {
+        return BLUE;
+      }
+      else if(this.mutantBases.size > 0) {
         return RED;
       }
       else if(this.originalBase === BASE_A) {
@@ -123,9 +152,13 @@ export class Base {
   
     getDisplayBase = function() {
   
+      // If there is an introduced mutant variety return it for this location. There should only be one despite its array nature.
+      if(this.introducedMutantBases.size > 0) {
+        return [...this.introducedMutantBases][0];
+      }
       // If there are no mutant varieties return the original base for this location.
-      if(this.mutantBases.size === 0) {
-        return this.originalBase;
+      else if(this.mutantBases.size === 0) {
+         return this.originalBase;
       }
       // If there is only one mutant variety return it for this location.
       else if(this.mutantBases.size === 1) {

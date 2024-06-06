@@ -420,7 +420,7 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
           const signatureWindow = displaySignatureWindow();
           signatureWindow.document.body.innerHTML = generateSignatureWindowContent(groupCategory, group, i, currentCDS.prot);
           initializeTabButtons(signatureWindow);
-          populateSignatureSequence(signatureWindow, currentSequence, i, 'selection', 'results', 'selectionSvg', 'resultsSvg', null);
+          populateSignatureSequence(signatureWindow, currentSequence, i, 'selection', 'results', 'selectionSvg', 'resultsSvg', null, null);
           setTimeout(function() {
             populateAAAlignment(signatureWindow, currentCDS, group, categoryGroup, mutationsMap, rootSequence);
             populateRestrictionComparisonMap(signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);

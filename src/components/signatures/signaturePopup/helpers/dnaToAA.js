@@ -114,10 +114,10 @@ export const getReplacementCodons = (codon, organism, cutoff) => {
         return codonInfo['aa'] === translate(codon) && codonInfo[organism] >= cutoff;
     });
 
-    /*if(repacementCodons.includes(codon)) {
+    if(repacementCodons.includes(codon)) {
         const index = repacementCodons.indexOf(codon);
         repacementCodons.splice(index, 1);
-    }*/
+    }
 
     return orderCodonsBySimilarity(codon, repacementCodons);
 }

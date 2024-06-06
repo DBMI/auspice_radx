@@ -6,7 +6,16 @@ export const replaceSequence = (fullSequence, targetSequence, replacementSequenc
     }
 
     for(let i = 0; i < replacementSequence.length; i += 1) {
-        console.log(replacementSequence.charAt(i), targetSequence[i]);
+
+        const targetBaseChar = targetSequence[i].getDisplayBase();
+        const targetBaseLocation = targetSequence[i]['location'];
+        const replacementBaseChar = replacementSequence.charAt(i);
+        
+        if(targetBaseChar !== replacementBaseChar) {
+            fullSequence.find(base => base.location == targetBaseLocation).addIntroducedMutantBase(replacementBaseChar);
+        }
+
+        //console.log(replacementSequence.charAt(i), targetSequence[i]);
     }
 
     return fullSequence;
