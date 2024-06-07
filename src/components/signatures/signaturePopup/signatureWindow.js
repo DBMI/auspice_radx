@@ -352,12 +352,12 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                 svg.append("rect")
                     .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
                     .attr("y", 95 - (unitHeight / 2))
-                    .attr("width", unitWidth)
+                    .attr("width", (unitWidth * 3) + 10) // Make it the width of amino acid representations that of three bases.
                     .attr("height", unitHeight)
                     .attr("fill", aminoAcid.getDisplayColor());
 
                 svg.append("text")
-                    .attr("x", (unitWidthTotal * (displayIndex + 1)) - 4)
+                    .attr("x", (unitWidthTotal * (displayIndex + 1)) - 4 + unitWidthTotal) // Center the text horizontally in the rectangle.
                     .attr("y", 95)
                     .style("fill", fontDisplayColor)
                     .attr("dy", ".4em")
@@ -367,13 +367,13 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
             }
         }
 
-        // TODO START
+
         if((restrictionSiteInfo !== null) && (sequence[i].location == restrictionSiteInfo.startPosition)) {
 
             svg.append('rect')
                 .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
                 .attr("y", 95 - (unitHeight / 2))
-                .attr("width", unitWidthTotal * (restrictionSiteInfo.length))
+                .attr("width", unitWidthTotal * (restrictionSiteInfo.length) - 5)
                 .attr("height", unitHeight)
                 .attr("fill", getBrighterColor(restrictionSiteInfo.displayColor));
 
@@ -386,7 +386,7 @@ function drawSelectSequence(sequence, start, stop, selectedBases, svg, resultsSv
                 .attr("text-anchor", "middle") // Set text anchor to middle for horizontal centering
                 .text("(" + restrictionSiteInfo.restrictionSiteName + ")");
         }
-        // TODO STOP
+
     
         baseRect[i] = svg.append("rect")
             .attr("x", (unitWidthTotal * (displayIndex + 1)) - 7)
@@ -738,7 +738,7 @@ function drawRestrictionSiteDetails(signatureWindow, divRestrictionSiteDetails, 
     svgRestrictionSiteDetails.append('rect')
         .attr("x", 300 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7)
         .attr("y", 10 - (unitHeight / 2))
-        .attr("width", unitWidthTotal * (restrictionStop - restrictionStart))
+        .attr("width", unitWidthTotal * (restrictionStop - restrictionStart) - 5)
         .attr("height", unitHeight)
         .attr("fill", getBrighterColor(groupColor));
 
@@ -822,14 +822,11 @@ function drawRestrictionSiteDetails(signatureWindow, divRestrictionSiteDetails, 
             .text(replacementSequence)
             .style("cursor", "pointer")
             .on("click", function() {
-                console.log("REPLACEMENT SEQUENCE", replacementSequence);
-                console.log("RESTRICTION FRAME SEQUENCE", restrictionFrameSequence);
-                // Clear existing SVG content
                 select(signatureWindow.document.querySelector(`#restrictionDesignSelectionSvg`)).selectAll("*").remove();
                 select(signatureWindow.document.querySelector(`#restrictionDesignSelectionResultsSvg`)).selectAll("*").remove();
                 const restrictionFrameStart = restrictionFrameSequence[0]['location'];
-                const newGroupDNASequence = replaceSequence(groupDNASequence, restrictionFrameSequence, replacementSequence);
-                populateSignatureSequence(signatureWindow, newGroupDNASequence, restrictionFrameStart, 'restrictionDesignSiteSelection', 'restrictionDesignSiteSelectionResults', 'restrictionDesignSelectionSvg', 'restrictionDesignSelectionResultsSvg', null, restrictionSiteInfo);               
+                const newGroupDNASequence = replaceSequence(groupDNASequence, restrictionFrameSequence, replacementSequence);  
+                populateSignatureSequence(signatureWindow, newGroupDNASequence, restrictionFrameStart, 'restrictionDesignSiteSelection', 'restrictionDesignSiteSelectionResults', 'restrictionDesignSelectionSvg', 'restrictionDesignSelectionResultsSvg', null, restrictionSiteInfo);           
             });
     });
 }

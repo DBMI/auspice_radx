@@ -7,11 +7,13 @@ export const replaceSequence = (fullSequence, targetSequence, replacementSequenc
 
     for(let i = 0; i < replacementSequence.length; i += 1) {
 
-        const targetBaseChar = targetSequence[i].getDisplayBase();
+        const targetBase = targetSequence[i];
+        targetBase.resetIntroducedMutantBases();
+        const targetBaseChar = targetBase.getDisplayBase();
         const targetBaseLocation = targetSequence[i]['location'];
         const replacementBaseChar = replacementSequence.charAt(i);
-        
-        if(targetBaseChar !== replacementBaseChar) {
+
+        if(targetBaseChar != replacementBaseChar) {
             fullSequence.find(base => base.location == targetBaseLocation).addIntroducedMutantBase(replacementBaseChar);
         }
 
@@ -20,3 +22,15 @@ export const replaceSequence = (fullSequence, targetSequence, replacementSequenc
 
     return fullSequence;
 };
+
+// Keep this one around, for some reasons introduced mutations leak into replaceSequence function.
+function testSequenceForIntroducedMutations(sequence) {
+
+    sequence.forEach((base) => {
+         if(base.containsIntroducedMutations()) {
+            return true;
+         }
+    });
+
+    return false;
+}

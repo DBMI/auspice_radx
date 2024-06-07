@@ -55,6 +55,11 @@ export class Base {
 
       this.introducedMutantBases.add(this.verifyBase(introducedMutantBase));
     }
+
+
+    resetIntroducedMutantBases() {
+      this.introducedMutantBases = new Set();
+    }
   
   
     // How to implement this is still in discussion. For now let's just print an error message to the console.

@@ -114,10 +114,11 @@ export const getReplacementCodons = (codon, organism, cutoff) => {
         return codonInfo['aa'] === translate(codon) && codonInfo[organism] >= cutoff;
     });
 
-    if(repacementCodons.includes(codon)) {
+    // Note: Don't eliminate the same codon as provided. Rather, at a higher level eliminate identical sequences made up of more than one codon.
+    /*if(repacementCodons.includes(codon)) {
         const index = repacementCodons.indexOf(codon);
         repacementCodons.splice(index, 1);
-    }
+    }*/
 
     return orderCodonsBySimilarity(codon, repacementCodons);
 }
