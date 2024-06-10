@@ -1,5 +1,5 @@
 import { Base } from "./base";
-import { displaySignatureWindow, generateSignatureWindowContent, initializeTabButtons, populateSignatureSequence, populateRestrictionComparisonMap, populateRestrictionDesignMap, populateAAAlignment } from "./signaturePopup/signatureWindow";
+import { displaySignatureWindow, generateSignatureWindowContent, initializeTabButtons, initializeRestrictionSelect, populateSignatureSequence, populateRestrictionComparisonMap, populateRestrictionDesignMap, populateRestrictionRemovalMap, populateAAAlignment } from "./signaturePopup/signatureWindow";
 //import { displayPrimerWindow, generatePrimerWindowContent } from "./primerPopup/primerWindow";
 
 const PARSE_BY_AUTHOR = 'author';
@@ -420,11 +420,13 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
           const signatureWindow = displaySignatureWindow();
           signatureWindow.document.body.innerHTML = generateSignatureWindowContent(groupCategory, group, i, currentCDS.prot);
           initializeTabButtons(signatureWindow);
+          initializeRestrictionSelect(signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
           populateSignatureSequence(signatureWindow, currentSequence, i, 'selection', 'results', 'selectionSvg', 'resultsSvg', null, null);
           setTimeout(function() {
             populateAAAlignment(signatureWindow, currentCDS, group, categoryGroup, mutationsMap, rootSequence);
             populateRestrictionComparisonMap(signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
-            populateRestrictionDesignMap('BsalHFv2', signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
+            populateRestrictionDesignMap(null, signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations); //'BsalHFv2'
+            populateRestrictionRemovalMap([], signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
           }, 1000);
         })
         .append("title")
