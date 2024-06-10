@@ -1262,19 +1262,31 @@ function drawRestrictionRemovalDetails(restrictionSitesToBeRemoved, svgRestricti
 
     svgRestrictionRemovalDetails.selectAll("*").remove();
 
-    if(restrictionSitesToBeRemoved.length > 0) {
-
-        svgRestrictionRemovalDetails.append("text")
+    svgRestrictionRemovalDetails.append("text")
         .attr("x", 20)
         .attr("y", 30)
         .style("fill", "black")
         .attr("font-size", "18px")
         .text("Sites To Be Removed");
+
+    if(restrictionSitesToBeRemoved.length > 0) {
+
+
     }
 
     var x = 50;
     var y = 80;
     var siteNumberIndex = 0;
+
+    if(restrictionSitesToBeRemoved.length === 0) {
+
+        svgRestrictionRemovalDetails.append("text")
+            .attr("x", x)
+            .attr("y", y)
+            .style("fill", "black")
+            .attr("font-size", "16px")
+            .text("(No Sites Selected)");
+    }
 
     restrictionSitesToBeRemoved.forEach((restrictionSite) => {
 
