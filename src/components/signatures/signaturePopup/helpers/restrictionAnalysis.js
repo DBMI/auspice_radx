@@ -43,7 +43,7 @@ export const hasRestrictionSite = (restrictionSiteName, sequence) => {
 
         const test = new RegExp(restrictionPattern, "g").test(sequence);
 
-        if (test) {
+        if(test) {
             return true;
         }
     }
