@@ -39,12 +39,6 @@ export class RestrictionSiteInfo {
 // External function to check if a sequence contains a specific restriction site pattern
 export const hasRestrictionSite = (restrictionSiteName, sequence) => {
 
-    /*const regexPattern = restrictionSites[restrictionSiteName][0]; // Get the regex pattern for the specified restriction site
-    const regex = new RegExp(regexPattern, "g");
-
-    console.log(sequence + " " + regexPattern, regex.test(sequence));
-    return regex.test(sequence);*/
-
     var test;
 
     restrictionSites[restrictionSiteName].forEach(function(restrictionPattern) {
@@ -176,3 +170,13 @@ export const getNonConservedRestrictionSites = (rootSequence, groups, mutationsM
 
     return nonConservedRestrictionSites;
 }
+
+
+
+export const bulkRemoveRestrictionSites = (restrictionSitesToBeRemoved) => {
+
+    const restrictionSitesToBeRemovedArray = Array.from(restrictionSitesToBeRemoved);
+    restrictionSitesToBeRemovedArray.sort((a, b) => a.startPosition - b.startPosition);
+
+    console.log("BULK REMOVE THEESE SITES", restrictionSitesToBeRemovedArray);
+} 

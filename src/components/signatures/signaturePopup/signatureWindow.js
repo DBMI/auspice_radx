@@ -3,7 +3,7 @@ import { axisBottom, axisTop } from "d3-axis";
 import { scaleLinear } from "d3-scale";
 import { select } from "d3-selection";
 import { lowerCase } from "lodash";
-import { RestrictionSiteInfo, getRestrictionSiteNames, getRestrictionSites, getNonConservedRestrictionSites, getRestrictionSiteLength, hasRestrictionSite } from "./helpers/restrictionAnalysis";
+import { RestrictionSiteInfo, getRestrictionSiteNames, getRestrictionSites, getNonConservedRestrictionSites, getRestrictionSiteLength, hasRestrictionSite, bulkRemoveRestrictionSites } from "./helpers/restrictionAnalysis";
 import { getBrighterColor } from "../../../util/colorHelpers";
 import { retrieveSequence } from "./../signaturesHelpers";
 import { getAminoAcidSequence, getReplacementCodons } from "./helpers/dnaToAA";
@@ -30,10 +30,14 @@ let actualWidth = w;    // Reset this when creating the window below.
 let actualHeight = h;   // Reset this when creating the window below.
 
 let selectedTab = AMPLICON_TAB;
-let selectedRestrictionSitesForRemoval = new Set();
+let selectedRestrictionSiteNamesForRemoval = new Set(); // The names of selected restriction sites.
+
 
 
 export const displaySignatureWindow = () => {
+
+    // Thisglobal variable needs to be reset for each new window.
+    selectedRestrictionSiteNamesForRemoval = new Set();
 
     const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
     const dualScreenTop = window.screenTop !==  undefined   ? window.screenTop  : window.screenY;
@@ -348,16 +352,20 @@ export const initializeRestrictionSelect = (signatureWindow, currentGroup, group
         }
         else if(selectedTab == RESTRICTION_REMOVAL_TAB) {
 
-            if(selectedRestrictionSitesForRemoval.has(restrictionSiteSelected)) {
-                selectedRestrictionSitesForRemoval.delete(restrictionSiteSelected);
+            if(selectedRestrictionSiteNamesForRemoval.has(restrictionSiteSelected)) {
+                selectedRestrictionSiteNamesForRemoval.delete(restrictionSiteSelected);
             }
             else {
-                selectedRestrictionSitesForRemoval.add(restrictionSiteSelected);
+                selectedRestrictionSiteNamesForRemoval.add(restrictionSiteSelected);
             }
 
-            populateRestrictionRemovalMap([...selectedRestrictionSitesForRemoval].sort(), signatureWindow, currentGroup, groups, mutationsMap, rootSequence, genomeAnnotations);
+            populateRestrictionRemovalMap([...selectedRestrictionSiteNamesForRemoval].sort(), signatureWindow, currentGroup, groups, mutationsMap, rootSequence, genomeAnnotations);
         };
     });
+
+    selectRestrictionSite.addEventListener('click', function() {
+        console.log("SELECTED", selectRestrictionSite.value);
+    })
 }
 
 
@@ -978,60 +986,6 @@ function getCurrentOrf(start, stop, genomeAnnotations) {
 }
 
 
-/*function drawSingleRestrictionSiteForAllGroups(signatureWindow, restrictionSiteName, selectedGroup, groups, restrictionWindowDisplayWidth, rootSequence) {
-
-    const elementHeight = 20;
-    const elementWidth = elementHeight;
-    const tickWidth = 3;
-
-    const sequenceLength = rootSequence.length;
-
-    const allRestrictionSites = getAllRestrictionSites(rootSequence, groups, mutationsMap);
-
-    // Selecting the container for the SVG
-    const singleEnzymeSitesContent = select(signatureWindow.document.getElementById('singleEnzymeSites'));
-    
-    // Clearing previous content
-    singleEnzymeSitesContent.selectAll("*").remove();
-
-    // Index for positioning the groups vertically
-    let index = 0;
-
-    // Loop through each group
-    groups.forEach((group) => {
-        
-        const groupName = group[0];
-        const groupColor = group[1];
-
-        let y = (groupName === selectedGroup) ? 0 : 50 + (index * 25);
-        index++;
-
-        // Append a rectangle representing the group
-        singleEnzymeSitesContent.append("rect")
-            .attr("x", 20)
-            .attr("y", y)
-            .attr("width", elementWidth)
-            .attr("height", elementHeight)
-            .attr("stroke-width", 2)
-            .attr("stroke", groupColor)
-            .attr("fill", getBrighterColor(groupColor));
-
-        // Get the restriction sites for the current group
-        const groupSingleRestrictionSites = allRestrictionSites[groupName][restrictionSiteName];
-        
-        // Draw tick marks for each restriction site
-        groupSingleRestrictionSites.forEach((position) => {
-            singleEnzymeSitesContent.append("rect")
-                .attr("x", 100 + (position / sequenceLength) * (restrictionWindowDisplayWidth - 100))
-                .attr("y", y)
-                .attr("width", tickWidth)
-                .attr("height", elementHeight)
-                .attr("fill", groupColor)
-                .style("cursor", "pointer");
-        });
-    });
-}*/
-
 
 export const populateRestrictionDesignMap = (restrictionSiteName, signatureWindow, currentGroup, groups, mutationsMap, rootSequence, genomeAnnotations) => {
 
@@ -1168,8 +1122,9 @@ export const populateRestrictionRemovalMap = (restrictionSiteNames, signatureWin
     const groupName = group[0];
     const groupColor = group[1];
     const sequenceLength = rootSequence.length;
-
     const groupDNASequence = retrieveSequence(rootSequence, mutationsMap.get(currentGroup));
+
+    var restrictionSitesToBeRemoved = new Set();
 
     var restrictionRemovalDetailsContent = signatureWindow.document.getElementById('restrictionRemovalDetails');
     var restrictionRemovalDetailsListContent = signatureWindow.document.getElementById('restrictionRemovalDetailsList');
@@ -1223,6 +1178,8 @@ export const populateRestrictionRemovalMap = (restrictionSiteNames, signatureWin
 
         restrictionSites.forEach((position) => {
 
+            restrictionSitesToBeRemoved.add(new RestrictionSiteInfo(restrictionSiteName, position, groupColor));
+
             svgRestrictionRemoval.append("rect")
                 .attr("x", 100 + (position / sequenceLength) * (restrictionWindowDisplayWidth - 100))
                 .attr("y", y)
@@ -1253,12 +1210,12 @@ export const populateRestrictionRemovalMap = (restrictionSiteNames, signatureWin
         .attr("width", "100%")
         .attr("height", "100%");
 
-    drawRestrictionRemovalDetails(restrictionSiteNames, svgRestrictionRemovalDetails);
+    drawRestrictionRemovalDetails(restrictionSiteNames, restrictionSitesToBeRemoved, svgRestrictionRemovalDetails);
 }
 
 
 
-function drawRestrictionRemovalDetails(restrictionSitesToBeRemoved, svgRestrictionRemovalDetails) {
+function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrictionSitesToBeRemoved, svgRestrictionRemovalDetails) {
 
     svgRestrictionRemovalDetails.selectAll("*").remove();
 
@@ -1269,26 +1226,63 @@ function drawRestrictionRemovalDetails(restrictionSitesToBeRemoved, svgRestricti
         .attr("font-size", "18px")
         .text("Sites To Be Removed");
 
-    if(restrictionSitesToBeRemoved.length > 0) {
-
-
-    }
-
-    var x = 50;
-    var y = 80;
+    var button_x = 30;
+    var button_y = 60
+    var button_radius = 5;
+    var button_width = 200;
+    var button_height = 50;
+    var button_dark = "#30353f";
+    var button_light = "#5da8a3";
+    
+    var x = 300;
+    var y_top = 65;
+    var y = y_top;
     var siteNumberIndex = 0;
 
-    if(restrictionSitesToBeRemoved.length === 0) {
+    if(restrictionSiteNamesToBeRemoved.length === 0) {
+
+        svgRestrictionRemovalDetails.append('rect')
+            .attr("x", button_x)
+            .attr("y", button_y)
+            .attr("rx", button_radius)
+            .attr("ry", button_radius)
+            .attr("width", button_width)
+            .attr("height", button_height)
+            .attr("fill", button_dark);
 
         svgRestrictionRemovalDetails.append("text")
-            .attr("x", x)
-            .attr("y", y)
-            .style("fill", "black")
-            .attr("font-size", "16px")
-            .text("(No Sites Selected)");
+            .attr("x", button_x + 35)
+            .attr("y", button_y + 32)
+            .style("fill", button_light)
+            .attr("font-size", "18px")
+            .attr("font-weight", "700")
+            .text("SELECT SITES");
+    }
+    else {
+
+        svgRestrictionRemovalDetails.append('rect')
+            .attr("x", button_x)
+            .attr("y", button_y)
+            .attr("rx", button_radius)
+            .attr("ry", button_radius)
+            .attr("width", button_width)
+            .attr("height", button_height)
+            .attr("fill", button_light)
+            .style("cursor", "pointer")
+            .on("click", function() { bulkRemoveRestrictionSites(restrictionSitesToBeRemoved); })
+
+        svgRestrictionRemovalDetails.append("text")
+            .attr("x", button_x + 35)
+            .attr("y", button_y + 32)
+            .style("fill", button_dark)
+            .attr("font-size", "18px")
+            .attr("font-weight", "700")
+            .text("REMOVE SITES")
+            .style("cursor", "pointer")
+            .on("click", function() { bulkRemoveRestrictionSites(restrictionSitesToBeRemoved); })
     }
 
-    restrictionSitesToBeRemoved.forEach((restrictionSite) => {
+    restrictionSiteNamesToBeRemoved.forEach((restrictionSiteName) => {
 
         siteNumberIndex++;
 
@@ -1297,14 +1291,14 @@ function drawRestrictionRemovalDetails(restrictionSitesToBeRemoved, svgRestricti
             .attr("y", y)
             .style("fill", "black")
             .attr("font-size", "16px")
-            .text(restrictionSite);
+            .text(restrictionSiteName);
 
         if((siteNumberIndex % 3) == 0) {
-            x = x + 200;
-            y = 80;
+            x = x + 150;
+            y = y_top;
         }
         else {
-            y = y + 20;
+            y = y + 25;
         }
     });
 }
