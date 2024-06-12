@@ -39,16 +39,15 @@ export class RestrictionSiteInfo {
 // External function to check if a sequence contains a specific restriction site pattern
 export const hasRestrictionSite = (restrictionSiteName, sequence) => {
 
-    var test;
+    for(const restrictionPattern of restrictionSites[restrictionSiteName]) {
 
-    restrictionSites[restrictionSiteName].forEach(function(restrictionPattern) {
-        test = new RegExp(restrictionPattern, "g").test(sequence);
-        if(test) {
-            return test;
+        const test = new RegExp(restrictionPattern, "g").test(sequence);
+
+        if (test) {
+            return true;
         }
-    });
-
-    return test;
+    }
+    return false;
 };
 
 
