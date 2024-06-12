@@ -172,11 +172,16 @@ export const getNonConservedRestrictionSites = (rootSequence, groups, mutationsM
 }
 
 
-
-export const bulkRemoveRestrictionSites = (restrictionSitesToBeRemoved) => {
+// Note: This currently only supports genomes that have all coding sequences in the (+) direction. Support for (-) will need to be added.
+export const bulkRemoveRestrictionSites = (restrictionSitesToBeRemoved, dnaSequence, genomeAnnotations) => {
 
     const restrictionSitesToBeRemovedArray = Array.from(restrictionSitesToBeRemoved);
     restrictionSitesToBeRemovedArray.sort((a, b) => a.startPosition - b.startPosition);
 
-    console.log("BULK REMOVE THEESE SITES", restrictionSitesToBeRemovedArray);
+    restrictionSitesToBeRemoved.forEach(function(restrictionSiteToBeRemoved) {
+
+        const orf = genomeAnnotations.find(obj => restrictionSiteToBeRemoved.startPosition >= obj.start && (restrictionSiteToBeRemoved.startPosition + restrictionSiteToBeRemoved.length) <= obj.end);
+
+        console.log(restrictionSiteToBeRemoved.restrictionSiteName + "-" + restrictionSiteToBeRemoved.startPosition, orf);
+    });
 } 

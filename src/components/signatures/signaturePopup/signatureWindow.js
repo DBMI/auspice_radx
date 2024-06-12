@@ -1210,12 +1210,12 @@ export const populateRestrictionRemovalMap = (restrictionSiteNames, signatureWin
         .attr("width", "100%")
         .attr("height", "100%");
 
-    drawRestrictionRemovalDetails(restrictionSiteNames, restrictionSitesToBeRemoved, svgRestrictionRemovalDetails);
+    drawRestrictionRemovalDetails(restrictionSiteNames, restrictionSitesToBeRemoved, svgRestrictionRemovalDetails, groupDNASequence, genomeAnnotations);
 }
 
 
 
-function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrictionSitesToBeRemoved, svgRestrictionRemovalDetails) {
+function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrictionSitesToBeRemoved, svgRestrictionRemovalDetails, dnaSequence, genomeAnnotations) {
 
     svgRestrictionRemovalDetails.selectAll("*").remove();
 
@@ -1269,7 +1269,7 @@ function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrict
             .attr("height", button_height)
             .attr("fill", button_light)
             .style("cursor", "pointer")
-            .on("click", function() { bulkRemoveRestrictionSites(restrictionSitesToBeRemoved); })
+            .on("click", function() { bulkRemoveRestrictionSites(restrictionSitesToBeRemoved, dnaSequence, genomeAnnotations); })
 
         svgRestrictionRemovalDetails.append("text")
             .attr("x", button_x + 35)
@@ -1279,7 +1279,7 @@ function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrict
             .attr("font-weight", "700")
             .text("REMOVE SITES")
             .style("cursor", "pointer")
-            .on("click", function() { bulkRemoveRestrictionSites(restrictionSitesToBeRemoved); })
+            .on("click", function() { bulkRemoveRestrictionSites(restrictionSitesToBeRemoved, dnaSequence, genomeAnnotations); })
     }
 
     restrictionSiteNamesToBeRemoved.forEach((restrictionSiteName) => {
