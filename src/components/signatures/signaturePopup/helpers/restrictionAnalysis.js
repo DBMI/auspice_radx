@@ -1,4 +1,6 @@
 import { retrieveSequence } from "../../signaturesHelpers";
+import { replaceSequence, retrieveTargetSequence } from "./sequenceTools";
+
 
 // Palindromic sequences have a single pattern, non-palindromic ones will have two.
 const restrictionSites = {
@@ -170,6 +172,11 @@ export const getNonConservedRestrictionSites = (rootSequence, groups, mutationsM
     return nonConservedRestrictionSites;
 }
 
+/* ******************************************************************************************************************************************************
+
+BULK REMOVE RESTRICTION SITES WITH INTERNAL HELPER FUNCTIONS
+
+****************************************************************************************************************************************************** */
 
 // Note: This currently only supports genomes that have all coding sequences in the (+) direction. Support for (-) will need to be added.
 export const bulkRemoveRestrictionSites = (restrictionSitesToBeRemoved, dnaSequence, genomeAnnotations) => {
@@ -179,8 +186,149 @@ export const bulkRemoveRestrictionSites = (restrictionSitesToBeRemoved, dnaSeque
 
     restrictionSitesToBeRemoved.forEach(function(restrictionSiteToBeRemoved) {
 
-        const orf = genomeAnnotations.find(obj => restrictionSiteToBeRemoved.startPosition >= obj.start && (restrictionSiteToBeRemoved.startPosition + restrictionSiteToBeRemoved.length) <= obj.end);
+        const restrictionSiteStart = restrictionSiteToBeRemoved.startPosition;
+        const restrictionSiteEnd = restrictionSiteToBeRemoved.startPosition + restrictionSiteToBeRemoved.length;
 
-        console.log(restrictionSiteToBeRemoved.restrictionSiteName + "-" + restrictionSiteToBeRemoved.startPosition, orf);
+        const orf = genomeAnnotations.find(
+            obj =>
+                restrictionSiteStart >= obj.start &&
+                restrictionSiteEnd <= obj.end);
+
+        if(orf === undefined) {
+
+            const orf5PrimeOnly = genomeAnnotations.find(
+                obj =>
+                    restrictionSiteStart < obj.start &&
+                    restrictionSiteEnd >= obj.start);
+    
+            const orf3PrimeOnly = genomeAnnotations.find(
+                obj =>
+                    restrictionSiteStart <= obj.end &&
+                    restrictionSiteEnd > obj.end);
+
+            removeRestrictionSiteFromEdgeCases(restrictionSiteToBeRemoved, dnaSequence, orf5PrimeOnly, orf3PrimeOnly);
+        }
+        else {
+            removeRestrictionSiteInCodingRegion(restrictionSiteToBeRemoved, orf, dnaSequence);
+        }
     });
-} 
+}
+
+
+// Deal with the Edge Cases: Restriction Sites fully or partially outside of ORFs.
+function removeRestrictionSiteFromEdgeCases(restrictionSiteToBeRemoved, dnaSequence, orf5PrimeOnly, orf3PrimeOnly) {
+
+    if(orf5PrimeOnly !== undefined) {
+        removeRestrictionSiteFrom5PrimeCodingRegion(restrictionSiteToBeRemoved, dnaSequence, orf5PrimeOnly);
+    }
+    else if(orf3PrimeOnly !== undefined) {
+        removeRestrictionSiteFrom3PrimeCodingRegion(restrictionSiteToBeRemoved, dnaSequence, orf3PrimeOnly);
+    }
+    else {
+        removeRestrictionSiteInNonCodingRegion(restrictionSiteToBeRemoved, dnaSequence);
+    }
+}
+
+
+
+// Edge Case 1: The 5' end of the restriction site in question outside of an ORF, but the 3' end is inside of an ORF.
+function removeRestrictionSiteFrom5PrimeCodingRegion(restrictionSiteToBeRemoved, dnaSequence, partialOrf) {
+
+    // TODO: This will need to be implemented in the future.
+    console.log('PARTIALLY IN CODING REGION 5P ORF', restrictionSiteToBeRemoved, partialOrf);
+}
+
+
+
+// Edge Case 1: The 3' end of the restriction site in question outside of an ORF, but the 5' end is inside of an ORF.
+function removeRestrictionSiteFrom3PrimeCodingRegion(restrictionSiteToBeRemoved, dnaSequence, partialOrf) {
+
+    // TODO: This will need to be implemented in the future.
+    console.log('PARTIALLY IN CODING REGION 3P ORF', restrictionSiteToBeRemoved, partialOrf);
+}
+
+
+// Edge Case 3: The restriction site in question is completely outside of any ORF. If this is the case, just incrementally replace the sequence itself without finding the reading frame.
+function removeRestrictionSiteInNonCodingRegion(restrictionSiteToBeRemoved, dnaSequence) {
+
+    const targetSequence = retrieveTargetSequence(dnaSequence, restrictionSiteToBeRemoved['startPosition'], restrictionSiteToBeRemoved['length']);
+
+    var targetSequenceString = '';
+    targetSequence.forEach(function(base) {
+        targetSequenceString += base.getDisplayBase();
+    });
+
+    var replacementSequenceString = '';
+    for(var i = 0; i < targetSequenceString.length; i++) {
+
+        const currentChar = targetSequenceString[i];
+        var replacementChar = currentChar;
+        if(currentChar === 'A') {
+            replacementChar = 'T';
+        }
+        else if(currentChar === 'T') {
+            replacementChar = 'A';
+        }
+        else if(currentChar === 'U') {
+            replacementChar = 'A';
+        }
+        else if(currentChar === 'C') {
+            replacementChar = 'G';
+        }
+        else if(currentChar === 'G') {
+            replacementChar = 'C';
+        }
+
+        replacementSequenceString = replaceCharAt(targetSequenceString, i, replacementChar);
+
+        if(!hasRestrictionSite(restrictionSiteToBeRemoved['restrictionSiteName'], replacementSequenceString)) {
+            break;
+        }
+    }
+
+    console.log('NON-CODING', targetSequence, replacementSequenceString);
+
+    return replaceSequence(dnaSequence, targetSequence, replacementSequenceString);
+}
+
+
+
+// Non-Edge Cases: The restriction site in question is completely within an ORF.
+function removeRestrictionSiteInCodingRegion(restrictionSiteToBeRemoved, orf, dnaSequence) {
+
+    if(orf['strand'] === '+') {
+        removeRestrictionSiteInPosStrandCodingRegion(restrictionSiteToBeRemoved, orf, dnaSequence);
+    }
+    else {
+        removeRestrictionSiteInNegStrandCodingRegion(restrictionSiteToBeRemoved, orf, dnaSequence);
+    }
+}
+
+
+
+// Non-Edge Case 1: The restriction site in question is completely within an ORF on the (+) strand.
+function removeRestrictionSiteInPosStrandCodingRegion(restrictionSiteToBeRemoved, orf, dnaSequence) {
+
+    console.log('CODING (+)', restrictionSiteToBeRemoved);
+}
+
+
+
+// Non-Edge Case 2: The restriction site in question is completely within an ORF on the (-) strand.
+function removeRestrictionSiteInNegStrandCodingRegion(restrictionSiteToBeRemoved, orf, dnaSequence) {
+
+    // TODO: This is not the case vof Covid-19, but how would with a (-) strand coding region?
+
+    console.log('CODING (-)', restrictionSiteToBeRemoved);
+}
+
+
+
+function replaceCharAt(str, index, replacement) {
+    if (index < 0 || index >= str.length) {
+        throw new Error("Index out of range");
+    }
+    
+    return str.substring(0, index) + replacement + str.substring(index + 1);
+}
+

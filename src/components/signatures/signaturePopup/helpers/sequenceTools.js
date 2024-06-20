@@ -1,4 +1,12 @@
-// External function to replace a subsequence of a sequence with a replacement sequence in string form.
+/* ******************************************************************************************************************************************************
+
+REPLACE SEQUENCE
+
+fullSequence: The full nucleic acid sequence as an array of Base.
+targetSequence: The nucleic acid to be replaced as an array of Base (i.e. sub-array of fullSequence).
+replacementSequence: The new nucleic acid sequence to replace the target sequence with as a string.
+
+****************************************************************************************************************************************************** */
 export const replaceSequence = (fullSequence, targetSequence, replacementSequence) => {
 
     if(targetSequence.length != replacementSequence.length) {
@@ -22,6 +30,23 @@ export const replaceSequence = (fullSequence, targetSequence, replacementSequenc
 
     return fullSequence;
 };
+
+
+/* ******************************************************************************************************************************************************
+
+RETRIEVE TARGET SEQUENCE
+
+fullSequence: The full nucleic acid sequence as an array of Base.
+targetSequenceStart: The start position of the sub-array of fullSequence to be returned as an int.
+targetSequenceLength: The length of the sub-array of fullSequence to be returned as an int.
+
+****************************************************************************************************************************************************** */
+export const retrieveTargetSequence = (fullSequence, targetSequenceStart, targetSequenceLength) => {
+
+    return fullSequence.slice(targetSequenceStart, targetSequenceStart + targetSequenceLength);
+}
+
+
 
 // Keep this one around, for some reasons introduced mutations leak into replaceSequence function.
 function testSequenceForIntroducedMutations(sequence) {
