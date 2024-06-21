@@ -24,8 +24,13 @@ const restrictionSites = {
     PciI: ["[Aa][Cc][Aa][TUtu][Gg][TUtu]"],
     SacII: ["[Cc][Cc][Gg][Cc][Gg][Gg]"],
     SexAI: ["[Aa][Cc][Cc][ATUatu][Gg][Gg][TUtu]"],
-    SmaI: ["[Cc][Cc][Cc][Gg][Gg][Gg]"]
+    SmaI: ["[Cc][Cc][Cc][Gg][Gg][Gg]"],
+    TEST_CODING: ["[Aa][Cc][Cc][Gg][Gg][TUtu]"],
+    TEST_5PRIME: ["[Aa][Aa][Cc][TUtu][Aa][Aa][Aa][Aa][TUtu][Gg]"],
+    TEST_3PRIME: ["[Cc][Cc][TUtu][Aa][Aa][Aa][Cc][TUtu][Cc][Aa]"],
+    TEST_NONCODING: ["[Cc][Aa][TtUu][Aa][Aa][TtUu][Gg][Aa][Aa][Aa][Cc][TtUu][TtUu][Gg][TtUu][Cc][Aa][Cc][Gg][Cc]"]
 };
+
 
 
 export class RestrictionSiteInfo {
@@ -37,6 +42,7 @@ export class RestrictionSiteInfo {
         this.displayColor = displayColor;
     }
 }
+
 
 // External function to check if a sequence contains a specific restriction site pattern
 export const hasRestrictionSite = (restrictionSiteName, sequence) => {
@@ -53,9 +59,11 @@ export const hasRestrictionSite = (restrictionSiteName, sequence) => {
 };
 
 
+
 export const getRestrictionSiteNames = () => {
     return Object.keys(restrictionSites);
 };
+
 
 
 export const getRestrictionSiteLength = (restrictionSiteName) => {
@@ -251,13 +259,14 @@ function removeRestrictionSiteFrom3PrimeCodingRegion(restrictionSiteToBeRemoved,
 // Edge Case 3: The restriction site in question is completely outside of any ORF. If this is the case, just incrementally replace the sequence itself without finding the reading frame.
 function removeRestrictionSiteInNonCodingRegion(restrictionSiteToBeRemoved, dnaSequence) {
 
-    const targetSequence = retrieveTargetSequence(dnaSequence, restrictionSiteToBeRemoved['startPosition'], restrictionSiteToBeRemoved['length']);
+    const targetSequence = retrieveTargetSequence(dnaSequence, restrictionSiteToBeRemoved.startPosition, restrictionSiteToBeRemoved.length);
 
     var targetSequenceString = '';
     targetSequence.forEach(function(base) {
         targetSequenceString += base.getDisplayBase();
     });
 
+    // Strategy: Swap out A for T, T/U for A, C for G, and G for C one at a time until the restriction pattern is no longer found.
     var replacementSequenceString = '';
     for(var i = 0; i < targetSequenceString.length; i++) {
 
@@ -281,12 +290,12 @@ function removeRestrictionSiteInNonCodingRegion(restrictionSiteToBeRemoved, dnaS
 
         replacementSequenceString = replaceCharAt(targetSequenceString, i, replacementChar);
 
-        if(!hasRestrictionSite(restrictionSiteToBeRemoved['restrictionSiteName'], replacementSequenceString)) {
+        if(!hasRestrictionSite(restrictionSiteToBeRemoved.restrictionSiteName, replacementSequenceString)) {
             break;
         }
     }
 
-    console.log('NON-CODING', targetSequence, replacementSequenceString);
+    console.log('NON-CODING', restrictionSiteToBeRemoved, targetSequence, replacementSequenceString);
 
     return replaceSequence(dnaSequence, targetSequence, replacementSequenceString);
 }
