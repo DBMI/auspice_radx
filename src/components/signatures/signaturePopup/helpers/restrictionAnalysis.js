@@ -44,7 +44,7 @@ const restrictionSites = {
     // TESTING ONLY FOR SEQUENCES PARTIALLY OR COMPLETEL OUTSIDE OF CODNG REGIONS
     "TEST-CODING": ["[Aa][Cc][Cc][Gg][Gg][TUtu]"],
     "TEST-5PRIME": ["[Aa][Aa][Cc][TUtu][Aa][Aa][Aa][Aa][TUtu][Gg]"],
-    "TEST-3PRIME": ["[Cc][Cc][TUtu][Aa][Aa][Aa][Cc][TUtu][Cc][Aa]"],
+    "TEST-3PRIME": ["[TUtu][Aa][Cc][Aa][Cc][Aa][TUtu][Aa][Aa][Aa][Cc][Gg][Aa][Aa][Cc][TUtu][TUtu][Aa][TUtu][Gg][Gg]"],
     "TEST-NONCODING": ["[Cc][Aa][TtUu][Aa][Aa][TtUu][Gg][Aa][Aa][Aa][Cc][TtUu][TtUu][Gg][TtUu][Cc][Aa][Cc][Gg][Cc]"]
 };
 
@@ -197,11 +197,183 @@ export const getNonConservedRestrictionSites = (rootSequence, groups, mutationsM
     return nonConservedRestrictionSites;
 }
 
+
+/* ******************************************************************************************************************************************************
+
+RESTRICTION SITE REMOVAL AND RELATED INTERNAL HELPER FUNCTIONS
+
+****************************************************************************************************************************************************** */
+
+
+export const getRestrictionFrame = (groupDNASequence, restrictionStart, restrictionStop, genomeAnnotations) => {
+
+    const orf = genomeAnnotations.find(
+        obj =>
+            restrictionStart >= obj.start &&
+            restrictionStop <= obj.end);
+
+    // SCENARIO 1: Restriction site is completely enclosed by a single ORF.
+    if(orf !== undefined && orf !== null) {
+
+        const restrictionLength = restrictionStop - restrictionStart;
+        const orfStart = orf['start'] + 1;
+        const restrictionFrameOffset = orfStart % 3;
+        const restrictionFrameStart = restrictionStart - restrictionFrameOffset;
+        const restrictionFrameStop = restrictionFrameStart + restrictionLength + (3 - (restrictionLength % 3));
+        const restrictionFrameSequence = groupDNASequence.slice(restrictionFrameStart, restrictionFrameStop);
+        const restrictionFrame = { restrictionRelativeStart: (restrictionStart - restrictionFrameStart) , restrictionFrameSequence: restrictionFrameSequence };
+
+        console.log("CODING", restrictionFrame);
+
+        return restrictionFrame;
+    }
+    else {
+
+        const orf5PrimeOnly = genomeAnnotations.find(
+            obj =>
+                restrictionStart < obj.start &&
+                restrictionStop >= obj.start);
+        
+        const orf3PrimeOnly = genomeAnnotations.find(
+            obj =>
+                restrictionStart <= obj.end &&
+                restrictionStop > obj.end);
+
+        // SCENARIO 2: Restriction site is completely outside of any ORF.
+        if((orf5PrimeOnly === undefined) && (orf3PrimeOnly === undefined)) {
+
+            const codonOffset = (restrictionStop - restrictionStart) % 3;
+
+            // SCENARIO 2.1: Restriction site length is divisible by 3. Return as is.
+            if(codonOffset === 0) {
+
+                const restrictionFrameSequence = groupDNASequence.slice(restrictionStart, restrictionStop);
+                const restrictionFrame = { restrictionRelativeStart: 0, restrictionFrameSequence: restrictionFrameSequence };
+                
+                console.log("NON-CODING 0", restrictionFrame);
+
+                return restrictionFrame;
+            }
+            // SCENARIO 2.2: Restriction site length is one longer than divisible by 3. Return the restriction site with an extra base on each end.
+            else if(codonOffset === 1) {
+                
+                const restrictionFrameSequence = groupDNASequence.slice((restrictionStart - 1), (restrictionStop + 1));
+                const restrictionFrame = { restrictionRelativeStart: 1, restrictionFrameSequence: restrictionFrameSequence };
+                
+                console.log("NON-CODING 1", restrictionFrame);
+
+                return restrictionFrame;
+            }
+            // SCENARIO 2.3: Restriction site length is two longer than divisible by 3. Return the restriction site with an extra base on the 5' end.
+            else {
+                
+                const restrictionFrameSequence = groupDNASequence.slice((restrictionStart - 1), restrictionStop);
+                const restrictionFrame = { restrictionRelativeStart: 1, restrictionFrameSequence: restrictionFrameSequence };
+                
+                console.log("NON-CODING 2", restrictionFrame);
+
+                return restrictionFrame;
+            }
+        }
+        // SCENARIO 3: Restriction site is inside the 5' of an ORF.
+        else if(orf5PrimeOnly !== undefined && orf5PrimeOnly !== null) {
+
+            const overlap = restrictionStop - orf5PrimeOnly.start;
+
+            var restrictionFrameStop;
+            if((overlap % 3) === 0) {
+                restrictionFrameStop = restrictionStop;
+            }
+            else if((overlap % 3) === 1) {
+                restrictionFrameStop = restrictionStop + 2;
+            }
+            else {
+                restrictionFrameStop = restrictionStop + 1;
+            }
+
+            var restrictionFrameStart;
+            var restrictionRelativeStart;
+            if(((restrictionFrameStop - restrictionStart) % 3) === 0) {
+                restrictionFrameStart = restrictionStart;
+                restrictionRelativeStart = 0;
+            }
+            else if(((restrictionFrameStop - restrictionStart) % 3) === 1) {
+                restrictionFrameStart = restrictionStart - 2;
+                restrictionRelativeStart = 2;
+            }
+            else {
+                restrictionFrameStart = restrictionStart - 1;
+                restrictionRelativeStart = 1;
+            }
+
+            const restrictionFrameSequence = groupDNASequence.slice(restrictionFrameStart, restrictionFrameStop);
+            const restrictionFrame = { restrictionRelativeStart: restrictionRelativeStart, restrictionFrameSequence: restrictionFrameSequence };
+
+            console.log("PARTIAL CODING 5' END", restrictionFrame);
+
+            return restrictionFrame;
+        }
+        // SCENARIO 4: Restriction site is inside the 3' of an ORF.
+        else {
+
+            const overlap = orf3PrimeOnly.stop - restrictionStart;
+
+            var restrictionFrameStart;
+            var restrictionRelativeStart;
+            if((overlap % 3) === 0) {
+                restrictionFrameStart = restrictionStart;
+                restrictionRelativeStart = 0;
+            }
+            else if((overlap % 3) === 1) {
+                restrictionFrameStart = restrictionStart - 2;
+                restrictionRelativeStart = 2;
+            }
+            else {
+                restrictionFrameStart = restrictionStart - 1;
+                restrictionRelativeStart = 1;
+            }
+
+            var restrictionFrameStop;
+            if(((restrictionFrameStop - restrictionStart) % 3) === 0) {
+                restrictionFrameStop = restrictionStop;
+            }
+            else if(((restrictionFrameStop - restrictionStart) % 3) === 1) {
+                restrictionFrameStop = restrictionStop + 2;
+            }
+            else {
+                restrictionFrameStop = restrictionStop + 1;
+            }
+
+            const restrictionFrameSequence = groupDNASequence.slice(restrictionFrameStart, restrictionFrameStop);
+            const restrictionFrame = { restrictionRelativeStart: restrictionRelativeStart, restrictionFrameSequence: restrictionFrameSequence };
+
+            console.log("PARTIAL CODING 3' END", restrictionFrame);
+
+            return restrictionFrame;
+        }
+    }
+}
+
+
+function getCurrentOrf(start, stop, genomeAnnotations) {
+
+    return genomeAnnotations.find((orf) => {
+        if (orf['strand'] === '+') {
+            if(orf['start'] <= start && orf['end'] >= stop) {
+                return true; // This indicates to Array.find() that the item was found
+            }
+        }
+        return false; // If condition not met, indicate to Array.find() to continue searching
+    }) || null; // Return null if no matching ORF is found
+}
+
+
 /* ******************************************************************************************************************************************************
 
 BULK REMOVE RESTRICTION SITES WITH INTERNAL HELPER FUNCTIONS
 
 ****************************************************************************************************************************************************** */
+
 
 // Note: This currently only supports genomes that have all coding sequences in the (+) direction. Support for (-) will need to be added.
 export const bulkRemoveRestrictionSites = (restrictionSitesToBeRemoved, dnaSequence, genomeAnnotations) => {

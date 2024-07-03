@@ -3,7 +3,7 @@ import { axisBottom, axisTop } from "d3-axis";
 import { scaleLinear } from "d3-scale";
 import { select } from "d3-selection";
 import { lowerCase } from "lodash";
-import { RestrictionSiteInfo, getRestrictionSiteNames, getRestrictionSites, getNonConservedRestrictionSites, getRestrictionSiteLength, hasRestrictionSite, bulkRemoveRestrictionSites } from "./helpers/restrictionAnalysis";
+import { RestrictionSiteInfo, getRestrictionFrame, getRestrictionSiteNames, getRestrictionSites, getNonConservedRestrictionSites, getRestrictionSiteLength, hasRestrictionSite, bulkRemoveRestrictionSites } from "./helpers/restrictionAnalysis";
 import { getBrighterColor } from "../../../util/colorHelpers";
 import { retrieveSequence } from "./../signaturesHelpers";
 import { getAminoAcidSequence, getReplacementCodons } from "./helpers/dnaToAA";
@@ -352,7 +352,7 @@ TAB 1: SIGNATURE SELECTOR
 
 
 export const populateSignatureSequence = (signatureWindow, sequence, position, selectionDiv, resultsDiv, selectionSvgId, resultsSvgId, aaSequence, restrictionSiteInfo) => {
-
+    
     // Include up to 500 bases to the 5' and 3' of the selected position in the display:
     const flankingSequenceLength = 500;
     let start = 0;
@@ -806,10 +806,6 @@ export const initializeRestrictionSelect = (signatureWindow, currentGroup, group
             populateRestrictionRemovalMap([...selectedRestrictionSiteNamesForRemoval].sort(), signatureWindow, currentGroup, groups, mutationsMap, rootSequence, genomeAnnotations);
         };
     });
-
-    selectRestrictionSite.addEventListener('click', function() {
-        console.log("SELECTED", selectRestrictionSite.value);
-    })
 }
 
 
@@ -1169,7 +1165,9 @@ function drawRestrictionSiteDetails(signatureWindow, divRestrictionSiteDetails, 
         }
     });
 
-    const columnWidth = 200; // Width of each column
+    //const columnWidth = 200; // Width of each column
+    // TODO
+    const columnWidth = unitWidth * restrictionFrameSequence.length;
     const lineHeight = 30; // Height of each line
     const maxRows = 3; // Maximum rows per column
     const maxColumns = Math.ceil(sequenceStringsNotContainingRestrictionSite.length / maxRows); // Maximum number of columns
@@ -1220,8 +1218,9 @@ function generateCombinations(arrays, currentIndex, currentCombination, allCombi
 }
 
 
-
+/*
 function getRestrictionFrame(groupDNASequence, restrictionStart, restrictionStop, genomeAnnotations) {
+
 
     const orf = getCurrentOrf(restrictionStart, restrictionStop, genomeAnnotations);
     const restrictionLength = restrictionStop - restrictionStart;
@@ -1248,7 +1247,7 @@ function getCurrentOrf(start, stop, genomeAnnotations) {
         return false; // If condition not met, indicate to Array.find() to continue searching
     }) || null; // Return null if no matching ORF is found
 }
-
+*/
 
 
 function getGroup(groups, groupName) {
