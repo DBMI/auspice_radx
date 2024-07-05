@@ -150,8 +150,15 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
     html += "</div>";
 
     html += "<div id=\"restrictionRemoval\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
-    html += "<div id=\"restrictionRemovalDetails\" style=\"height: 14%\"></div>";
-    html += "<div id=\"restrictionRemovalDetailsList\" style=\"height: 86%\"><svg id=\"restrictionRemovalListSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/></div>";
+    html += "<div id=\"restrictionRemovalDetails\" style=\"height: 14%; margin:\">";
+    html += "<svg id=\"restrictionRemovalDetailsSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/>";
+    html += "</div>";
+    html += "<div id=\"restrictionRemovalDetailsList\" style=\"height: 16%;\">";
+    html += "<svg id=\"restrictionRemovalDetailsListSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/>";
+    html += "</div>";
+    html += "<div id=\"restrictionRemovalDetailsResults\" style=\"height: 70%;\">";
+    html += "<svg id=\"restrictionRemovalDetailsResultsSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/>";
+    html += "</div>";
     html += "</div>";
     
     html += "</div>";  // Wrapper Close
@@ -1218,37 +1225,6 @@ function generateCombinations(arrays, currentIndex, currentCombination, allCombi
 }
 
 
-/*
-function getRestrictionFrame(groupDNASequence, restrictionStart, restrictionStop, genomeAnnotations) {
-
-
-    const orf = getCurrentOrf(restrictionStart, restrictionStop, genomeAnnotations);
-    const restrictionLength = restrictionStop - restrictionStart;
-    const orfStart = orf['start'] + 1;
-    const restrictionFrameOffset = orfStart % 3;
-    const restrictionFrameStart = restrictionStart - restrictionFrameOffset;
-    const restrictionFrameStop = restrictionFrameStart + restrictionLength + (3 - (restrictionLength % 3));
-    const restrictionFrameSequence = groupDNASequence.slice(restrictionFrameStart, restrictionFrameStop);
-    const restrictionFrame = { restrictionRelativeStart: (restrictionStart - restrictionFrameStart) , restrictionFrameSequence: restrictionFrameSequence };
-
-    return restrictionFrame;
-}
-
-
-
-function getCurrentOrf(start, stop, genomeAnnotations) {
-
-    return genomeAnnotations.find((orf) => {
-        if (orf['strand'] === '+') {
-            if(orf['start'] <= start && orf['end'] >= stop) {
-                return true; // This indicates to Array.find() that the item was found
-            }
-        }
-        return false; // If condition not met, indicate to Array.find() to continue searching
-    }) || null; // Return null if no matching ORF is found
-}
-*/
-
 
 function getGroup(groups, groupName) {
 
@@ -1284,30 +1260,32 @@ export const populateRestrictionRemovalMap = (restrictionSiteNames, signatureWin
 
     var restrictionSitesToBeRemoved = new Set();
 
-    var restrictionRemovalDetailsContent = signatureWindow.document.getElementById('restrictionRemovalDetails');
-    var restrictionRemovalDetailsListContent = signatureWindow.document.getElementById('restrictionRemovalDetailsList');
-
-    restrictionRemovalDetailsContent.style.display = "block";
-
-    // Clear existing DIV content
-    restrictionRemovalDetailsContent.innerHTML = '';
-    restrictionRemovalDetailsListContent.innerHTML = '';
-
-    // Clear existing SVG content
-    select(signatureWindow.document.querySelector(`#restrictionRemovalSvg`)).selectAll("*").remove();
-    select(signatureWindow.document.querySelector(`#restrictionRemovalListSvg`)).selectAll("*").remove();
-
-    var svgRestrictionRemoval = select(restrictionRemovalDetailsContent)
-        .append("svg")
+    var svgRestrictionRemovalDetails = select(signatureWindow.document.querySelector(`#restrictionRemovalDetailsSvg`));
+    svgRestrictionRemovalDetails.selectAll("*").remove();
+    svgRestrictionRemovalDetails
         .style("background-color", "#f0f0f0")
         .attr("width", "100%")
         .attr("height", "100%");
 
-    drawORFMap(restrictionWindowDisplayWidth, svgRestrictionRemoval, elementHeight, rootSequence, genomeAnnotations);
+    var svgRestrictionRemovalDetailsList = select(signatureWindow.document.querySelector(`#restrictionRemovalDetailsListSvg`));
+    svgRestrictionRemovalDetailsList.selectAll("*").remove();
+    svgRestrictionRemovalDetailsList
+        .style("background-color", "#f0f0f0")
+        .attr("width", "100%")
+        .attr("height", "100%");
+
+    var svgRestrictionRemovalDetailsResults = select(signatureWindow.document.querySelector(`#restrictionRemovalDetailsResultsSvg`));
+    svgRestrictionRemovalDetailsResults.selectAll("*").remove();
+    svgRestrictionRemovalDetailsResults
+        .style("background-color", "#f0f0f0")
+        .attr("width", "100%")
+        .attr("height", "100%");
+
+    drawORFMap(restrictionWindowDisplayWidth, svgRestrictionRemovalDetails, elementHeight, rootSequence, genomeAnnotations);
 
     var y = 80;
 
-    svgRestrictionRemoval.append("rect")
+    svgRestrictionRemovalDetails.append("rect")
         .attr("x", 20)
         .attr("y", y)
         .attr("width", elementHeight)
@@ -1322,7 +1300,7 @@ export const populateRestrictionRemovalMap = (restrictionSiteNames, signatureWin
             groupTooltip.text("");
         });
 
-    var groupTooltip = svgRestrictionRemoval.append("text")
+    var groupTooltip = svgRestrictionRemovalDetails.append("text")
         .attr("x", 20)
         .attr("y", y - 15)
         .style("fill", "black")
@@ -1338,7 +1316,7 @@ export const populateRestrictionRemovalMap = (restrictionSiteNames, signatureWin
 
             restrictionSitesToBeRemoved.add(new RestrictionSiteInfo(restrictionSiteName, position, groupColor));
 
-            svgRestrictionRemoval.append("rect")
+            svgRestrictionRemovalDetails.append("rect")
                 .attr("x", 100 + (position / sequenceLength) * (restrictionWindowDisplayWidth - 100))
                 .attr("y", y)
                 .attr("width", tickWidth)
@@ -1352,7 +1330,7 @@ export const populateRestrictionRemovalMap = (restrictionSiteNames, signatureWin
                     tooltip.text("");
                 });
     
-            var tooltip = svgRestrictionRemoval.append("text")
+            var tooltip = svgRestrictionRemovalDetails.append("text")
                 .attr("x", 100 + (position / sequenceLength) * (restrictionWindowDisplayWidth - 100))
                 .attr("y", y - 5)
                 .attr("text-anchor", "middle")
@@ -1362,22 +1340,17 @@ export const populateRestrictionRemovalMap = (restrictionSiteNames, signatureWin
         });
     });
 
-    const svgRestrictionRemovalDetails = select(restrictionRemovalDetailsContent)
-        .append("svg")
-        .style("background-color", "#f0f0f0")
-        .attr("width", "100%")
-        .attr("height", "100%");
-
-    drawRestrictionRemovalDetails(restrictionSiteNames, restrictionSitesToBeRemoved, svgRestrictionRemovalDetails, groupDNASequence, genomeAnnotations);
+    drawRestrictionRemovalDetailsList(restrictionSiteNames, restrictionSitesToBeRemoved, svgRestrictionRemovalDetailsList, svgRestrictionRemovalDetailsResults, groupDNASequence, genomeAnnotations);
 }
 
 
 
-function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrictionSitesToBeRemoved, svgRestrictionRemovalDetails, dnaSequence, genomeAnnotations) {
+function drawRestrictionRemovalDetailsList(restrictionSiteNamesToBeRemoved, restrictionSitesToBeRemoved, svgRestrictionRemovalDetailsList, svgRestrictionRemovalDetailsResults, dnaSequence, genomeAnnotations) {
 
-    svgRestrictionRemovalDetails.selectAll("*").remove();
+    svgRestrictionRemovalDetailsList.selectAll("*").remove();
+    svgRestrictionRemovalDetailsResults.selectAll("*").remove();
 
-    svgRestrictionRemovalDetails.append("text")
+    svgRestrictionRemovalDetailsList.append("text")
         .attr("x", 20)
         .attr("y", 30)
         .style("fill", "black")
@@ -1399,7 +1372,7 @@ function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrict
 
     if(restrictionSiteNamesToBeRemoved.length === 0) {
 
-        svgRestrictionRemovalDetails.append('rect')
+        svgRestrictionRemovalDetailsList.append('rect')
             .attr("x", button_x)
             .attr("y", button_y)
             .attr("rx", button_radius)
@@ -1408,7 +1381,7 @@ function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrict
             .attr("height", button_height)
             .attr("fill", button_dark);
 
-        svgRestrictionRemovalDetails.append("text")
+            svgRestrictionRemovalDetailsList.append("text")
             .attr("x", button_x + 35)
             .attr("y", button_y + 32)
             .style("fill", button_light)
@@ -1418,7 +1391,7 @@ function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrict
     }
     else {
 
-        svgRestrictionRemovalDetails.append('rect')
+        svgRestrictionRemovalDetailsList.append('rect')
             .attr("x", button_x)
             .attr("y", button_y)
             .attr("rx", button_radius)
@@ -1427,9 +1400,9 @@ function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrict
             .attr("height", button_height)
             .attr("fill", button_light)
             .style("cursor", "pointer")
-            .on("click", function() { bulkRemoveRestrictionSites(restrictionSitesToBeRemoved, dnaSequence, genomeAnnotations); })
+            .on("click", function() { drawRestrictionRemovalDetailsReslults(restrictionSitesToBeRemoved, svgRestrictionRemovalDetailsResults, dnaSequence, genomeAnnotations); })
 
-        svgRestrictionRemovalDetails.append("text")
+        svgRestrictionRemovalDetailsList.append("text")
             .attr("x", button_x + 35)
             .attr("y", button_y + 32)
             .style("fill", button_dark)
@@ -1437,14 +1410,14 @@ function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrict
             .attr("font-weight", "700")
             .text("REMOVE SITES")
             .style("cursor", "pointer")
-            .on("click", function() { bulkRemoveRestrictionSites(restrictionSitesToBeRemoved, dnaSequence, genomeAnnotations); })
+            .on("click", function() { drawRestrictionRemovalDetailsReslults(restrictionSitesToBeRemoved, svgRestrictionRemovalDetailsResults, dnaSequence, genomeAnnotations); })
     }
 
     restrictionSiteNamesToBeRemoved.forEach((restrictionSiteName) => {
 
         siteNumberIndex++;
 
-        svgRestrictionRemovalDetails.append("text")
+        svgRestrictionRemovalDetailsList.append("text")
             .attr("x", x)
             .attr("y", y)
             .style("fill", "black")
@@ -1459,6 +1432,157 @@ function drawRestrictionRemovalDetails(restrictionSiteNamesToBeRemoved, restrict
             y = y + 25;
         }
     });
+}
+
+
+
+function drawRestrictionRemovalDetailsReslults(restrictionSitesToBeRemoved, svgRestrictionRemovalDetailsResults, dnaSequence, genomeAnnotations) {
+
+    svgRestrictionRemovalDetailsResults.selectAll("*").remove();
+
+    var y = 20;
+    var yOffset = 30;
+    
+    for (const restrictionSite of restrictionSitesToBeRemoved) {
+    
+        const restrictionFrame =
+            getRestrictionFrame(
+                dnaSequence, restrictionSite.startPosition, (restrictionSite.startPosition + restrictionSite.length), genomeAnnotations);
+        
+        const restrictionFrameSequence = restrictionFrame.restrictionFrameSequence;
+        const restrictionRelativeStart = restrictionFrame.restrictionRelativeStart;
+    
+        svgRestrictionRemovalDetailsResults.append("text")
+            .attr("x", 100)
+            .attr("y", y)
+            .style("fill", fontDisplayColor)
+            .attr("dy", ".4em")
+            .attr("font-size", "14px")
+            .attr("text-align", "center")
+            .text("Replaced " + restrictionSite.restrictionSiteName + " at position " + restrictionSite.startPosition);
+    
+        svgRestrictionRemovalDetailsResults.append('rect')
+            .attr("x", 450 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7)
+            .attr("y", y - (unitHeight / 2))
+            .attr("width", unitWidthTotal * (restrictionSite.length) - 5)
+            .attr("height", unitHeight)
+            .attr("fill", getBrighterColor(restrictionSite.displayColor));
+    
+        svgRestrictionRemovalDetailsResults.append("text")
+            .attr("x", 450 + (unitWidthTotal * (restrictionRelativeStart + 1)) - 7 + (unitWidthTotal * restrictionSite.length) / 2) // Center horizontally
+            .attr("y", y)
+            .style("fill", fontDisplayColor)
+            .attr("dy", ".4em")
+            .attr("font-size", "12px")
+            .attr("text-anchor", "middle") // Set text anchor to middle for horizontal centering
+            .text(restrictionSite.restrictionSiteName);
+    
+        svgRestrictionRemovalDetailsResults.append("text")
+            .attr("x", 250)
+            .attr("y", y + yOffset)
+            .style("fill", fontDisplayColor)
+            .attr("dy", ".4em")
+            .attr("font-size", "14px")
+            .attr("text-align", "center")
+            .text("ORIGINAL");
+    
+        svgRestrictionRemovalDetailsResults.append("text")
+            .attr("x", 250)
+            .attr("y", y + (2 * yOffset))
+            .style("fill", fontDisplayColor)
+            .attr("dy", ".4em")
+            .attr("font-size", "14px")
+            .attr("text-align", "center")
+            .text("UPDATED");
+
+        // START Get replacement coding sequences!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        var restrictionFrameSequenceString = '';
+        restrictionFrameSequence.forEach((base) => {
+            restrictionFrameSequenceString = restrictionFrameSequenceString + base.getDisplayBase();
+        });
+    
+        // Grab all matching replacementCodons for each codon in a 2D array.
+        var codonIndex = 0;
+        var replacementCodons = [];
+        for(let i = 0; i < restrictionFrameSequenceString.length; i += 3) {
+            const codon = restrictionFrameSequenceString.substring(i, i + 3);
+            replacementCodons[codonIndex++] = getReplacementCodons(codon, 'hs', 0.10);
+        }
+    
+        // Create an array of all possible codon combinations as strings.
+        var possibleSequenceStrings = [];
+        generateCombinations(replacementCodons, 0, [], possibleSequenceStrings);
+        
+        // Iterate over each string in possibleSequenceStrings
+        var sequenceStringsNotContainingRestrictionSite = [];
+        possibleSequenceStrings.forEach((sequence) => {
+            // Check if the sequence string does not contain the restriction site pattern
+            if (!hasRestrictionSite(restrictionSite.restrictionSiteName, sequence)) {
+                // If it doesn't, add it to sequenceStringsNotContainingRestrictionSite
+                sequenceStringsNotContainingRestrictionSite.push(sequence);
+            }
+        });
+
+        console.log("COSEST MATCH FOR " + restrictionFrameSequenceString, findClosestMatch(restrictionFrameSequenceString, sequenceStringsNotContainingRestrictionSite));
+
+        // STOP Get replacement coding sequences!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+        for(let i = 0; i < restrictionFrameSequence.length; i++) {
+    
+            svgRestrictionRemovalDetailsResults.append("rect")
+                .attr("x", 450 + (unitWidthTotal * (i + 1)) - 7)
+                .attr("y", y + yOffset - (unitHeight / 2))
+                .attr("width", unitWidth)
+                .attr("height", unitHeight)
+                .attr("fill", restrictionFrameSequence[i].getDisplayColor());
+    
+            svgRestrictionRemovalDetailsResults.append("text")
+                .attr("x", 450 + (unitWidthTotal * (i + 1)) - 4)
+                .attr("y", y + yOffset)
+                .style("fill", fontDisplayColor)
+                .attr("dy", ".4em")
+                .attr("font-size", "12px")
+                .attr("text-align", "center")
+                .text(restrictionFrameSequence[i].getDisplayBase())
+                .style("cursor", "pointer")
+                .append("title")
+                .text(function() {
+                    return restrictionFrameSequence[i].location;
+                });
+        }
+    
+        y += ((3 * yOffset) + 10);
+    }
+}
+
+
+// Function to calculate the Hamming distance between two strings
+function hammingDistance(str1, str2) {
+    let distance = 0;
+    for (let i = 0; i < str1.length; i++) {
+        if (str1[i] !== str2[i]) {
+            distance++;
+        }
+    }
+    return distance;
+}
+
+// Function to find the element in sequences with the least amount of changes compared to sequence.
+function findClosestMatch(sequence, sequences) {
+
+    let minDistance = Infinity;
+    let closestMatch = null;
+
+    for (const element of sequences) {
+        const distance = hammingDistance(sequence, element);
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestMatch = element;
+        }
+    }
+
+    return closestMatch;
 }
 
 

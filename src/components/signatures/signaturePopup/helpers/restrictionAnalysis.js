@@ -219,7 +219,12 @@ export const getRestrictionFrame = (groupDNASequence, restrictionStart, restrict
         const orfStart = orf['start'] + 1;
         const restrictionFrameOffset = orfStart % 3;
         const restrictionFrameStart = restrictionStart - restrictionFrameOffset;
-        const restrictionFrameStop = restrictionFrameStart + restrictionLength + (3 - (restrictionLength % 3));
+        const restrictionFrameStop =
+            ((restrictionFrameOffset === 0) && (restrictionLength % 3 === 0))
+            ? restrictionFrameStart + restrictionLength
+            : restrictionFrameStart + restrictionLength + (3 - (restrictionLength % 3));
+        //var restrictionFrameStop = restrictionFrameStart + restrictionLength + (3 - (restrictionLength % 3));
+        //if((restrictionLength % 3) === 0) { restrictionFrameStop = restrictionFrameStop - 3; }
         const restrictionFrameSequence = groupDNASequence.slice(restrictionFrameStart, restrictionFrameStop);
         const restrictionFrame = { restrictionRelativeStart: (restrictionStart - restrictionFrameStart) , restrictionFrameSequence: restrictionFrameSequence };
 
@@ -375,8 +380,16 @@ BULK REMOVE RESTRICTION SITES WITH INTERNAL HELPER FUNCTIONS
 ****************************************************************************************************************************************************** */
 
 
+export const bulkRemoveRestrictionSites = (restrictionSitesToBeRemoved) => {
+
+    console.log("DEEZ NUTZ", restrictionSitesToBeRemoved);
+}
+
+
+
+
 // Note: This currently only supports genomes that have all coding sequences in the (+) direction. Support for (-) will need to be added.
-export const bulkRemoveRestrictionSites = (restrictionSitesToBeRemoved, dnaSequence, genomeAnnotations) => {
+export const bulkRemoveRestrictionSiteZZZ = (restrictionSitesToBeRemoved, dnaSequence, genomeAnnotations) => {
 
     const restrictionSitesToBeRemovedArray = Array.from(restrictionSitesToBeRemoved);
     restrictionSitesToBeRemovedArray.sort((a, b) => a.startPosition - b.startPosition);
