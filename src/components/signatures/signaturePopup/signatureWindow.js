@@ -115,11 +115,11 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
 
     // BODY
 
-    html += "<body>";
+    html += "<body style=\"overflow: hidden;\">";
 
     html += getHeaderDiv(groupCategory, group, position, orf);
 
-    html += "<div class=\"wrapper\">";  // Wrapper Open
+    html += "<div class=\"wrapper\" style=\"overflow: hidden;\">";  // Wrapper Open
 
     html += getTabDiv();
 
@@ -149,23 +149,21 @@ export const generateSignatureWindowContent = (groupCategory, group, position, o
     html += "<div id=\"restrictionDesignSiteSelectionResults\" style=\"height: 50%; width: 100%;\"><svg id=\"restrictionDesignSelectionResultsSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/></div>";
     html += "</div>";
 
-    html += "<div id=\"restrictionRemoval\" class=\"tabcontent\" style=\"display: none; height: 100%;\">";
+    html += "<div id=\"restrictionRemoval\" class=\"tabcontent\" style=\"display: none; height: 100%; overflow-x: scroll; overflow-y: hidden;\">";
     html += "<div id=\"restrictionRemovalDetails\" style=\"height: 14%; margin:\">";
     html += "<svg id=\"restrictionRemovalDetailsSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/>";
     html += "</div>";
     html += "<div id=\"restrictionRemovalDetailsList\" style=\"height: 16%;\">";
     html += "<svg id=\"restrictionRemovalDetailsListSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/>";
     html += "</div>";
-    html += "<div id=\"restrictionRemovalDetailsResults\" style=\"height: 70%;\">";
-    html += "<svg id=\"restrictionRemovalDetailsResultsSvg\" style=\"height: 100%; width: 100%; background: #f0f0f0;\"/>";
+    html += "<div id=\"restrictionRemovalDetailsResults\" style=\"height: 70%; overflow-y: auto;\">";
+    html += "<svg id=\"restrictionRemovalDetailsResultsSvg\" style=\"height: auto; width: 100%; background: #f0f0f0;\"/></div>";    
     html += "</div>";
     html += "</div>";
     
     html += "</div>";  // Wrapper Close
 
     html += getFooterDiv();
-
- 
 
     html += "</body>";
 
@@ -1442,6 +1440,8 @@ function drawRestrictionRemovalDetailsReslults(restrictionSitesToBeRemoved, svgR
 
     var y = 20;
     var yOffset = 30;
+
+    var updatedDnaSequence = dnaSequence;
     
     for (const restrictionSite of restrictionSitesToBeRemoved) {
     
@@ -1495,7 +1495,6 @@ function drawRestrictionRemovalDetailsReslults(restrictionSitesToBeRemoved, svgR
             .attr("text-align", "center")
             .text("UPDATED");
 
-        // START Get replacement coding sequences!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         var restrictionFrameSequenceString = '';
         restrictionFrameSequence.forEach((base) => {
@@ -1524,9 +1523,8 @@ function drawRestrictionRemovalDetailsReslults(restrictionSitesToBeRemoved, svgR
             }
         });
 
-        console.log("COSEST MATCH FOR " + restrictionFrameSequenceString, findClosestMatch(restrictionFrameSequenceString, sequenceStringsNotContainingRestrictionSite));
-
-        // STOP Get replacement coding sequences!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        const closestMatch = findClosestMatch(restrictionFrameSequenceString, sequenceStringsNotContainingRestrictionSite);
+        
     
         for(let i = 0; i < restrictionFrameSequence.length; i++) {
     
@@ -1551,10 +1549,74 @@ function drawRestrictionRemovalDetailsReslults(restrictionSitesToBeRemoved, svgR
                     return restrictionFrameSequence[i].location;
                 });
         }
+
+        // Note: This will also update the restrictionFrameSequence object, to represent the updated sub-sequence.
+        updatedDnaSequence = replaceSequence(updatedDnaSequence, restrictionFrameSequence, closestMatch);
+
+
+        for(let i = 0; i < restrictionFrameSequence.length; i++) {
+    
+            svgRestrictionRemovalDetailsResults.append("rect")
+                .attr("x", 450 + (unitWidthTotal * (i + 1)) - 7)
+                .attr("y", y + (2 * yOffset) - (unitHeight / 2))
+                .attr("width", unitWidth)
+                .attr("height", unitHeight)
+                .attr("fill", restrictionFrameSequence[i].getDisplayColor());
+    
+            svgRestrictionRemovalDetailsResults.append("text")
+                .attr("x", 450 + (unitWidthTotal * (i + 1)) - 4)
+                .attr("y", y + (2 * yOffset))
+                .style("fill", fontDisplayColor)
+                .attr("dy", ".4em")
+                .attr("font-size", "12px")
+                .attr("text-align", "center")
+                .text(restrictionFrameSequence[i].getDisplayBase())
+                .style("cursor", "pointer")
+                .append("title")
+                .text(function() {
+                    return restrictionFrameSequence[i].location;
+                });
+        }
     
         y += ((3 * yOffset) + 10);
     }
+
+    y += 100;
+
+    var svgElement = svgRestrictionRemovalDetailsResults.node();
+
+    // Create foreignObject element
+    var foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+    foreignObject.setAttribute('width', '90%');
+    foreignObject.setAttribute('height', '100%');
+    foreignObject.setAttribute('transform', `translate(100, ${y})`);
+
+    // Create div element for wrapped text content
+    var divElement = document.createElement('div');
+    divElement.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+    divElement.classList.add('wrapped-text');
+
+    var updatedDnaSequenceString = '';
+    updatedDnaSequence.forEach((base) => {
+        updatedDnaSequenceString = updatedDnaSequenceString + base.getDisplayBase();
+    });
+    divElement.textContent = updatedDnaSequenceString;
+
+    // Append div element to foreignObject
+    foreignObject.appendChild(divElement);
+
+    // Append foreignObject to svgElement
+    svgElement.appendChild(foreignObject);
+
+    const additionalYForSequence = ((updatedDnaSequenceString.length / 150) * 20) + 100;
+
+    // Adjust the SVG height dynamically based on its content
+    setTimeout(() => {
+        const bbox = svgElement.getBBox(); // Get the bounding box of the content
+        svgElement.setAttribute("height", bbox.height + additionalYForSequence);
+    }, 0);
 }
+
 
 
 // Function to calculate the Hamming distance between two strings
@@ -1705,6 +1767,7 @@ function getSignatureWindowStyle() {
             display: flex;
             flex-direction: column;
             min-height: 100vh; /* Ensure the body takes at least the full height of the viewport */
+            overflow: hidden;
         }
         html, body {
             overflow-x: hidden;
@@ -1884,6 +1947,12 @@ function getSignatureWindowStyle() {
         }
         .tablinks {
             border-radius: 10px 10px 0 0; /* Rounded corners on top */
+        }
+        .wrapped-text {
+            white-space: pre-wrap; /* Allow wrapping of text */
+            word-wrap: break-word; /* Ensure long words wrap */
+            overflow-wrap: break-word; /* Alternative for word-wrap */
+            fontFamily: monospace;
         }
         #selectRestrictionSite {
             position: absolute;
