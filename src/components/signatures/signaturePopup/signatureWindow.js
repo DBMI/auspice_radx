@@ -1587,7 +1587,7 @@ function drawRestrictionRemovalDetailsReslults(restrictionSitesToBeRemoved, svgR
 
     // Create foreignObject element
     var foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
-    foreignObject.setAttribute('width', '90%');
+    foreignObject.setAttribute('width', '80%');
     foreignObject.setAttribute('height', '100%');
     foreignObject.setAttribute('transform', `translate(100, ${y})`);
 
@@ -1952,7 +1952,7 @@ function getSignatureWindowStyle() {
             white-space: pre-wrap; /* Allow wrapping of text */
             word-wrap: break-word; /* Ensure long words wrap */
             overflow-wrap: break-word; /* Alternative for word-wrap */
-            fontFamily: monospace;
+            font-family: monospace;
         }
         #selectRestrictionSite {
             position: absolute;
