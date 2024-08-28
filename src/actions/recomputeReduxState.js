@@ -690,8 +690,8 @@ const createMetadataStateFromJSON = (json) => {
   if (json.meta.maintainers) {
     metadata.maintainers = json.meta.maintainers;
   }
-  if (json.meta.build_url) {
-    metadata.buildUrl = json.meta.build_url;
+  if (json.meta.groupings) {
+    metadata.groupings = json.meta.groupings;
   }
   if (json.meta.genome_annotations) {
     metadata.genomeAnnotations = json.meta.genome_annotations;
@@ -717,7 +717,8 @@ const createMetadataStateFromJSON = (json) => {
       language: "language",
       sidebar: "sidebar",
       panels: "panels",
-      transmission_lines: "showTransmissionLines"
+      transmission_lines: "showTransmissionLines",
+      groupings: "groupings"
     };
     for (const [jsonKey, auspiceKey] of Object.entries(jsonKeyToAuspiceKey)) {
       if (Object.prototype.hasOwnProperty.call(json.meta.display_defaults, jsonKey)) {

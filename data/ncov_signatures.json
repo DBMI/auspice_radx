@@ -1,6 +1,18 @@
 {
   "meta": {
     "build_url": "https://github.com/nextstrain/ncov",
+    "groupings": [
+      {
+        "key": "Group A",
+        "name": "Awesome Guys",
+        "aka": "Saucy Sam And The Sandworms"
+      },
+      {
+        "key": "Group B",
+        "name": "Bad Guys",
+        "aka": "Kooky Kunkles And Canines"
+      }
+    ],
     "colorings": [
       {
         "key": "num_date",
