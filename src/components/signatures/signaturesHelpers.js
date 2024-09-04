@@ -46,7 +46,7 @@ export const formatGroupByName = (groupByNameIn) => {
       groupByNameOut = groupByNameOut.concat(" ");
     }
   }
-
+  
   return groupByNameOut;
 }
 
@@ -81,14 +81,14 @@ export const parseGroupColoringsBy = (parseBy, inputTree, nodeColors) => {
       }
     }
   }
-
+  
   return Array.from(groupColorings, ([name, value]) => ([name, value])); // Convert to array of arrays.
 }
 
 
 /* Parse mutations from a tree object by a filter like clade, city, etc. */
-export const parseCombinedMutationsBy = (parseBy, inputTree) => {
-
+export const parseCombinedMutationsByOLD = (parseBy, inputTree) => {
+  var startTime = performance.now();
   let groupSizes = new Map();
 
   const nodes = [];
@@ -149,6 +149,20 @@ export const parseCombinedMutationsBy = (parseBy, inputTree) => {
       groupMutations.set(groupKey, injectParentMutations(node, nodes, groupMutations.get(groupKey)));
     }
   }
+  var endTime = performance.now();
+  console.log(`OLD WAY ${endTime - startTime} milliseconds`);
+  var endTime = performance.now();
+  return groupMutations;
+}
+
+
+export const parseCombinedMutationsBy = (parseBy, groupings) => {
+
+  var startTime = performance.now();
+  var groupMutations = new Map(groupings[parseBy])
+
+  var endTime = performance.now();
+  console.log(`NEW WAY: ${endTime - startTime} milliseconds`);
 
   return groupMutations;
 }
@@ -369,7 +383,7 @@ export const parsePositionFromMutationString = (mutation) => {
 export const drawGroupMutationsAsTicks = (barBuffer, barHeight, categoryElementColor, currentMutations, geneLength, groupIndex, yMSA, scales, selection, zoomCoordinates, sequenceDisplayMax, signaturesChart) => {
 
   var displayBufferSequenceLength = Math.round(sequenceDisplayMax / 2) - 1; // The number of bases on either side of a mutation to show to change to full sequence view.
-
+  
   for(let i = 0; i < currentMutations.length; i++) {
     let xPosition = getZoomXPosition(parsePositionFromMutationString(currentMutations[i]), zoomCoordinates[0], zoomCoordinates[1], geneLength);
     if(xPosition !== -1) {

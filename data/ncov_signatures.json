@@ -1,18 +1,136 @@
 {
   "meta": {
     "build_url": "https://github.com/nextstrain/ncov",
-    "groupings": [
-      {
-        "key": "Group A",
-        "name": "Awesome Guys",
-        "aka": "Saucy Sam And The Sandworms"
-      },
-      {
-        "key": "Group B",
-        "name": "Bad Guys",
-        "aka": "Kooky Kunkles And Canines"
-      }
-    ],
+    "groupings":{
+      "city": [
+        [
+          "Wuhan", ["A21137G", "A24325G", "A3778G", "A8001C", "A8388G", "C1023T", "C1025T", "C9534T", "G20670A", "G20679A", "G21316A", "G29277C", "G7016A", "T21656A", "T6996C", "T8987A"]
+        ],
+        [
+          "Hangzhou", ["C583T"]
+        ],
+        [
+          "Shenzhen", ["C29095T", "C8782T", "T23569C", "T28144C"]
+        ],
+        [
+          "Zhuhai", ["C21707T"]
+        ],
+        [
+          "Bangkok", []
+        ]
+      ],
+      "country": [
+        [
+          "China", ["A21137G", "A24325G", "A3778G", "A8001C", "A8388G", "C1023T", "C1025T", "C21707T", "C29095T", "C583T", "C8782T", "C9534T", "G20670A", "G20679A", "G21316A", "G29277C", "G7016A", "T21656A", "T23569C", "T28144C", "T6996C", "T8987A"]],
+        [
+          "Thailand", []
+        ]
+      ],
+      "host":[
+        [
+          "human", ["A21137G", "A24325G", "A3778G", "A8001C", "A8388G", "C1023T", "C1025T", "C21707T", "C29095T", "C583T", "C8782T", "C9534T", "G20670A", "G20679A", "G21316A", "G29277C", "G7016A", "T21656A", "T23569C", "T28144C", "T6996C", "T8987A"]
+        ] 
+      ],
+      "authors":[
+        [
+          ["Chen-et-al", ["C583T"]],
+          ["Fang-et-al", ["T21656A"]],
+          ["Kang-et-al", ["C21707T", "C29095T", "C8782T", "T23569C", "T28144C"]],
+          ["Pilailuk-et-al", []],
+          ["Ren-et-al-A", ["A3778G", "A8388G", "T8987A"]],
+          ["Ren-et-al-B", ["T6996C"]],
+          ["Tan-et-al", ["C1023T", "C1025T", "G20670A", "G20679A"]],
+          ["Zhang-et-al-A", ["G29277C"]],
+          ["Zhang-et-al-B", []],
+          ["Zhou-et-al", ["A21137G", "A24325G", "A8001C", "C9534T", "G21316A", "G7016A"]]
+        ]
+      ],
+      "originating_lab":[
+        [
+          "Bamrasnaradura-Hospital-Nonthaburi-Thailand", []
+        ],
+        [
+          "Guangdong-Provincial-Center-for-Diseases-Control-and-Prevention-Guangdong-Provinical-Public-Health-Guangzhou-China", ["C21707T", "C29095T", "C8782T", "T23569C", "T28144C"]
+        ],
+        [
+          "Institute-of-Pathogen-Biology-Chinese-Academy-of-Medical-Sciences-and-Peking-Union-Medical-College-Beijing-China", ["A3778G", "A8388G", "T6996C", "T8987A"]
+        ],
+        [
+          "National-Institute-for-Viral-Disease-Control-and-Prevention-China-CDC-Beijing-China", ["C1023T", "C1025T", "G20670A", "G20679A"]
+        ],
+        [
+          "UNDEFINED", ["G29277C"]
+        ],
+        [
+          "Wuhan-Jinyintan-Hospital-Wuhan-China", ["A21137G", "A24325G", "A8001C", "C9534T", "G21316A", "G7016A", "T21656A"]
+        ],
+        [
+          "Zhejiang-Provincial-Center-for-Disease-Control-and-Prevention-Hangzhou-China", ["C583T"]
+        ]
+      ],
+      "submitting_lab":[
+        [
+          "Department-of-Medical-Sciences-National-Institute-of-Health-Nonthaburi-Thailand", []
+        ],
+        [
+          "Department-of-Microbiology-Guangdong-Provincial-Center-for-Diseases-Control-and-Prevention-Guangdong-Provinical-Public-Health-Guangzhou-China", ["C21707T", "C29095T", "C8782T", "T23569C", "T28144C"]
+        ],
+        [
+          "Department-of-Microbiology-Zhejiang-Provincial-Center-for-Disease-Control-and-Prevention-Hangzhou-China", ["C583T"]
+        ],
+        [
+          "Hubei-Provincial-Center-for-Disease-Control-and-Prevention-Wuhan-China", ["T21656A"]
+        ],
+        [
+          "Institute-of-Pathogen-Biology-Chinese-Academy-of-Medical-Sciences-and-Peking-Union-Medical-College-Beijing-China", ["A3778G", "A8388G", "T6996C", "T8987A"]
+        ],
+        [
+          "National-Institute-for-Communicable-Disease-Control-and-Prevention-ICDC-China-CDC-Beijing-China", ["G29277C"]
+        ],
+        [
+          "National-Institute-for-Viral-Disease-Control-and-Prevention-China-CDC-Beijing-China", ["C1023T", "C1025T", "G20670A", "G20679A"]
+        ],
+        [
+          "Wuhan-Institute-of-Virology-Chinese-Academy-of-Sciences-Wuhan-China", ["A21137G", "A24325G", "A8001C", "C9534T", "G21316A", "G7016A"]
+        ]
+      ],
+      "num_date":[
+        [
+          "Dec-23-2019", ["A3778G", "A8388G", "T8987A"]
+        ],
+        [
+          "Dec-25-2019", ["G29277C"]
+        ],
+        [
+          "Dec-29-2019", ["A21137G", "A24325G", "A8001C", "C9534T", "G20670A", "G20679A", "G21316A", "G7016A", "T21656A", "T6996C"]
+        ],
+        [
+          "Jan-1-2020", ["C1023T", "C1025T"]
+        ],
+        [
+          "Jan-13-2020", []
+        ],
+        [
+          "Jan-14-2020", ["C29095T", "C8782T", "T28144C"]
+        ],
+        [
+          "Jan-15-2020", ["C29095T", "C8782T", "T23569C", "T28144C"]
+        ],
+        [
+          "Jan-16-2020", ["C583T"]
+        ],
+        [
+          "Jan-17-2020", ["C21707T"]
+        ],
+        [
+          "Jan-18-2020", ["C21707T"]
+        ],
+        [
+          "Jan-8-2020", []
+        ]
+    ]
+    
+    },
     "colorings": [
       {
         "key": "num_date",

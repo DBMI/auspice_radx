@@ -12,7 +12,7 @@ import { isColorByGenotype, decodeColorByGenotype } from "../../util/getGenotype
 import { changeZoom } from "../../actions/signatures";
 import { nucleotide_gene } from "../../util/globals";
 import { getBrighterColor } from "../../util/colorHelpers";
-import { drawGroupMutationsAsTicks, drawGroupSequence, formatGroupByName, parseCombinedMutationsBy, parseGroupColoringsBy, retrieveSequence, REFERENCE_COLOR } from "./signaturesHelpers";
+import { drawGroupMutationsAsTicks, drawGroupSequence, formatGroupByName, parseCombinedMutationsBy, parseCombinedMutationsByOLD, parseGroupColoringsBy, retrieveSequence, REFERENCE_COLOR } from "./signaturesHelpers";
 
 /* EntropChart uses D3 for visualisation. There are 2 methods exposed to
  * keep the visualisation in sync with React:
@@ -277,8 +277,15 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       categoryGroup = [['Unsupported', '#FFFF00']];
     }
   }
-
-  mutationsMap = parseCombinedMutationsBy(colorBy, props.tree.nodes);
+  
+  //If the groupings are by genotype it will have to be dealt with dynamically as before. Otherwise use the precomputed mutations from the JSON.
+  if(colorBy.startsWith('gt-')) {
+    mutationsMap = parseCombinedMutationsByOLD(colorBy, props.tree.nodes);
+  }
+  else {
+    mutationsMap = parseCombinedMutationsBy(colorBy, props.metadata.groupings);
+  }
+  
 
   // Draw legends (without zoom functionality)
 

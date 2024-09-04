@@ -62,7 +62,7 @@ const constructEncodedGenotype = (mutType, d) => {
 };
 
 @connect((state) => {
-  console.log("STATE", state);
+  console.log("STATE /signatures/index.js", state);
   return {
     mutType: state.controls.mutType,
     bars: state.entropy.bars,
@@ -170,7 +170,7 @@ class Signature extends React.Component {
     );
   }
   setUp(props) {
-    console.log("PROPS", props);
+    console.log("PROPS /signatures/index.js", props);
     const chart = new SignaturesChart(
       this.d3entropy,
       props.annotations,
