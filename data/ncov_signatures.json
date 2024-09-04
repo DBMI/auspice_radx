@@ -16,19 +16,17 @@
       "host":[
         ["human", ["A21137G", "A24325G", "A3778G", "A8001C", "A8388G", "C1023T", "C1025T", "C21707T", "C29095T", "C583T", "C8782T", "C9534T", "G20670A", "G20679A", "G21316A", "G29277C", "G7016A", "T21656A", "T23569C", "T28144C", "T6996C", "T8987A"]] 
       ],
-      "authors":[
-        [
-          ["Chen-et-al", ["C583T"]],
-          ["Fang-et-al", ["T21656A"]],
-          ["Kang-et-al", ["C21707T", "C29095T", "C8782T", "T23569C", "T28144C"]],
-          ["Pilailuk-et-al", []],
-          ["Ren-et-al-A", ["A3778G", "A8388G", "T8987A"]],
-          ["Ren-et-al-B", ["T6996C"]],
-          ["Tan-et-al", ["C1023T", "C1025T", "G20670A", "G20679A"]],
-          ["Zhang-et-al-A", ["G29277C"]],
-          ["Zhang-et-al-B", []],
-          ["Zhou-et-al", ["A21137G", "A24325G", "A8001C", "C9534T", "G21316A", "G7016A"]]
-        ]
+      "author":[
+        ["Chen-et-al", ["C583T"]],
+        ["Fang-et-al", ["T21656A"]],
+        ["Kang-et-al", ["C21707T", "C29095T", "C8782T", "T23569C", "T28144C"]],
+        ["Pilailuk-et-al", []],
+        ["Ren-et-al-A", ["A3778G", "A8388G", "T8987A"]],
+        ["Ren-et-al-B", ["T6996C"]],
+        ["Tan-et-al", ["C1023T", "C1025T", "G20670A", "G20679A"]],
+        ["Zhang-et-al-A", ["G29277C"]],
+        ["Zhang-et-al-B", []],
+        ["Zhou-et-al", ["A21137G", "A24325G", "A8001C", "C9534T", "G21316A", "G7016A"]]
       ],
       "originating_lab":[
         ["Bamrasnaradura-Hospital-Nonthaburi-Thailand", []],
