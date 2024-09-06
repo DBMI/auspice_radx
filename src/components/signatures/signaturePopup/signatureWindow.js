@@ -1710,8 +1710,20 @@ function getTabDiv() {
 
 function getFooterDiv() {
 
+    var version = '1.0.1';
+
+    /*fetch('../version.json')
+        .then(response => response.json())
+        .then(data => {
+            console.log("DATA", data);
+            version = data.version;
+    })
+    .catch(error => console.error('Error fetching version:', error));*/
+
     let footer = "<div class=\"footer\">";
-    footer += "<a href=\"https://www.radxrad.org\">RADx Radical DCC 2024</a>";
+    footer += "<a href=\"https://www.radxrad.org\">";
+    footer += `Signatures Version ${version} RADx Radical DCC 2024`;
+    footer += "</a>";
     footer += "</div>";
 
     return footer;

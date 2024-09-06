@@ -87,7 +87,7 @@ export const parseGroupColoringsBy = (parseBy, inputTree, nodeColors) => {
 
 
 /* Parse mutations from a tree object by a filter like clade, city, etc. */
-export const parseCombinedMutationsByOLD = (parseBy, inputTree) => {
+export const parseCombinedMutationsDynamicallyBy = (parseBy, inputTree) => {
   var startTime = performance.now();
   let groupSizes = new Map();
 
@@ -156,7 +156,7 @@ export const parseCombinedMutationsByOLD = (parseBy, inputTree) => {
 }
 
 
-export const parseCombinedMutationsBy = (parseBy, groupings) => {
+export const parseCombinedMutationsFromJsonBy = (parseBy, groupings) => {
 
   var startTime = performance.now();
   var groupMutations = new Map(groupings[parseBy])
