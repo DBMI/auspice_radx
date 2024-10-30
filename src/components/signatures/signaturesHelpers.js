@@ -159,7 +159,7 @@ export const parseCombinedMutationsDynamicallyBy = (parseBy, inputTree) => {
 export const parseCombinedMutationsFromJsonBy = (parseBy, groupings) => {
 
   var startTime = performance.now();
-  var groupMutations = new Map(groupings[parseBy])
+  var groupMutations = new Map(groupings[parseBy]);
 
   var endTime = performance.now();
   console.log(`NEW WAY: ${endTime - startTime} milliseconds`);
@@ -421,33 +421,41 @@ export const drawGroupSequence = (barBuffer, barHeight, categoryElementColor, cu
         .attr("fill", currentSequence[i].getDisplayColor())
         .enter();
 
-      selection.append("text")
+      let txt = selection.append("text")
         .attr("x", scales.xNav(xPosition)+ (barHeight / 4))
         .attr("y", yMSA +  ((groupIndex + 1) * barHeight) + ((groupIndex + 1) * barBuffer) + (barHeight / 2))
         .style("fill", fontDisplayColor)
         .attr("dy", ".4em")
         .attr("font-size", "12px")
         .attr("text-align", "left")
-        .text(currentSequence[i].getDisplayBase())
-        .style("cursor", "pointer")
-        .on("click", function() {
-          const signatureWindow = displaySignatureWindow();
-          signatureWindow.document.body.innerHTML = generateSignatureWindowContent(groupCategory, group, i, currentCDS.prot);
-          initializeTabButtons(signatureWindow);
-          initializeRestrictionSelect(signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
-          populateSignatureSequence(signatureWindow, currentSequence, i, 'selection', 'results', 'selectionSvg', 'resultsSvg', null, null);
-          setTimeout(function() {
-            populateAAAlignment(signatureWindow, currentCDS, group, categoryGroup, mutationsMap, rootSequence);
-            populateRestrictionComparisonMap(signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
-            populateRestrictionDesignMap(null, signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations); //'BsalHFv2'
-            populateRestrictionRemovalMap([], signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
-          }, 1000);
-        })
-        .append("title")
-        .text(function() {
-          return i;
-        })
-        .enter();
+        .text(currentSequence[i].getDisplayBase());
+       
+      // The text bases should only be clickable if they represent a CDS. This will preclude the reference seuqence form being clickable,
+      // which would result in errors.
+      if(currentCDS != null) {
+        txt
+          .style("cursor", "pointer")
+          .on("click", function() {
+            if(currentCDS != null) {
+              const signatureWindow = displaySignatureWindow();
+              signatureWindow.document.body.innerHTML = generateSignatureWindowContent(groupCategory, group, i, currentCDS.prot);
+              initializeTabButtons(signatureWindow);
+              initializeRestrictionSelect(signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
+              populateSignatureSequence(signatureWindow, currentSequence, i, 'selection', 'results', 'selectionSvg', 'resultsSvg', null, null);
+              setTimeout(function() {
+                populateAAAlignment(signatureWindow, currentCDS, group, categoryGroup, mutationsMap, rootSequence);
+                populateRestrictionComparisonMap(signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
+                populateRestrictionDesignMap(null, signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations); //'BsalHFv2'
+                populateRestrictionRemovalMap([], signatureWindow, group, categoryGroup, mutationsMap, rootSequence, genomeAnnotations);
+              }, 1000);
+            }
+          })
+          .append("title")
+          .text(function() {
+            return i;
+          })
+          .enter();
+        }
     }
   }
 }

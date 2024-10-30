@@ -378,7 +378,10 @@ SignaturesChart.prototype._drawSignatures = function _drawSignatures(props) {
       //.enter();
 
       // Draw ticks representing the locations of mutations (zoomable)
-      let currentMutations = mutationsMap.get(categoryElement);
+      let currentMutationData = mutationsMap.get(categoryElement);  // Contains the full data for a group of mutations, including the name of the mutation (key) as well as an array of two integers (value) representing the number of sequences in the group the mutation occurs in and the number of total sequences in the group.
+      let currentMutations = Object.keys(currentMutationData);      // Contains only the names of the mutations in the above data structure, as an array.
+      //let currentMutations = mutationsMap.get(categoryElement);
+      
       if(this.zoomCoordinates[1] - this.zoomCoordinates[0] > sequenceDisplayMax) {
 
         drawGroupMutationsAsTicks(

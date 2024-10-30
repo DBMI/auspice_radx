@@ -8,6 +8,7 @@ import { getBrighterColor } from "../../../util/colorHelpers";
 import { retrieveSequence } from "./../signaturesHelpers";
 import { getAminoAcidSequence, getReplacementCodons } from "./helpers/dnaToAA";
 import { replaceSequence } from "./helpers/sequenceTools";
+import { VERSION } from '../version';
 
 const w = 900;
 const h = 750;
@@ -783,7 +784,7 @@ export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, 
 
 /* ******************************************************************************************************************************************************
 
-TAB 3: COMPARATIVE RESTRICTION ANALYSIS (i.e. sites that differ between groups)
+Initialize the restriction site drop down.
 
 ****************************************************************************************************************************************************** */
 
@@ -814,10 +815,19 @@ export const initializeRestrictionSelect = (signatureWindow, currentGroup, group
 }
 
 
+/* ******************************************************************************************************************************************************
+
+TAB 3: COMPARATIVE RESTRICTION ANALYSIS (i.e. sites that differ between groups)
+
+****************************************************************************************************************************************************** */
+
+
 export const populateRestrictionComparisonMap = (signatureWindow, currentGroup, groups, mutationsMap, rootSequence, genomeAnnotations) => {
 
     const elementHeight = 20;
+
     const nonConservedRestrictionSites = getNonConservedRestrictionSites(rootSequence, groups, mutationsMap);
+
     const restrictionWindowDisplayWidth = actualWidth - 100;
 
     var nonConservedSitesContent = signatureWindow.document.getElementById('nonConservedSites');
@@ -841,6 +851,7 @@ export const populateRestrictionComparisonMap = (signatureWindow, currentGroup, 
 
     let y = 125;
     groups.forEach((group) => {
+        
         let groupKey = group[0];
         let groupColor = group[1];
         if(groupKey == currentGroup) {
@@ -892,7 +903,6 @@ function drawORFMap(restrictionWindowDisplayWidth, svg, elementHeight, rootSeque
             .style("pointer-events", "none");
     });
 }
-
 
 
 function drawGroupRestrictionMap(svg, restrictionWindowDisplayWidth, rootSequence, groupNonConservedRestrictionSites, y, groupKey, groupColor, svgRestrictionSiteDetails, groups, signatureWindow, genomeAnnotations, mutationsMap) {
@@ -1710,19 +1720,24 @@ function getTabDiv() {
 
 function getFooterDiv() {
 
-    var version = '1.0.1';
+    /*var version = '1.0.1';
 
-    /*fetch('../version.json')
-        .then(response => response.json())
-        .then(data => {
-            console.log("DATA", data);
-            version = data.version;
+    fetch('../version.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("DATA", data);
+        version = data.version;
     })
     .catch(error => console.error('Error fetching version:', error));*/
 
     let footer = "<div class=\"footer\">";
     footer += "<a href=\"https://www.radxrad.org\">";
-    footer += `Signatures Version ${version} RADx Radical DCC 2024`;
+    footer += `Signatures Version ${VERSION} RADx Radical DCC 2024`;
     footer += "</a>";
     footer += "</div>";
 
