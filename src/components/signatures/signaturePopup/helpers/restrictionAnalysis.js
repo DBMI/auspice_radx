@@ -212,7 +212,7 @@ export const getRestrictionFrame = (groupDNASequence, restrictionStart, restrict
         obj =>
             restrictionStart >= obj.start &&
             restrictionStop <= obj.end);
-
+    
     // SCENARIO 1: Restriction site is completely enclosed by a single ORF.
     if(orf !== undefined && orf !== null) {
 
@@ -220,16 +220,22 @@ export const getRestrictionFrame = (groupDNASequence, restrictionStart, restrict
         const orfStart = orf['start'] + 1;
         const restrictionFrameOffset = orfStart % 3;
         const restrictionFrameStart = restrictionStart - restrictionFrameOffset;
-        const restrictionFrameStop =
-            ((restrictionFrameOffset === 0) && (restrictionLength % 3 === 0))
-            ? restrictionFrameStart + restrictionLength
-            : restrictionFrameStart + restrictionLength + (3 - (restrictionLength % 3));
-        //var restrictionFrameStop = restrictionFrameStart + restrictionLength + (3 - (restrictionLength % 3));
-        //if((restrictionLength % 3) === 0) { restrictionFrameStop = restrictionFrameStop - 3; }
+
+        let restrictionFrameStop;
+        if (restrictionFrameOffset === 0 && restrictionLength % 3 === 0) {
+            restrictionFrameStop = restrictionFrameStart + restrictionLength;
+        }
+        else if (restrictionFrameOffset === 2 && restrictionLength % 3 === 2) {
+            restrictionFrameStop = restrictionFrameStart + restrictionLength + (3 - (restrictionLength % 3)) + 3;
+        }
+        else {
+            restrictionFrameStop = restrictionFrameStart + restrictionLength + (3 - (restrictionLength % 3));
+        }
+
         const restrictionFrameSequence = groupDNASequence.slice(restrictionFrameStart, restrictionFrameStop);
         const restrictionFrame = { restrictionRelativeStart: (restrictionStart - restrictionFrameStart) , restrictionFrameSequence: restrictionFrameSequence };
 
-        console.log("CODING", restrictionFrame);
+        console.debug("RESTRICTION SITE IN CODING SEQUENCE, " + restrictionStart + " TO " + restrictionStop, restrictionFrame);
 
         return restrictionFrame;
     }
@@ -256,7 +262,7 @@ export const getRestrictionFrame = (groupDNASequence, restrictionStart, restrict
                 const restrictionFrameSequence = groupDNASequence.slice(restrictionStart, restrictionStop);
                 const restrictionFrame = { restrictionRelativeStart: 0, restrictionFrameSequence: restrictionFrameSequence };
                 
-                console.log("NON-CODING 0", restrictionFrame);
+                console.debug("RESTRICTION SITE IN NON-CODING SEQUENCE, 0", restrictionFrame);
 
                 return restrictionFrame;
             }
@@ -266,7 +272,7 @@ export const getRestrictionFrame = (groupDNASequence, restrictionStart, restrict
                 const restrictionFrameSequence = groupDNASequence.slice((restrictionStart - 1), (restrictionStop + 1));
                 const restrictionFrame = { restrictionRelativeStart: 1, restrictionFrameSequence: restrictionFrameSequence };
                 
-                console.log("NON-CODING 1", restrictionFrame);
+                console.debug("RESTRICTION SITE IN NON-CODING SEQUENCE, 1", restrictionFrame);
 
                 return restrictionFrame;
             }
@@ -276,7 +282,7 @@ export const getRestrictionFrame = (groupDNASequence, restrictionStart, restrict
                 const restrictionFrameSequence = groupDNASequence.slice((restrictionStart - 1), restrictionStop);
                 const restrictionFrame = { restrictionRelativeStart: 1, restrictionFrameSequence: restrictionFrameSequence };
                 
-                console.log("NON-CODING 2", restrictionFrame);
+                console.debug("RESTRICTION SITE IN NON-CODING SEQUENCE, 2", restrictionFrame);
 
                 return restrictionFrame;
             }
@@ -315,7 +321,7 @@ export const getRestrictionFrame = (groupDNASequence, restrictionStart, restrict
             const restrictionFrameSequence = groupDNASequence.slice(restrictionFrameStart, restrictionFrameStop);
             const restrictionFrame = { restrictionRelativeStart: restrictionRelativeStart, restrictionFrameSequence: restrictionFrameSequence };
 
-            console.log("PARTIAL CODING 5' END", restrictionFrame);
+            console.debug("RESTRICTION SITE IN PARTIAL CODING SEQUENCE AT 5' END", restrictionFrame);
 
             return restrictionFrame;
         }
@@ -353,7 +359,7 @@ export const getRestrictionFrame = (groupDNASequence, restrictionStart, restrict
             const restrictionFrameSequence = groupDNASequence.slice(restrictionFrameStart, restrictionFrameStop);
             const restrictionFrame = { restrictionRelativeStart: restrictionRelativeStart, restrictionFrameSequence: restrictionFrameSequence };
 
-            console.log("PARTIAL CODING 3' END", restrictionFrame);
+            console.debug("RESTRICTION SITE IN PARTIAL CODING SEQUENCE AT 3' END", restrictionFrame);
 
             return restrictionFrame;
         }
