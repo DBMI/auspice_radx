@@ -486,7 +486,7 @@ function getCurrentCds(sequenceIndex, genomeAnnotations) {
 
 // Takes reference sequence as a string, applies mutations to it, if applicable and returns it as an array of Base.
 export const retrieveSequence = (referenceSequence, mutations) => {
-
+  
   let sequenceAsChars = [...referenceSequence];
   let sequence = new Array(sequenceAsChars.length);
 

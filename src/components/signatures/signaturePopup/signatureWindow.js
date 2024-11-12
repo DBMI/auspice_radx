@@ -715,8 +715,10 @@ export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, 
         const currentGroup = groups[i];
         const currentGroupName = currentGroup[0];
         const currentGroupColor = currentGroup[1];
-        const currentGroupDNASequence = retrieveSequence(rootSequence, mutationsMap.get(currentGroupName));
+        const groupMutations = Object.keys(mutationsMap.get(currentGroupName));
+        const currentGroupDNASequence = retrieveSequence(rootSequence, groupMutations);//mutationsMap.get(currentGroupName));
         const currentGroupAASequence = getAminoAcidSequence(currentCDS, currentGroupDNASequence);
+        console.log("GROUP MUTATIONS " + currentGroupName, groupMutations);
         
         let y = yIndex;
 
@@ -1563,7 +1565,6 @@ function drawRestrictionRemovalDetailsReslults(restrictionSitesToBeRemoved, svgR
         // Note: This will also update the restrictionFrameSequence object, to represent the updated sub-sequence.
         updatedDnaSequence = replaceSequence(updatedDnaSequence, restrictionFrameSequence, closestMatch);
 
-
         for(let i = 0; i < restrictionFrameSequence.length; i++) {
     
             svgRestrictionRemovalDetailsResults.append("rect")
@@ -1719,21 +1720,6 @@ function getTabDiv() {
 
 
 function getFooterDiv() {
-
-    /*var version = '1.0.1';
-
-    fetch('../version.json')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("DATA", data);
-        version = data.version;
-    })
-    .catch(error => console.error('Error fetching version:', error));*/
 
     let footer = "<div class=\"footer\">";
     footer += "<a href=\"https://www.radxrad.org\">";
