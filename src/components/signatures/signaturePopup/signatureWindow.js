@@ -716,9 +716,8 @@ export const populateAAAlignment = (signatureWindow, currentCDS, selectedGroup, 
         const currentGroupName = currentGroup[0];
         const currentGroupColor = currentGroup[1];
         const groupMutations = Object.keys(mutationsMap.get(currentGroupName));
-        const currentGroupDNASequence = retrieveSequence(rootSequence, groupMutations);//mutationsMap.get(currentGroupName));
+        const currentGroupDNASequence = retrieveSequence(rootSequence, groupMutations);
         const currentGroupAASequence = getAminoAcidSequence(currentCDS, currentGroupDNASequence);
-        console.log("GROUP MUTATIONS " + currentGroupName, groupMutations);
         
         let y = yIndex;
 
