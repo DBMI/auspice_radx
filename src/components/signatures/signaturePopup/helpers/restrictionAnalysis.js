@@ -40,12 +40,12 @@ const restrictionSites = {
     // GOLDEN GATE ENZYMES (NON-PALINDROMIC)
     "BsaI-HF®v2": ["[Gg][Gg][TtUu][Cc][TtUu][Cc]", "[Gg][Aa][Gg][Aa][Cc][Cc]"],
     "BsmBI-v2": ["[Cc][Gg][TUtu][Cc][TUtu][Cc]", "[Gg][Aa][Gg][Aa][Cc][Gg]"],
-    "PaqCI": ["[Cc][Aa][Cc][Cc][TtUu][Gg][Cc]", "[Gg][Cc][Aa][Gg][Gg][TtUu][Gg]"],
+    "PaqCI": ["[Cc][Aa][Cc][Cc][TtUu][Gg][Cc]", "[Gg][Cc][Aa][Gg][Gg][TtUu][Gg]"]//,
     // TESTING ONLY FOR SEQUENCES PARTIALLY OR COMPLETEL OUTSIDE OF CODNG REGIONS
-    "TEST-CODING": ["[Aa][Cc][Cc][Gg][Gg][TUtu]"],
-    "TEST-5PRIME": ["[Aa][Aa][Cc][TUtu][Aa][Aa][Aa][Aa][TUtu][Gg]"],
-    "TEST-3PRIME": ["[TUtu][Aa][Cc][Aa][Cc][Aa][TUtu][Aa][Aa][Aa][Cc][Gg][Aa][Aa][Cc][TUtu][TUtu][Aa][TUtu][Gg][Gg]"],
-    "TEST-NONCODING": ["[Cc][Aa][TtUu][Aa][Aa][TtUu][Gg][Aa][Aa][Aa][Cc][TtUu][TtUu][Gg][TtUu][Cc][Aa][Cc][Gg][Cc]"]
+    //"TEST-CODING": ["[Aa][Cc][Cc][Gg][Gg][TUtu]"],
+    //"TEST-5PRIME": ["[Aa][Aa][Cc][TUtu][Aa][Aa][Aa][Aa][TUtu][Gg]"],
+    //"TEST-3PRIME": ["[TUtu][Aa][Cc][Aa][Cc][Aa][TUtu][Aa][Aa][Aa][Cc][Gg][Aa][Aa][Cc][TUtu][TUtu][Aa][TUtu][Gg][Gg]"],
+    //"TEST-NONCODING": ["[Cc][Aa][TtUu][Aa][Aa][TtUu][Gg][Aa][Aa][Aa][Cc][TtUu][TtUu][Gg][TtUu][Cc][Aa][Cc][Gg][Cc]"]
 };
 
 
